@@ -11,5 +11,5 @@
 - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)
 
 ## 下載專案
-- `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-turborepo.git`
+- `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`
 - `pnpm i` 
