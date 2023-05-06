@@ -6,4 +6,4 @@
 
 ### Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)
 
-### Notion 筆記 [Link](https://daydaychao.notion.site/SHARE-ec77da63c00b49c9bb8557fd033c6ba1)
+### Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)
