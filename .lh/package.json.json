@@ -1,0 +1,26 @@
+{
+    "sourceFile": "package.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1683398760307,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1683399158925,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,6 +8,6 @@\n   },\n   \"keywords\": [],\n   \"author\": \"\",\n   \"license\": \"ISC\",\n-  \"packageManager\": \"npm@9.5.0\"\n+\n }\n"
+                },
+                {
+                    "date": 1683399455795,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,12 @@\n+{\n+  \"name\": \"game-mystic-elven-mines-turborepo\",\n+  \"version\": \"1.0.0\",\n+  \"description\": \"\",\n+  \"main\": \"index.js\",\n+  \"scripts\": {\n+    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n+  },\n+  \"keywords\": [],\n+  \"author\": \"\",\n+  \"license\": \"ISC\"\n+}\n"
+                }
+            ],
+            "date": 1683398760307,
+            "name": "Commit-0",
+            "content": "{\n  \"name\": \"game-mystic-elven-mines-turborepo\",\n  \"version\": \"1.0.0\",\n  \"description\": \"\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n    \"dev\":\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\"\n}\n"
+        }
+    ]
+}

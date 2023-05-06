@@ -1,0 +1,70 @@
+{
+    "sourceFile": "README.md",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 13,
+            "patches": [
+                {
+                    "date": 1683402434473,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1683402515647,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,4 +16,7 @@\n ## 下載專案\n \n - `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`\n - `pnpm i`\n+\n+\n+\n"
+                },
+                {
+                    "date": 1683402525881,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,8 +7,9 @@\n \n - Miro [Link](https://miro.com/app/board/uXjVPLbiyto=/)\n - Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n+- Nx [Link](https://nx.dev/)\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n@@ -16,7 +17,4 @@\n ## 下載專案\n \n - `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`\n - `pnpm i`\n-\n-\n-\n"
+                },
+                {
+                    "date": 1683402561963,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,10 @@\n - Miro [Link](https://miro.com/app/board/uXjVPLbiyto=/)\n - Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n+- Nx Qwik plugin [Link]\n+- Nx Java plugin [Link]\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n"
+                },
+                {
+                    "date": 1683402573194,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,10 +8,10 @@\n - Miro [Link](https://miro.com/app/board/uXjVPLbiyto=/)\n - Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n-- Nx Qwik plugin [Link]\n-- Nx Java plugin [Link]\n+- Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n+- Nx Java plugin [Link]()\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n"
+                },
+                {
+                    "date": 1683402581002,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n - Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n - Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n-- Nx Java plugin [Link]()\n+- Nx Java plugin [Link](https://github.com/tinesoft/nxrocks)\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n"
+                },
+                {
+                    "date": 1683402610751,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,9 +9,9 @@\n - Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n - Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n-- Nx Java plugin [Link](https://github.com/tinesoft/nxrocks)\n+- Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n"
+                },
+                {
+                    "date": 1683402616109,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,9 @@\n - Nx [Link](https://nx.dev/)\n - Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n \n+\n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n"
+                },
+                {
+                    "date": 1683402632292,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,10 +10,10 @@\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n - Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n+`nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n-\n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n"
+                },
+                {
+                    "date": 1683402639907,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,9 +10,9 @@\n - Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n - Nx [Link](https://nx.dev/)\n - Nx Qwik plugin [Link](https://github.com/qwikifiers/qwik-nx)\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n-`nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n+- `nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n ## 安裝環境\n \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n"
+                },
+                {
+                    "date": 1683402683409,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n - `nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n ## 安裝環境\n-\n+- N\n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n ## 下載專案\n \n"
+                },
+                {
+                    "date": 1683402694708,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,9 @@\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n - `nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n ## 安裝環境\n-- N\n+- Node.js 18\n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n ## 下載專案\n \n"
+                },
+                {
+                    "date": 1683402702047,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,8 +14,10 @@\n - `nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n ## 安裝環境\n - Node.js 18\n+- Java 17\n+- \n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n ## 下載專案\n \n"
+                },
+                {
+                    "date": 1683402733728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,12 @@\n - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)\n - `nx g @nxrocks/nx-spring-boot:new <your-app-name>`\n \n ## 安裝環境\n+\n - Node.js 18\n-- Java 17\n-- \n+- Java 17 , Maven 4.0.0\n+-\n - [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n \n ## 下載專案\n \n"
+                }
+            ],
+            "date": 1683402434473,
+            "name": "Commit-0",
+            "content": "# game-mystic-elven-mines-turborepo\n\n神秘精靈礦 Mystic Elven Mines\n前端 / 後端\n\n## 文件\n\n- Miro [Link](https://miro.com/app/board/uXjVPLbiyto=/)\n- Figma 視覺圖 [Link](https://www.figma.com/file/sRcnCyQ1Ka4PjNsYjOhoQ0/)\n- Notion Wiki [Link](https://daydaychao.notion.site/ec77da63c00b49c9bb8557fd033c6ba1?v=73f4fe0644d04f1eb290ed509f407e1d)\n\n## 安裝環境\n\n- [Link](https://daydaychao.notion.site/abba2c2821a54e1cb985c04e4f141725)\n\n## 下載專案\n\n- `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`\n- `pnpm i`\n"
+        }
+    ]
+}
