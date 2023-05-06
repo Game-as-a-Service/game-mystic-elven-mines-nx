@@ -1,4 +1,4 @@
-# game-mystic-elven-mines-turborepo
+# game-mystic-elven-mines-nx
 
 神秘精靈礦 Mystic Elven Mines
 前端 / 後端
@@ -23,4 +23,4 @@
 ## 下載專案
 
 - `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`
-- `pnpm i`
+- `npm i`
