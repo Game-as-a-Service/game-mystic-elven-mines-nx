@@ -3,16 +3,16 @@ export enum CardTypeEnum {
   Paths = 'Card_Path', // 道路卡
   Actions = 'Card_Actions', // 功能卡
   Repair = 'Card_Repair', // 修復卡
-  Saboteur = 'Card_Saboteur', // 破壞卡
+  Broken = 'Card_Broken', // 破壞卡
   Skills = 'Card_Skills', // 技能卡
 }
 
 export enum FinishGroup {
-  MagicCrystal = 'MagicCrystal', //魔法水晶
-  PreciousGemstone = 'PreciousGemstone', // 珍貴寶石
+  // MagicCrystal = 'MagicCrystal', //魔法水晶
+  // PreciousGemstone = 'PreciousGemstone', // 珍貴寶石
   SacredRelic = 'SacredRelic', //神聖遺物
-  UndergroundCave = 'UndergroundCave', // 地下洞窟
-  RockCollapse = 'RockCollapse', // 岩石塌方
+  // UndergroundCave = 'UndergroundCave', // 地下洞窟
+  // RockCollapse = 'RockCollapse', // 岩石塌方
   MagicalInterference = 'MagicalInterference', // 魔法干擾
 }
 export enum Actions {
@@ -73,11 +73,18 @@ export enum Repair {
   Fix_2 = 'Fix_2', // 修復2
   Fix_3 = 'Fix_3', // 修復3
 }
-export enum Saboteur {
+export enum Broken {
   //實作可能只需要一種
-  Saboteur_1 = 'Saboteur_1', // 破畫卡1
-  Saboteur_2 = 'Saboteur_2', // 破畫卡2
-  Saboteur_3 = 'Saboteur_3', // 破畫卡3
+  Broken_1 = 'Broken_1', // 破畫卡1
+  Broken_2 = 'Broken_2', // 破畫卡2
+  Broken_3 = 'Broken_3', // 破畫卡3
+
+  //   飛行靴 (Flying Boots)
+  // 幻視水晶球 (Illusion Crystal Ball)
+  // 音樂之琴 (Harp of Harmony)
+  // 彩虹斗篷 (Rainbow Cloak)
+  // 星光之杖 (Starlight Wand)
+  // 神秘地圖 (Mystic Map)
 }
 export enum Skills {
   InsightfulRevelation = 'Skill_InsightfulRevelation', // 洞悉真相
@@ -90,7 +97,7 @@ export enum Skills {
   ItemDestruction = 'Skill_ItemDestruction', // 道具破壞
   TimeFreeze = 'Skill_TimeFreeze', // 時間凍結
 }
-  
+
 export interface CardType {
   name: string;
   description: string;

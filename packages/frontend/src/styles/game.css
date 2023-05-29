@@ -1,0 +1,4 @@
+footer .developer {
+  @apply inline-block px-1;
+  @apply rounded-sm bg-white;
+}
