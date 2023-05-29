@@ -9,6 +9,13 @@
  * - More code is transferred to the browser than in SSR mode.
  * - Optimizer/Serialization/Deserialization code is not exercised!
  */
+
+// 此文件用于纯客户端开发，不涉及服务器端渲染（SSR）。
+// 应用程序的任何部分都不会在服务器上进行预渲染。
+// 整个应用程序都在浏览器中运行，没有部分代码是在服务器上预渲染的。
+// 与 SSR 模式相比，更多的代码会传输到浏览器端。
+// 此模式下不会使用优化器/序列化/反序列化代码。
+
 import { render, RenderOptions } from '@builder.io/qwik';
 import Root from './root';
 

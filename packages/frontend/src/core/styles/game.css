@@ -1,0 +1,14 @@
+footer .developer {
+  @apply inline-block px-1;
+  @apply rounded-sm bg-white;
+}
+
+.game-bg {
+  width: 100%;
+  height: 1024px;
+  background-image: url('/public/images/bg/map1.jpg');
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  z-index: -1;
+}

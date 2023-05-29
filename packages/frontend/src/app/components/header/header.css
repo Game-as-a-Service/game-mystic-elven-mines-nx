@@ -1,6 +1,6 @@
 header {
   display: flex;
-  background: white;
+  background: #000;
   border-bottom: 10px solid var(--qwik-dark-purple);
 }
 

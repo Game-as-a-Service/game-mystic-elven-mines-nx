@@ -1,0 +1,29 @@
+.map {
+  @apply flex flex-col items-center text-center;
+  margin: 0 auto;
+  max-width: 1060px;
+
+  overflow: hidden;
+  border: 1px solid #dedede;
+}
+.map-row {
+  @apply flex flex-row text-center items-center;
+  overflow-x: hidden;
+}
+.map-grid {
+  min-width: 90px;
+  min-height: 125px;
+  /* width: 20px;
+  height: 20px; */
+  background: rgba(255, 255, 255, 0.3);
+  margin: 3px;
+  border: #9b9b9b;
+}
+
+.map-grid:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.map-has-card {
+  border: 2px solid red;
+}

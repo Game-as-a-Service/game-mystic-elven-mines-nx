@@ -8,7 +8,7 @@ export enum CardTypeEnum {
 }
 
 export enum FinishGroup {
-  // MagicCrystal = 'MagicCrystal', //魔法水晶
+  MagicCrystal = 'MagicCrystal', //魔法水晶
   // PreciousGemstone = 'PreciousGemstone', // 珍貴寶石
   SacredRelic = 'SacredRelic', //神聖遺物
   // UndergroundCave = 'UndergroundCave', // 地下洞窟

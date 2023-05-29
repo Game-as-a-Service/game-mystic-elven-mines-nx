@@ -1,21 +1,25 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
-import { Link } from '@builder.io/qwik-city';
-
+import Map from '../game/map';
 const API_URL = process.env.PUBLIC_API_URL;
 console.log('API_URL', API_URL);
 
 export default component$(() => {
   return (
-    <div>
-      <h1>
-        <label class="p-1 bg-green-200">打後端的api</label> {API_URL}
-      </h1>
+    <>
+      {/* 左 - 玩家資訊 */}
 
-      <h1>
-        Welcome frontend <span class="lightning">⚡️</span>
-      </h1>
-    </div>
+      {/* 中 - 大地圖 */}
+      <Map></Map>
+
+      {/* 中 - 卡牌堆 */}
+
+      {/* 下 - 玩家手牌 */}
+
+      {/* 右 - 系統按鈕 */}
+
+      {/* 共用 - 通知列 */}
+    </>
   );
 });
 
