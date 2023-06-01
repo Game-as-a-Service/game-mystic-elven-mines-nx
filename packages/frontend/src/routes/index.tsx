@@ -1,12 +1,23 @@
 import { component$ } from '@builder.io/qwik';
 import type { DocumentHead } from '@builder.io/qwik-city';
 import Map from '../game/map';
-const API_URL = process.env.PUBLIC_API_URL;
-console.log('API_URL', API_URL);
+import { createGame, findGame, helloTest, players } from '../core/network/api';
 
 export default component$(() => {
   return (
     <>
+      <button class="bg-slate-300 p-2" onClick$={() => helloTest()}>
+        api Hello
+      </button>
+
+      <button class="bg-slate-300 p-2" onClick$={() => createGame()}>
+        api 建立遊戲
+      </button>
+
+      <button class="bg-slate-300 p-2" onClick$={() => findGame()}>
+        api 查詢遊戲
+      </button>
+
       {/* 左 - 玩家資訊 */}
 
       {/* 中 - 大地圖 */}
