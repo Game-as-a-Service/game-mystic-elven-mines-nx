@@ -1,7 +1,7 @@
 ---
 name: 後端 issue template
 about: No Description
-title: ''
+title: "[後端]"
 labels: 後端
 assignees: ''
 
