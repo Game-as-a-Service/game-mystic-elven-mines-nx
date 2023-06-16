@@ -1,26 +1,26 @@
-export const fetcher = async (url: string, body?: any) => {
+type fetcherType = { url: string; body?: any; type: 'GET' | 'POST' };
+
+export const fetcher = async ({ url, body, type }: fetcherType) => {
   try {
     const token = 'your_token'; // 请替换为您的实际 token
 
     let response: Response;
 
+    response = await fetch(url, {
+      method: type,
+      headers: {
+        'Content-Type': 'application/json',
+        //   Authorization: `Bearer ${token}`,
+      },
+    });
     if (body) {
-      // POST 请求
       response = await fetch(url, {
-        method: 'POST',
+        method: type,
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          //    Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(body),
-      });
-    } else {
-      // GET 请求
-      response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
     }
 
