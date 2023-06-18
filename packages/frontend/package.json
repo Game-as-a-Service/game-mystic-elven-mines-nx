@@ -1,3 +1,6 @@
 {
-  "name": "frontend"
+  "name": "frontend",
+  "dependencies": {
+    "zustand": "^4.3.8"
+  }
 }

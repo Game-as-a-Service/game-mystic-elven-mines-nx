@@ -1,25 +1,15 @@
-import { component$ } from '@builder.io/qwik';
-import { renderMap, CardType } from './mapController';
-import { CardTypeEnum, Paths } from '../../core/types/Card';
-import './map.css';
-import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName';
+import { component$ } from '@builder.io/qwik'
+import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
+import { renderMap, CardType } from './mapController'
+import { mockCards } from './mock'
+import './map.css'
 
-const mockCards: CardType[] = [
-  { row: 1, col: 2, cardName: Paths.Cross, cardType: CardTypeEnum.Paths },
-  {
-    row: 1,
-    col: 4,
-    cardName: Paths.DeadEndCross,
-    cardType: CardTypeEnum.Paths,
-  },
-  { row: 5, col: 5, cardName: Paths.LeftCurve, cardType: CardTypeEnum.Paths },
-];
-
+// 桌上地圖(格)
 export default component$(() => {
-  return <div class="map">{renderMap(mockCards)}</div>;
-});
+  return <div class="map">{renderMap(mockCards)}</div>
+})
 
-// 桌上的卡牌
+// 桌上卡牌(一張)
 export const MapCard = component$((card: CardType) => {
   return (
     <>
@@ -28,5 +18,5 @@ export const MapCard = component$((card: CardType) => {
         <image src={getImageUrlByApiCardName(card.cardName)}></image>
       </div>
     </>
-  );
-});
+  )
+})
