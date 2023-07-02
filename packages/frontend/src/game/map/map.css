@@ -10,7 +10,7 @@
   @apply flex flex-row text-center items-center;
   overflow-x: hidden;
 }
-.map-grid {
+.map-col {
   min-width: 90px;
   min-height: 125px;
   /* width: 20px;
@@ -20,7 +20,7 @@
   border: #9b9b9b;
 }
 
-.map-grid:hover {
+.map-col:hover {
   background: rgba(255, 255, 255, 0.5);
 }
 
