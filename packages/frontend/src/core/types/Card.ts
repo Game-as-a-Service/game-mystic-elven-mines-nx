@@ -5,6 +5,7 @@ export enum CardTypeEnum {
   Repair = 'Card_Repair', // 修復卡
   Broken = 'Card_Broken', // 破壞卡
   Skills = 'Card_Skills', // 技能卡
+  Empty = '',
 }
 
 export enum FinishGroup {
@@ -36,6 +37,7 @@ export enum Actions {
   // 神秘地圖:這張地圖隱藏了精靈世界中的重要位置和秘密寶藏的線索。精靈需要解讀地圖上的符號和謎題,找到寶藏或者尋找前進的道路。
 }
 export enum Paths {
+  Empty = '', // 沒有卡
   Start = 'Path_Start', // 起始卡
   Finish = FinishGroup.MagicCrystal, // 終點卡
 
@@ -99,7 +101,7 @@ export enum Skills {
 }
 
 export interface CardType {
-  name: string;
-  description: string;
-  type: CardTypeEnum;
+  name: string
+  description: string
+  type: CardTypeEnum
 }

@@ -1,8 +1,8 @@
-import { CardType } from './mapController'
+import { MapCardType } from './mapController'
 import { CardTypeEnum, Paths } from '../../core/types/Card'
 import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
 
-export const mockCards: CardType[] = [
+export const mockCards: MapCardType[] = [
   { row: 1, col: 2, cardName: Paths.Cross, cardType: CardTypeEnum.Paths },
   {
     row: 2,

@@ -1,32 +1,28 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, $ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 
 import Map from '../game/map'
 import TesterStore from '../game/tester.zustand'
 import TesterApi from '../game/tester.api'
+import TesterCard from '../game/tester.card'
 
 export default component$(() => {
   return (
     <>
       {/* 測試=====START */}
-
       {/* 狀態管理測試 */}
-      <TesterStore />
-
+      {/* <TesterStore /> */}
       {/* api測試 */}
-      <TesterApi />
-
+      {/* <TesterApi /> */}
       {/* 測試=====END */}
-
       {/* 左 - 玩家資訊 */}
       <Map></Map> {/* 中 - 大地圖 */}
-
       {/* 中 - 卡牌堆 */}
-
       {/* 下 - 玩家手牌 */}
-
+      <TesterCard name="a" type="aType" propLeft="100px" color="red" />
+      <TesterCard name="b" type="bType" propLeft="220px" color="green" />
+      <TesterCard name="c" type="cType" propLeft="340px" color="yellow" />
       {/* 右 - 系統按鈕 */}
-
       {/* 共用 - 通知列 */}
     </>
   )

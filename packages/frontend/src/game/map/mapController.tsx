@@ -1,16 +1,18 @@
+import gameStore from '../../core/stores'
 import { CardTypeEnum, Paths } from '../../core/types/Card'
+import { SelectCardType } from '../tester.card'
 
-export interface CardType {
+export interface MapCardType {
   row: number
   col: number
   cardName: Paths | string
   cardType: CardTypeEnum | string
 }
 
-export type ColType = CardType & { hasCard: boolean }
-type MapType = ColType[][]
+export type ColType = MapCardType & { hasCard: boolean }
+export type MapType = Array<ColType[]>
 
-export const convertToMapRow = (cardData: CardType[]): MapType => {
+export const convertToMapRow = (cardData: MapCardType[]): MapType => {
   const dataMap = getDefaultMap()
   for (const card of cardData) {
     const { row, col, cardName, cardType } = card
@@ -43,3 +45,12 @@ const getDefaultMap = (): MapType => {
 
   return map
 }
+
+interface putCardToTableProp {
+  currentMap: MapType
+  selectedCard: SelectCardType
+  rol: number
+  col: number
+}
+
+export const putCardToTable = ({ rol: x, col: y, currentMap, selectedCard }: putCardToTableProp): MapType => {}
