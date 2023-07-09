@@ -5,6 +5,7 @@ import Map from '../game/map'
 import TesterStore from '../game/tester.zustand'
 import TesterApi from '../game/tester.api'
 import TesterCard from '../game/tester.card'
+import { CardTypeEnum, Paths } from '../core/types/Card'
 
 export default component$(() => {
   return (
@@ -16,12 +17,11 @@ export default component$(() => {
       {/* <TesterApi /> */}
       {/* 測試=====END */}
       {/* 左 - 玩家資訊 */}
-      <Map></Map> {/* 中 - 大地圖 */}
-      {/* 中 - 卡牌堆 */}
+      <Map></Map> {/* 中 - 大地圖 */}0{/* 中 - 卡牌堆 */}
       {/* 下 - 玩家手牌 */}
-      <TesterCard name="a" type="aType" propLeft="100px" color="red" />
-      <TesterCard name="b" type="bType" propLeft="220px" color="green" />
-      <TesterCard name="c" type="cType" propLeft="340px" color="yellow" />
+      <TesterCard cName={Paths.Cross} cType={CardTypeEnum.Paths} left="100px" color="red" />
+      <TesterCard cName={Paths.Cross} cType={CardTypeEnum.Paths} left="220px" color="green" />
+      <TesterCard cName={Paths.Cross} cType={CardTypeEnum.Paths} left="340px" color="yellow" />
       {/* 右 - 系統按鈕 */}
       {/* 共用 - 通知列 */}
     </>

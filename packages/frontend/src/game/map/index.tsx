@@ -1,10 +1,23 @@
-import { $, component$, render, Slot, useStore as useQwikStore, useSignal, useVisibleTask$ } from '@builder.io/qwik'
+import {
+  $,
+  component$,
+  render,
+  Slot,
+  useStore as useQwikStore,
+  useSignal,
+  useTask$,
+  useVisibleTask$,
+} from '@builder.io/qwik'
+
+import { Image } from '@unpic/qwik'
+
 import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
-import { convertToMapRow, MapType, ColType } from './mapController'
+import { convertToMapRow, MapType, ColType, MapCardType } from './mapController'
 import { mockCards } from './mock'
 import './map.css'
 
 import gameStore, { IGameStore } from '../../core/stores'
+import { CardType } from '../../core/types/Card'
 
 // NOTE
 // 目标x坐标 = 第10格的左边界 + （格子宽度 - 卡牌宽度）/ 2
@@ -27,13 +40,11 @@ export default component$(() => {
 
   return (
     <div class="map">
-      {data.value.map((dataRow, y) => (
-        <div key={y + 'row'} class="map-row">
-          {dataRow.map((col, x) => (
+      {data.value.map((r, y) => (
+        <div key={`row-${y}`} class="map-row">
+          {r.map((col, x) => (
             <Col {...{ x, y, ...col }}>
-              <div q:slot="SlotCard">
-                <MapCard key={x + 'mapCard'} {...col} />
-              </div>
+              <MapCard q:slot="SlotCard" key={`mapCard-${x}`} {...col} />
             </Col>
           ))}
         </div>
@@ -79,12 +90,16 @@ const Col = component$((props: any) => {
   )
 })
 
-export const MapCard = component$((props: any) => {
+export const MapCard = component$((props: MapCardType & { hasCard: boolean }) => {
+  let propsData = useSignal(props)
+  useVisibleTask$(() => {
+    console.log('useVisibleTask MapCard', propsData.value)
+  })
   return (
-    props.hasCard && (
+    propsData?.value?.hasCard && (
       <button class="relative text-left">
-        <small class="absolute top-[50%]">{props.cardName}</small>
-        <image src={getImageUrlByApiCardName(props.cardName)}></image>
+        <small class="absolute top-[50%]">{propsData.value.cardName}</small>
+        <Image src={getImageUrlByApiCardName(propsData.value.cardName)} alt="地圖卡"></Image>
       </button>
     )
   )

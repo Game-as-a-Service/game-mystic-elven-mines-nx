@@ -45,12 +45,3 @@ const getDefaultMap = (): MapType => {
 
   return map
 }
-
-interface putCardToTableProp {
-  currentMap: MapType
-  selectedCard: SelectCardType
-  rol: number
-  col: number
-}
-
-export const putCardToTable = ({ rol: x, col: y, currentMap, selectedCard }: putCardToTableProp): MapType => {}

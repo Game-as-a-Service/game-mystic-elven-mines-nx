@@ -11,13 +11,13 @@
   overflow-x: hidden;
 }
 .map-col {
+  @apply flex flex-row items-center align-middle;
   min-width: 90px;
   min-height: 125px;
-  /* width: 20px;
-  height: 20px; */
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   margin: 3px;
   border: #9b9b9b;
+
 }
 
 .map-col:hover {
