@@ -1,23 +1,13 @@
-import {
-  $,
-  component$,
-  render,
-  Slot,
-  useStore as useQwikStore,
-  useSignal,
-  useTask$,
-  useVisibleTask$,
-} from '@builder.io/qwik'
+import { $, component$, Slot, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 
 import { Image } from '@unpic/qwik'
 
 import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
-import { convertToMapRow, MapType, ColType, MapCardType } from './mapController'
+import { convertToMapRow, MapType, MapCardType } from './mapController'
 import { mockCards } from './mock'
 import './map.css'
 
-import gameStore, { IGameStore } from '../../core/stores'
-import { CardType } from '../../core/types/Card'
+import gameStore from '../../core/stores'
 
 // NOTE
 // 目标x坐标 = 第10格的左边界 + （格子宽度 - 卡牌宽度）/ 2
