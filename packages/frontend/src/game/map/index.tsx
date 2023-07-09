@@ -18,14 +18,11 @@ const mockData = convertToMapRow(mockCards)
 
 // 地圖
 export default component$(() => {
-  let data = useSignal<MapType>(mockData)
+  const data = useSignal<MapType>(mockData)
 
   useVisibleTask$(() => {
     gameStore.setState({ map: mockData })
-    gameStore.subscribe(({ map }) => {
-      data.value = map
-      console.log('changed map', map)
-    })
+    gameStore.subscribe(({ map }) => (data.value = map))
   })
 
   return (
@@ -34,7 +31,7 @@ export default component$(() => {
         <div key={`row-${y}`} class="map-row">
           {r.map((col, x) => (
             <Col {...{ x, y, ...col }}>
-              <MapCard q:slot="SlotCard" key={`mapCard-${x}`} {...col} />
+              <MapCard q:slot="SlotCard" key={`mapCard-${x}-${col.cardName}`} {...col} />
             </Col>
           ))}
         </div>
@@ -83,7 +80,7 @@ const Col = component$((props: any) => {
 export const MapCard = component$((props: MapCardType & { hasCard: boolean }) => {
   let propsData = useSignal(props)
   useVisibleTask$(() => {
-    console.log('useVisibleTask MapCard', propsData.value)
+    //  console.log('useVisibleTask MapCard', propsData.value)
   })
   return (
     propsData?.value?.hasCard && (
