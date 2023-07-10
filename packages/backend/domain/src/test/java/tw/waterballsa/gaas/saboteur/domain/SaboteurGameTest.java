@@ -57,16 +57,19 @@ class SaboteurGameTest {
     void gameShouldContainAtLeast3Players() {
         assertThrows(Exception.class, () -> new SaboteurGame(
                 asList(defaultPlayer("A"), defaultPlayer("B"))
-        ));
+        ).startGame());
     }
 
     @Test
     void gameShouldContainAtMost10Players() {
-        assertThrows(Exception.class, () -> new SaboteurGame(
+        assertThrows(Exception.class, () -> {
+            new SaboteurGame(
                 range(0, 11)
-                        .mapToObj(String::valueOf)
-                        .map(Players::defaultPlayer).collect(toList())
-        ));
+                    .mapToObj(String::valueOf)
+                    .map(Players::defaultPlayer).collect(toList())
+            ).startGame();
+        });
+
     }
 
     @Test

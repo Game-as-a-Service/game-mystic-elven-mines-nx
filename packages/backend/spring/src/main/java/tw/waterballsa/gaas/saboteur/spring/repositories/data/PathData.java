@@ -28,10 +28,22 @@ public class PathData {
     @Getter(NONE)
     private Boolean gold;
 
+    public static PathData toData(Path path) {
+        PathCard pathCard = path.getPathCard();
+        return new PathData(path.getRow(), path.getCol(),
+            pathCard.getName(), path.isFlipped(), null);
+    }
+
+    public static PathData toData(Destination destination) {
+        PathCard pathCard = destination.getPathCard();
+        return new PathData(destination.getRow(), destination.getCol(),
+            pathCard.getName(), destination.isFlipped(), destination.isGold());
+    }
+
     public Path toDomain() {
         PathCard pathCard = getPathCard();
         return gold == null ? new Path(row, col, pathCard, flipped) :
-                new Destination(row, col, pathCard, gold);
+            new Destination(row, col, pathCard, gold);
     }
 
     private PathCard getPathCard() {
@@ -42,18 +54,6 @@ public class PathData {
             case 右彎 -> 右彎();
             default -> throw new IllegalStateException("Unexpected value: " + pathCardName);
         };
-    }
-
-    public static PathData toData(Path path) {
-        PathCard pathCard = path.getPathCard();
-        return new PathData(path.getRow(), path.getCol(),
-                pathCard.getName(), path.isFlipped(), null);
-    }
-
-    public static PathData toData(Destination destination) {
-        PathCard pathCard = destination.getPathCard();
-        return new PathData(destination.getRow(), destination.getCol(),
-                pathCard.getName(), destination.isFlipped(), destination.isGold());
     }
 
     public boolean isGold() {

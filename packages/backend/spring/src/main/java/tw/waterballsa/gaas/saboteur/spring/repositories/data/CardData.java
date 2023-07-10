@@ -31,8 +31,53 @@ public class CardData {
 
     private Boolean isGold;
 
-    public enum Type {
-        REPAIR, SABOTEUR, ROCK_FALL,MAP, DESTINATION
+    public static CardData toData(Card card) {
+        if (card instanceof Repair r) {
+            return toRepairCardData(r);
+        } else if (card instanceof Sabotage s) {
+            return toSabotageCardData(s);
+        } else if (card instanceof RockFall r) {
+            return toRockFallCardData(r);
+        } else if (card instanceof PathCard p) {
+            return toPathCardData(p);
+        } else if (card instanceof MapCard) {
+            return toMapCardData();
+        }
+        throw new SaboteurGameException("unsupported card class " + card.getClass());
+    }
+
+    private static CardData toRepairCardData(Repair card) {
+        return CardData.builder()
+            .type(Type.REPAIR)
+            .toolName(card.getToolName())
+            .build();
+    }
+
+    private static CardData toSabotageCardData(Sabotage card) {
+        return CardData.builder()
+            .type(Type.SABOTEUR)
+            .toolName(card.getToolName())
+            .build();
+    }
+
+    private static CardData toRockFallCardData(RockFall card) {
+        return CardData.builder()
+            .type(Type.ROCK_FALL)
+            .build();
+    }
+
+    private static CardData toPathCardData(PathCard card) {
+        return CardData.builder()
+            .type(Type.DESTINATION)
+            .name(card.getName())
+            .path(card.getPath())
+            .build();
+    }
+
+    private static CardData toMapCardData() {
+        return CardData.builder()
+            .type(Type.MAP)
+            .build();
     }
 
     public Card toDomain() {
@@ -55,53 +100,8 @@ public class CardData {
         };
     }
 
-    public static CardData toData(Card card) {
-        if (card instanceof Repair r) {
-            return toRepairCardData(r);
-        } else if (card instanceof Sabotage s) {
-            return toSabotageCardData(s);
-        } else if (card instanceof RockFall r) {
-            return toRockFallCardData(r);
-        } else if (card instanceof PathCard p) {
-            return toPathCardData(p);
-        } else if (card instanceof MapCard) {
-            return toMapCardData();
-        }
-        throw new SaboteurGameException("unsupported card class " + card.getClass());
-    }
-
-    private static CardData toRepairCardData(Repair card) {
-        return CardData.builder()
-                .type(Type.REPAIR)
-                .toolName(card.getToolName())
-                .build();
-    }
-
-    private static CardData toSabotageCardData(Sabotage card) {
-        return CardData.builder()
-                .type(Type.SABOTEUR)
-                .toolName(card.getToolName())
-                .build();
-    }
-
-    private static CardData toRockFallCardData(RockFall card) {
-        return CardData.builder()
-                .type(Type.ROCK_FALL)
-                .build();
-    }
-
-    private static CardData toPathCardData(PathCard card) {
-        return CardData.builder()
-                .type(Type.DESTINATION)
-                .name(card.getName())
-                .path(card.getPath())
-                .build();
-    }
-
-    private static CardData toMapCardData() {
-        return CardData.builder()
-                .type(Type.MAP)
-                .build();
+    public enum Type {
+        REPAIR, SABOTEUR, ROCK_FALL, MAP, DESTINATION
     }
 
 }

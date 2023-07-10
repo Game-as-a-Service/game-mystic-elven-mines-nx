@@ -25,13 +25,6 @@ public class SaboteurGameData {
     private MazeData maze;
     private List<PathData> destinations = new ArrayList<>(DESTINATION_CARDS_COUNT);
 
-    public SaboteurGame toDomain() {
-        var players = mapToList(this.players, PlayerData::toDomain);
-        SaboteurGame game = new SaboteurGame(id, players, maze.toDomain());
-        game.setGoldInDestinationCard(getGoldenDestinationCardIndex());
-        return game;
-    }
-
     public static SaboteurGameData /*Data*/ toData(/*聚合根*/ SaboteurGame saboteurGame) {
         var maze = MazeData.toData(saboteurGame.getMaze());
         var players = mapToList(saboteurGame.getPlayers(), PlayerData::toData);
@@ -39,11 +32,18 @@ public class SaboteurGameData {
         return new SaboteurGameData(saboteurGame.getId(), players, maze, destinations);
     }
 
+    public SaboteurGame toDomain() {
+        var players = mapToList(this.players, PlayerData::toDomain);
+        SaboteurGame game = new SaboteurGame(id, players, maze.toDomain());
+        game.setGoldInDestinationCard(getGoldenDestinationCardIndex());
+        return game;
+    }
+
     public int getGoldenDestinationCardIndex() {
         return range(0, destinations.size())
-                .filter(i -> destinations.get(i).isGold())
-                .findFirst()
-                .orElseThrow(() -> new SaboteurGameException("Impossible! There must be one golden destination card!"));
+            .filter(i -> destinations.get(i).isGold())
+            .findFirst()
+            .orElseThrow(() -> new SaboteurGameException("Impossible! There must be one golden destination card!"));
     }
 
 }

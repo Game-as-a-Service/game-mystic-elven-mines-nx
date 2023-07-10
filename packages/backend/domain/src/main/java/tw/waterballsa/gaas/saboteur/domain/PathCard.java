@@ -24,30 +24,30 @@ public class PathCard implements Card {
 
     public static PathCard 十字路口() {
         return new PathCard(十字路口, new boolean[]{
-                false, true, false,
-                true, true, true,
-                false, true, false});
+            false, true, false,
+            true, true, true,
+            false, true, false});
     }
 
     public static PathCard T型死路() {
         return new PathCard(T型死路, new boolean[]{
-                false, true, false,
-                true, false, true,
-                false, false, false});
+            false, true, false,
+            true, false, true,
+            false, false, false});
     }
 
     public static PathCard 一字型() {
         return new PathCard(一字型, new boolean[]{
-                false, false, false,
-                true, true, true,
-                false, false, false});
+            false, false, false,
+            true, true, true,
+            false, false, false});
     }
 
     public static PathCard 右彎() {
         return new PathCard(右彎, new boolean[]{
-                false, false, false,
-                true, true, false,
-                false, true, false});
+            false, false, false,
+            true, true, false,
+            false, true, false});
     }
 
     @Override
@@ -93,7 +93,7 @@ public class PathCard implements Card {
     }
 
     public boolean looksLike(String presentation) {
-        char[] chars = presentation.replaceAll(lineSeparator(), "").toCharArray();
+        char[] chars = presentation.replaceAll("[\r\n]", "").toCharArray();
 
         for (int i = 0; i < path.length; i++) {
             if (path[i] != (chars[i] == '0')) {

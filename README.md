@@ -24,3 +24,8 @@
 
 - `git clone git@github.com:Game-as-a-Service/game-mystic-elven-mines-nx.git`
 - `npm i`
+
+## 執行指令
+
+- 前端 `npx nx run frontend:serve` [Link](http://localhost:4200/)
+- 後端 `npx nx run backend:serve` [Link](http://localhost:8080/)
