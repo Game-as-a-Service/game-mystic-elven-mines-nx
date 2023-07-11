@@ -16,6 +16,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,6 +47,18 @@ class SaboteurGameControllerTest {
             .andExpect(jsonPath("$.gameId").exists())
             .andExpect(jsonPath("$.host.id").exists())
             .andExpect(jsonPath("$.host.name").value("A"));
+    }
+
+    @Test
+    public void 玩家取得遊戲() throws Exception {
+        Player A = defaultPlayer("A");
+        SaboteurGame game = givenGameStarted(A);
+
+        mockMvc.perform(get("/api/games/{gameId}", game.getId()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.players").isArray())
+            .andExpect(jsonPath("$.players[0].id").value(A.getId()))
+            .andExpect(jsonPath("$.players[0].name").value(A.getName()));
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------
