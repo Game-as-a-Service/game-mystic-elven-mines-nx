@@ -19,18 +19,19 @@ import static tw.waterballsa.gaas.saboteur.domain.commons.utils.StreamUtils.mapT
 @AllArgsConstructor
 public class PlayerData {
     private String id;
+    private String name;
     private List<ToolData> tools;
     private List<CardData> hands;
-
-    public Player toDomain() {
-        var tools = mapToArray(this.tools, ToolData::toDomain, Tool[]::new);
-        var hands = mapToList(this.hands, CardData::toDomain);
-        return new Player(id, hands, tools);
-    }
 
     public static PlayerData toData(Player player) {
         var tools = mapToList(player.getTools(), ToolData::toData);
         var hands = mapToList(player.getHands(), CardData::toData);
-        return new PlayerData(player.getId(), tools, hands);
+        return new PlayerData(player.getId(), player.getName(), tools, hands);
+    }
+
+    public Player toDomain() {
+        var tools = mapToArray(this.tools, ToolData::toDomain, Tool[]::new);
+        var hands = mapToList(this.hands, CardData::toDomain);
+        return new Player(id, name, hands, tools);
     }
 }

@@ -1,16 +1,15 @@
 package tw.waterballsa.gaas.saboteur.spring.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tw.waterballsa.gaas.saboteur.domain.Player;
 import tw.waterballsa.gaas.saboteur.domain.SaboteurGame;
 import tw.waterballsa.gaas.saboteur.spring.repositories.SpringSaboteurGameRepository;
 
 import java.util.List;
-import java.util.Optional;
 
+import static org.springframework.http.ResponseEntity.notFound;
 import static tw.waterballsa.gaas.saboteur.domain.builders.Players.defaultPlayerBuilder;
 
 @RestController
@@ -18,20 +17,13 @@ import static tw.waterballsa.gaas.saboteur.domain.builders.Players.defaultPlayer
 @RequestMapping("/api/test")
 public class WalkingSkeletonController {
 
-    private SpringSaboteurGameRepository repository;
+    private final SpringSaboteurGameRepository repository;
 
-    @Autowired
-    public WalkingSkeletonController(SpringSaboteurGameRepository repository) {
-        this.repository = repository;
-    }
-
-    @ResponseBody
     @GetMapping("/hello")
     public String hello() {
         return "hello";
     }
 
-    @ResponseBody
     @GetMapping("/createGame/{gameId}")
     public String createGame(@PathVariable String gameId) {
         // player
@@ -48,15 +40,10 @@ public class WalkingSkeletonController {
 
     @ResponseBody
     @GetMapping("/findGame/{gameId}")
-    public String findGame(@PathVariable String gameId) {
-        // find game
-        Optional<SaboteurGame> game = repository.findById(gameId);
-        // if game isn't exist
-        if (game.isEmpty()) {
-            return "The game isn't exist.";
-        }
-        // show game
-        return new ObjectMapper().valueToTree(game.get()).toString();
+    public ResponseEntity<?> findGame(@PathVariable String gameId) {
+        return repository.findById(gameId)
+            .map(ResponseEntity::ok)
+            .orElseGet(notFound()::build);
     }
 
 }

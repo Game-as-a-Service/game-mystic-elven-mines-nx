@@ -16,6 +16,7 @@ public class Players {
     public static Player.PlayerBuilder defaultPlayerBuilder(String id) {
         return Player.builder()
                 .id(id)
+                .name(id)
                 .tools(new Tool[]{
                         new Tool(ToolName.MINE_CART, true),
                         new Tool(ToolName.LANTERN, true),

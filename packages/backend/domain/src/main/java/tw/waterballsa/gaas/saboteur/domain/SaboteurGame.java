@@ -42,12 +42,16 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
         this.id = id;
         this.players = requireNonNullElseGet(players, Collections::emptyList);
 
+        setupDestinationCards(RANDOM.nextInt(DESTINATION_CARDS_COUNT));
+        this.maze = maze;
+    }
+
+    public void startGame() {
+        // check players count
         if (players.size() < DESTINATION_CARDS_COUNT || players.size() > 10) {
             throw new IllegalArgumentException("玩家人數必須介於 3 ~ 10 之間");
         }
-
-        setupDestinationCards(RANDOM.nextInt(DESTINATION_CARDS_COUNT));
-        this.maze = maze;
+        // TODO: initialize game
     }
 
 
@@ -115,4 +119,7 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
                 .orElseThrow(() -> new SaboteurGameException(format("Path not found. (row: %d, col: %d)", row, col)));
     }
 
+    public void addPlayer(Player player) {
+        players.add(player);
+    }
 }

@@ -1,6 +1,5 @@
 package tw.waterballsa.gaas.saboteur.spring.controllers;
 
-import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -35,42 +34,57 @@ class SaboteurGameControllerTest {
     @Autowired
     private SaboteurGameRepository gameRepository;
 
+    @Test
+    public void 玩家建立一場遊戲() throws Exception {
+        mockMvc.perform(post("/api/games")
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {
+                        "host": "A"
+                    }"""))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.gameId").exists())
+            .andExpect(jsonPath("$.host.id").exists())
+            .andExpect(jsonPath("$.host.name").value("A"));
+    }
+
     // ATDD (1) 先寫驗收測試程式 （2) ------------
     @Test
     public void 修好其中一個工具耶() throws Exception {
         Player A = new Player(
-                "A",
-                emptyList(),
-                new Tool(ToolName.MINE_CART, true),
-                new Tool(ToolName.LANTERN, true),
-                new Tool(ToolName.PICK, false)
+            "A", "A",
+            emptyList(),
+            new Tool(ToolName.MINE_CART, true),
+            new Tool(ToolName.LANTERN, true),
+            new Tool(ToolName.PICK, false)
         );
         Player B = new Player(
-                "B",
-                emptyList(),
-                new Tool(ToolName.MINE_CART, true),
-                new Tool(ToolName.LANTERN, true),
-                new Tool(ToolName.PICK, true)
+            "B", "B",
+            emptyList(),
+            new Tool(ToolName.MINE_CART, true),
+            new Tool(ToolName.LANTERN, true),
+            new Tool(ToolName.PICK, true)
         );
         B.addHandCard(new Repair(ToolName.PICK));
 
-        Player C = new Player("C",
-                emptyList(),
-                new Tool(ToolName.MINE_CART, true),
-                new Tool(ToolName.LANTERN, true),
-                new Tool(ToolName.PICK, true));
+        Player C = new Player(
+            "C", "C",
+            emptyList(),
+            new Tool(ToolName.MINE_CART, true),
+            new Tool(ToolName.LANTERN, true),
+            new Tool(ToolName.PICK, true));
 
         SaboteurGame game = givenGameStarted(A, B, C);
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content("""
-                                {  "cardType": "REPAIR",
-                                "playerId": "B",
-                                  "handIndex": 0,
-                                  "targetPlayerId": "A"
-                                }"""))
-                .andExpect(status().isNoContent());
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {  "cardType": "REPAIR",
+                    "playerId": "B",
+                      "handIndex": 0,
+                      "targetPlayerId": "A"
+                    }"""))
+            .andExpect(status().isNoContent());
 
         var actualGame = findGameById(game.getId());
         Player actualA = actualGame.getPlayer("A");
@@ -104,14 +118,14 @@ class SaboteurGameControllerTest {
         SaboteurGame game = givenGameStarted(A, B, C);
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content("""
-                                {   "cardType": "REPAIR",
-                                "playerId": "B",
-                                  "handIndex": 0,
-                                  "targetPlayerId": "A"
-                                }"""))
-                .andExpect(status().isBadRequest());
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {   "cardType": "REPAIR",
+                    "playerId": "B",
+                      "handIndex": 0,
+                      "targetPlayerId": "A"
+                    }"""))
+            .andExpect(status().isBadRequest());
 
         var actualGame = findGameById(game.getId());
         Player actualA = actualGame.getPlayer("A");
@@ -124,7 +138,7 @@ class SaboteurGameControllerTest {
     @Test
     public void 看終點底下有無金礦喔() throws Exception {
         Player A = defaultPlayerBuilder("A")
-                .hand(new MapCard()).build();
+            .hand(new MapCard()).build();
         Player B = defaultPlayer("B");
         Player C = defaultPlayer("C");
 
@@ -134,15 +148,15 @@ class SaboteurGameControllerTest {
 
         //A玩家對 終點2 使用地圖卡
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content("""
-                                {   "cardType": "MAP",
-                                "playerId": "A",
-                                  "handIndex": 0,
-                                  "destinationCardIndex": 2
-                                }"""))
-                .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.isGold").value(true));
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {   "cardType": "MAP",
+                    "playerId": "A",
+                      "handIndex": 0,
+                      "destinationCardIndex": 2
+                    }"""))
+            .andExpect(status().is2xxSuccessful())
+            .andExpect(jsonPath("$.isGold").value(true));
 
     }
 
@@ -152,7 +166,7 @@ class SaboteurGameControllerTest {
         Player A = defaultPlayer("A");
         Player B = defaultPlayer("B");
         Player C = defaultPlayerBuilder("C")
-                .hand(new Sabotage(ToolName.LANTERN)).build();
+            .hand(new Sabotage(ToolName.LANTERN)).build();
 
         SaboteurGame game = givenGameStarted(A, B, C);
 
@@ -170,12 +184,12 @@ class SaboteurGameControllerTest {
     void 工具如果被破壞了就不能蓋路了() throws Exception {
         // Given
         Player A = defaultPlayerBuilder("A")
-                .hand(PathCard.T型死路()) // <--- code with me 在搞
-                .tools(new Tool[]{
-                        new Tool(ToolName.MINE_CART, true),
-                        new Tool(ToolName.LANTERN, false),
-                        new Tool(ToolName.PICK, true)})
-                .build();
+            .hand(PathCard.T型死路()) // <--- code with me 在搞
+            .tools(new Tool[]{
+                new Tool(ToolName.MINE_CART, true),
+                new Tool(ToolName.LANTERN, false),
+                new Tool(ToolName.PICK, true)})
+            .build();
         Player B = defaultPlayer("B");
         Player C = defaultPlayer("C");
 
@@ -183,20 +197,20 @@ class SaboteurGameControllerTest {
 
         // When
         playPathCard(game, "A", 0, 0, 1, false)
-                .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest());
     }
 
     @Test
     void 唉呀怎麼壞了() throws Exception {
         Player A = defaultPlayerBuilder("A")
-                .tools(new Tool[]{
-                        new Tool(ToolName.MINE_CART, true),
-                        new Tool(ToolName.LANTERN, true),
-                        new Tool(ToolName.PICK, true)})
-                .build();
+            .tools(new Tool[]{
+                new Tool(ToolName.MINE_CART, true),
+                new Tool(ToolName.LANTERN, true),
+                new Tool(ToolName.PICK, true)})
+            .build();
         Player B = defaultPlayerBuilder("B")
-                .hand(new Sabotage(ToolName.LANTERN))
-                .build();
+            .hand(new Sabotage(ToolName.LANTERN))
+            .build();
 
         SaboteurGame game = givenGameStarted(A, B, defaultPlayer("C"));
 
@@ -212,37 +226,37 @@ class SaboteurGameControllerTest {
 
     private void playSabotageCardSuccessfully(SaboteurGame game, String playerId, int handIndex, String targetPlayerId) throws Exception {
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content(format("""
-                                {   "cardType": "SABOTAGE",
-                                "playerId": "%s",
-                                  "handIndex": %d,
-                                  "targetPlayerId": "%s"
-                                }""", playerId, handIndex, targetPlayerId)))
-                .andExpect(status().is2xxSuccessful());
+                .contentType(APPLICATION_JSON)
+                .content(format("""
+                    {   "cardType": "SABOTAGE",
+                    "playerId": "%s",
+                      "handIndex": %d,
+                      "targetPlayerId": "%s"
+                    }""", playerId, handIndex, targetPlayerId)))
+            .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     void testRockFall() throws Exception {
         Player A = defaultPlayerBuilder("A")
-                .hand(new RockFall()).build();
+            .hand(new RockFall()).build();
         Player B = defaultPlayer("B");
         Player C = defaultPlayer("C");
 
         var game = givenGameStarted(new SaboteurGame("GameId", List.of(A, B, C),
-                new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
-                        new Path(0, 1, PathCard.十字路口()),
-                        new Path(-1, 1, PathCard.右彎(), true)))));
+            new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
+                new Path(0, 1, PathCard.十字路口()),
+                new Path(-1, 1, PathCard.右彎(), true)))));
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                        .contentType(APPLICATION_JSON)
-                        .content("""
-                                {"cardType": "ROCKFALL",
-                                 "playerId": "A",
-                                 "row": 0,
-                                 "col": 1
-                                }"""))
-                .andExpect(status().is2xxSuccessful());
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {"cardType": "ROCKFALL",
+                     "playerId": "A",
+                     "row": 0,
+                     "col": 1
+                    }"""))
+            .andExpect(status().is2xxSuccessful());
 
         var actualGame = gameRepository.findById(game.getId()).orElseThrow();
         assertNull(actualGame.getMaze().getPath(0, 1).orElse(null));
@@ -253,43 +267,43 @@ class SaboteurGameControllerTest {
     void test迷宮案例1() throws Exception {
         // Given
         Player A = defaultPlayerBuilder("A")
-                .hand(十字路口())
-                .build();
+            .hand(十字路口())
+            .build();
         Player B = defaultPlayerBuilder("B")
-                .hand(T型死路())
-                .build();
+            .hand(T型死路())
+            .build();
         Player C = defaultPlayerBuilder("C")
-                .hand(PathCard.一字型())
-                .hand(PathCard.右彎())
-                .build();
+            .hand(PathCard.一字型())
+            .hand(PathCard.右彎())
+            .build();
 
         SaboteurGame game = givenGameStarted(A, B, C);
 
         // When -- Then
         //  輪到 A 出一張十字路口，可以成功連接回起點，放置成功
         playPathCard(game, "A", 0, 0, 1, false)
-                .andExpect(status().is2xxSuccessful());
+            .andExpect(status().is2xxSuccessful());
 
         // 輪到 B 出一張T型死路，可以成功連接回起點，放置成功
         playPathCard(game, "B", 0, 0, 2, false)
-                .andExpect(status().is2xxSuccessful());
+            .andExpect(status().is2xxSuccessful());
 
         // 輪到 C 出一張一字型卡，無法成功連接回起點，放置失敗
         playPathCard(game, "C", 0, 0, 3, false)
-                .andExpect(status().isBadRequest());
+            .andExpect(status().isBadRequest());
 
         //輪到 C 出另一張L型（翻轉右彎）卡，可以成功連接回起點，放置成功
         playPathCard(game, "C", 1, -1, 1, true)
-                .andExpect(status().is2xxSuccessful());
+            .andExpect(status().is2xxSuccessful());
 
         var actualGame = gameRepository.findById(game.getId()).orElseThrow();
         Maze maze = actualGame.getMaze();
 
         assertEquals(十字路口(), maze.getPath(0, 1)
-                .map(Path::getPathCard).orElseThrow());
+            .map(Path::getPathCard).orElseThrow());
 
         assertEquals(T型死路(), maze.getPath(0, 2)
-                .map(Path::getPathCard).orElseThrow());
+            .map(Path::getPathCard).orElseThrow());
 
         Path actual右彎 = maze.getPath(-1, 1).orElseThrow();
         assertTrue(actual右彎.isFlipped());
@@ -297,16 +311,16 @@ class SaboteurGameControllerTest {
 
     private ResultActions playPathCard(SaboteurGame game, String playerId, int handIndex, int row, int col, boolean flipped) throws Exception {
         return mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
-                .contentType(APPLICATION_JSON)
-                .content(format("""
-                            {
-                             "cardType": "PATH",
-                            "playerId": "%s",
-                            "handIndex": %d,
-                            "row": %d,
-                            "col": %d,
-                            "flipped": %b}
-                        """, playerId, handIndex, row, col, flipped)));
+            .contentType(APPLICATION_JSON)
+            .content(format("""
+                    {
+                     "cardType": "PATH",
+                    "playerId": "%s",
+                    "handIndex": %d,
+                    "row": %d,
+                    "col": %d,
+                    "flipped": %b}
+                """, playerId, handIndex, row, col, flipped)));
     }
 
 }

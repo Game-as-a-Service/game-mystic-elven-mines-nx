@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Singular;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -17,14 +16,16 @@ import static java.util.List.copyOf;
 @Builder
 public class Player {
     protected String id;
+    protected String name;
 
     @Singular
     protected List<Card> hands;
 
     protected Tool[] tools;
 
-    public Player(String id, List<Card> hands, Tool... tools) {
+    public Player(String id, String name, List<Card> hands, Tool... tools) {
         this.id = id;
+        this.name = name;
         this.hands = new ArrayList<>(hands);
         // TODO
         if (tools.length != 3) {
@@ -43,15 +44,19 @@ public class Player {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void addHandCard(Card card) {
         hands.add(card);
     }
 
     public Tool getTool(ToolName toolName) {
         return stream(tools)
-                .filter(tool -> tool.getToolName().equals(toolName))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(format("Tool %s not found.", toolName)));
+            .filter(tool -> tool.getToolName().equals(toolName))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException(format("Tool %s not found.", toolName)));
     }
 
     public Tool[] getTools() {
@@ -73,4 +78,5 @@ public class Player {
     public boolean allToolsAreAvailable() {
         return stream(tools).allMatch(Tool::isAvailable);
     }
+
 }

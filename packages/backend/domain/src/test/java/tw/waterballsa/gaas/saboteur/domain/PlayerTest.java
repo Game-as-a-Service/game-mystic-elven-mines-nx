@@ -10,18 +10,18 @@ class PlayerTest {
     @Test
     void playerMustOwn3Tools() {
         assertThrows(RuntimeException.class,
-                () -> new Player("id", emptyList(), new Tool[0])
+            () -> new Player("id", "id", emptyList(), new Tool[0])
         );
     }
 
     @Test
     void playerMustHaveMineCartLanternPick() {
         assertThrows(RuntimeException.class,
-                () -> new Player("id",
-                        emptyList(),
-                        new Tool(ToolName.PICK, true),
-                        new Tool(ToolName.PICK, true),
-                        new Tool(ToolName.LANTERN, true))
+            () -> new Player("id", "id",
+                emptyList(),
+                new Tool(ToolName.PICK, true),
+                new Tool(ToolName.PICK, true),
+                new Tool(ToolName.LANTERN, true))
         );
     }
 }
