@@ -20,12 +20,12 @@ public class WalkingSkeletonController {
     private final SpringSaboteurGameRepository repository;
 
     @GetMapping("/hello")
-    public ResponseEntity<?> hello() {
-        return ResponseEntity.ok("Hello, world!");
+    public String hello() {
+        return "hello";
     }
 
     @GetMapping("/createGame/{gameId}")
-    public ResponseEntity<?> createGame(@PathVariable String gameId) {
+    public String createGame(@PathVariable String gameId) {
         // player
         Player playerA = defaultPlayerBuilder("A").build();
         Player playerB = defaultPlayerBuilder("B").build();
@@ -35,7 +35,7 @@ public class WalkingSkeletonController {
         // save game
         repository.save(game);
 
-        return ResponseEntity.ok("Game created.");
+        return "success";
     }
 
     @ResponseBody
