@@ -36,7 +36,7 @@ class SaboteurGameControllerTest {
     private SaboteurGameRepository gameRepository;
 
     @Test
-    public void 玩家建立一場遊戲() throws Exception {
+    public void testPlayerCreateGame() throws Exception {
         mockMvc.perform(post("/api/games")
                 .contentType(APPLICATION_JSON)
                 .content("""
@@ -50,7 +50,7 @@ class SaboteurGameControllerTest {
     }
 
     @Test
-    public void 玩家取得遊戲() throws Exception {
+    public void testPlayerFindGame() throws Exception {
         Player A = defaultPlayer("A");
         SaboteurGame game = givenGameStarted(A);
 
