@@ -4,9 +4,12 @@ import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tw.waterballsa.gaas.saboteur.app.usecases.CreateGameUsecase;
+import tw.waterballsa.gaas.saboteur.app.usecases.FindGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.PlayCardUsecase;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter.CreateGameViewModel;
+import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter;
+import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter.FindGameViewModel;
 import tw.waterballsa.gaas.saboteur.spring.presenters.PlayCardPresenter;
 
 import javax.validation.constraints.NotBlank;
@@ -23,6 +26,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 public class SaboteurController {
 
     private final CreateGameUsecase createGameUsecase;
+    private final FindGameUsecase findGameUsecase;
     private final PlayCardUsecase playCardUsecase;
 
     @PostMapping
@@ -40,6 +44,13 @@ public class SaboteurController {
         return presenter.getViewModel()
             .map(ResponseEntity::ok)
             .orElseGet(noContent()::build);
+    }
+
+    @GetMapping("/{gameId}")
+    public FindGameViewModel findGame(@PathVariable String gameId) {
+        var presenter = new FindGamePresenter();
+        findGameUsecase.execute(gameId, presenter);
+        return presenter.present();
     }
 
     @Value
