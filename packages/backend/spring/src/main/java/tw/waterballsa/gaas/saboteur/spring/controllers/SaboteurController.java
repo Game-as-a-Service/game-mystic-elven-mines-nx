@@ -5,11 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tw.waterballsa.gaas.saboteur.app.usecases.CreateGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.FindGameUsecase;
+import tw.waterballsa.gaas.saboteur.app.usecases.JoinGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.PlayCardUsecase;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter.CreateGameViewModel;
 import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter;
 import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter.FindGameViewModel;
+import tw.waterballsa.gaas.saboteur.spring.presenters.JoinGamePresenter;
+import tw.waterballsa.gaas.saboteur.spring.presenters.JoinGamePresenter.JoinGameViewModel;
 import tw.waterballsa.gaas.saboteur.spring.presenters.PlayCardPresenter;
 
 import javax.validation.constraints.NotBlank;
@@ -27,12 +30,27 @@ public class SaboteurController {
 
     private final CreateGameUsecase createGameUsecase;
     private final FindGameUsecase findGameUsecase;
+    private final JoinGameUsecase joinGameUsecase;
     private final PlayCardUsecase playCardUsecase;
 
     @PostMapping
     public CreateGameViewModel createGame(@RequestBody CreateGameRequest request) {
         var presenter = new CreateGamePresenter();
         createGameUsecase.execute(request.toRequest(), presenter);
+        return presenter.present();
+    }
+
+    @GetMapping("/{gameId}")
+    public FindGameViewModel findGame(@PathVariable String gameId) {
+        var presenter = new FindGamePresenter();
+        findGameUsecase.execute(gameId, presenter);
+        return presenter.present();
+    }
+
+    @PostMapping("/{gameId}")
+    public JoinGameViewModel joinGame(@PathVariable String gameId, @RequestBody JoinGameRequest request) {
+        var presenter = new JoinGamePresenter();
+        joinGameUsecase.execute(gameId, request.toRequest(), presenter);
         return presenter.present();
     }
 
@@ -44,13 +62,6 @@ public class SaboteurController {
         return presenter.getViewModel()
             .map(ResponseEntity::ok)
             .orElseGet(noContent()::build);
-    }
-
-    @GetMapping("/{gameId}")
-    public FindGameViewModel findGame(@PathVariable String gameId) {
-        var presenter = new FindGamePresenter();
-        findGameUsecase.execute(gameId, presenter);
-        return presenter.present();
     }
 
     @Value
@@ -92,6 +103,20 @@ public class SaboteurController {
         // toRequest
         public CreateGameUsecase.Request toRequest() {
             return new CreateGameUsecase.Request(host);
+        }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class JoinGameRequest {
+
+        @NotBlank
+        private String name;
+
+        // toRequest
+        public JoinGameUsecase.Request toRequest() {
+            return new JoinGameUsecase.Request(name);
         }
     }
 
