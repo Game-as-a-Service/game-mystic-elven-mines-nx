@@ -1,12 +1,14 @@
 package tw.waterballsa.gaas.saboteur.spring.controllers;
 
 import lombok.*;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tw.waterballsa.gaas.saboteur.app.usecases.CreateGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.FindGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.JoinGameUsecase;
 import tw.waterballsa.gaas.saboteur.app.usecases.PlayCardUsecase;
+import tw.waterballsa.gaas.saboteur.domain.exceptions.IllegalRequestException;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter;
 import tw.waterballsa.gaas.saboteur.spring.presenters.CreateGamePresenter.CreateGameViewModel;
 import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter;
@@ -16,6 +18,7 @@ import tw.waterballsa.gaas.saboteur.spring.presenters.JoinGamePresenter.JoinGame
 import tw.waterballsa.gaas.saboteur.spring.presenters.PlayCardPresenter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.stream.Stream;
 
 import static java.util.Objects.requireNonNullElse;
 import static org.springframework.http.ResponseEntity.noContent;
@@ -48,7 +51,8 @@ public class SaboteurController {
     }
 
     @PostMapping("/{gameId}")
-    public JoinGameViewModel joinGame(@PathVariable String gameId, @RequestBody JoinGameRequest request) {
+    public JoinGameViewModel joinGame(@PathVariable String gameId,
+                                      @RequestBody JoinGameRequest request) {
         var presenter = new JoinGamePresenter();
         joinGameUsecase.execute(gameId, request.toRequest(), presenter);
         return presenter.present();
@@ -102,7 +106,10 @@ public class SaboteurController {
 
         // toRequest
         public CreateGameUsecase.Request toRequest() {
-            return new CreateGameUsecase.Request(host);
+            return Stream.of(host)
+                .filter(StringUtils::isNotBlank).findFirst()
+                .map(CreateGameUsecase.Request::new)
+                .orElseThrow(() -> new IllegalRequestException("Host name is required"));
         }
     }
 
@@ -116,7 +123,10 @@ public class SaboteurController {
 
         // toRequest
         public JoinGameUsecase.Request toRequest() {
-            return new JoinGameUsecase.Request(name);
+            return Stream.of(name)
+                .filter(StringUtils::isNotBlank).findFirst()
+                .map(JoinGameUsecase.Request::new)
+                .orElseThrow(() -> new IllegalRequestException("Host name is required"));
         }
     }
 

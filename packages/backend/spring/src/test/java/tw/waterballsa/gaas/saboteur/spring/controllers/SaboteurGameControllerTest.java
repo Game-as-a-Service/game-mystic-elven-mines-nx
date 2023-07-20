@@ -76,6 +76,7 @@ class SaboteurGameControllerTest {
             .andExpect(jsonPath("$.players").isArray())
             .andExpect(jsonPath("$.players[0].id").value(A.getId()))
             .andExpect(jsonPath("$.players[0].name").value(A.getName()))
+            .andExpect(jsonPath("$.players[1].id").exists())
             .andExpect(jsonPath("$.players[1].name").value("BB"));
     }
 
