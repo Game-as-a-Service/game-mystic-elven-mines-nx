@@ -10,7 +10,6 @@ import tw.waterballsa.gaas.saboteur.domain.SaboteurGame;
 import tw.waterballsa.gaas.saboteur.domain.exceptions.NotFoundException;
 
 import javax.inject.Named;
-import java.util.List;
 
 import static java.util.UUID.randomUUID;
 import static tw.waterballsa.gaas.saboteur.domain.builders.Players.defaultPlayerBuilder;
@@ -22,9 +21,9 @@ public class JoinGameUsecase {
     private final SaboteurGameRepository saboteurGameRepository;
 
     // createGame
-    public void execute(String gameId, Request request, Presenter presenter) {
+    public void execute(Request request, Presenter presenter) {
         // 查
-        SaboteurGame saboteurGame = saboteurGameRepository.findById(gameId)
+        SaboteurGame saboteurGame = saboteurGameRepository.findById(request.gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
 
         // 改
@@ -44,6 +43,7 @@ public class JoinGameUsecase {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
+        private String gameId;
         private String name;
     }
 
