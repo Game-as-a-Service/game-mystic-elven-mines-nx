@@ -50,7 +50,7 @@ public class SaboteurController {
 
     @PostMapping("/{gameId}")
     public JoinGameViewModel joinGame(@PathVariable String gameId,
-                                      @RequestBody JoinGameRequest request) {
+                                      @Valid @RequestBody JoinGameRequest request) {
         var presenter = new JoinGamePresenter();
         joinGameUsecase.execute(request.toRequest(gameId), presenter);
         return presenter.present();
@@ -58,7 +58,7 @@ public class SaboteurController {
 
     @PostMapping("/{gameId}:playCard")
     public ResponseEntity<?> playCard(@PathVariable String gameId,
-                                      @RequestBody PlayCardRequest request) {
+                                      @Valid @RequestBody PlayCardRequest request) {
         var presenter = new PlayCardPresenter();
         playCardUsecase.execute(request.toRequest(gameId), presenter);
         return presenter.getViewModel()
