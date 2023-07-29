@@ -61,6 +61,25 @@ class SaboteurGameControllerTest {
             .andExpect(jsonPath("$.players[0].name").value(A.getName()));
     }
 
+    @Test
+    public void testPlayerJoinGame() throws Exception {
+        Player A = defaultPlayer("A");
+        SaboteurGame game = givenGameStarted(A);
+
+        mockMvc.perform(post("/api/games/{gameId}", game.getId())
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {
+                        "name": "BB"
+                    }"""))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.players").isArray())
+            .andExpect(jsonPath("$.players[0].id").value(A.getId()))
+            .andExpect(jsonPath("$.players[0].name").value(A.getName()))
+            .andExpect(jsonPath("$.players[1].id").exists())
+            .andExpect(jsonPath("$.players[1].name").value("BB"));
+    }
+
     // ATDD (1) 先寫驗收測試程式 （2) ------------
     @Test
     public void 修好其中一個工具耶() throws Exception {
