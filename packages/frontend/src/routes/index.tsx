@@ -14,7 +14,7 @@ export default component$(() => {
       {/* 狀態管理測試 */}
       {/* <TesterStore /> */}
       {/* api測試 */}
-      {/* <TesterApi /> */}
+      <TesterApi />
       {/* 測試=====END */}
       {/* 左 - 玩家資訊 */}
       <Map></Map> {/* 中 - 大地圖 */}0{/* 中 - 卡牌堆 */}

@@ -1,4 +1,5 @@
 import { MapType } from '../../game/map/mapController'
+import { IApiGames } from '../network/api/type'
 import { CardTypeEnum, Paths } from '../types/Card'
 
 export type SelectCardType = {
@@ -7,7 +8,7 @@ export type SelectCardType = {
 }
 
 export interface IGameStore {
-  gameId: string
+  gameInfo: IApiGames | null
   map: MapType
   selectedCard: SelectCardType | null
   // setGameId: (gameId: string) => void

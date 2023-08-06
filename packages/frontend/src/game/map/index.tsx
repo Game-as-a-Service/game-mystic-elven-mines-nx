@@ -1,5 +1,5 @@
-import { $, component$, Slot, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 
+import { $, component$, Slot, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 import { Image } from '@unpic/qwik'
 
 import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'

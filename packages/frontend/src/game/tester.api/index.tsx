@@ -10,7 +10,7 @@ export default component$(() => {
       <button class="bg-slate-300 p-2" onClick$={() => helloTest()}>
         api Hello
       </button>
-      <button class="bg-slate-300 p-2" onClick$={() => createGame()}>
+      <button class="bg-slate-300 p-2" onClick$={() => createGame({ host: 'testPlayer' })}>
         api 建立遊戲
       </button>
       <button class="bg-slate-300 p-2" onClick$={() => getFindGame()}>
