@@ -4,26 +4,14 @@ import gameStore from '../../core/stores'
 import { SelectCardType } from '../../core/stores/typing'
 
 export default component$(
-  ({
-    color,
-    left,
-    cName,
-    cType,
-  }: {
-    propType: CardTypeEnum
-    cardName: Paths
-    color: string
-    left: string
-    cName: Paths
-    cType: CardTypeEnum
-  }) => {
+  ({ color, left, cName, cType }: { color: string; left: string; cName: Paths; cType: CardTypeEnum }) => {
     const isSelected = useSignal(false)
     const cardRef = useSignal<Element>()
 
     useVisibleTask$(({ track }) => {
       track(() => isSelected.value)
-      console.log('拿了卡', gameStore.getState().selectedCard)
-      console.log('task ', isSelected.value)
+      //console.log('拿了卡', gameStore.getState().selectedCard)
+      //console.log('task ', isSelected.value)
       if (isSelected.value) cardRef.value!.style.bottom = '100px'
       else if (!isSelected.value) cardRef.value!.style.bottom = '50px'
     })

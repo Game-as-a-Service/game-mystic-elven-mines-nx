@@ -1,4 +1,3 @@
-
 import { $, component$, Slot, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 import { Image } from '@unpic/qwik'
 
@@ -41,13 +40,13 @@ export default component$(() => {
 })
 
 const Col = component$((props: any) => {
-  console.log('props', props)
+  //console.log('props', props)
   // 格子
   const { selfY, selfX, hasCard } = { ...props, selfX: props.x + 1, selfY: props.y + 1, hasCard: props.hasCard }
 
   // click
   const clickCol = $(() => {
-    console.log({ selfY, selfX })
+    //console.log({ selfY, selfX })
     if (hasCard) return
 
     const hasSelectedCard = Boolean(gameStore.getState().selectedCard?.cardName)

@@ -1,19 +1,32 @@
 import { subscribeWithSelector } from 'zustand/middleware'
 import { createStore } from 'zustand/vanilla'
-import { IGameStore } from './typing'
-import { IApiGames } from '../network/api/type'
+import { SelectCardType } from './typing'
+import { IApiCreateGame, IApiQueryGame } from '../network/api/type'
+import { MapType } from '../../game/map/mapController'
+
+interface IGameStore {
+  roomInfo: IApiCreateGame | null
+  roomPlayers: IApiQueryGame | null
+  map: MapType
+  selectedCard: SelectCardType | null
+  uiBgImg: 'bg-game-01' | 'bg-create'
+}
 
 const gameStore = createStore(
   subscribeWithSelector<IGameStore>(() => ({
-    gameInfo: null,
+    //Room
+    roomInfo: null,
+    roomPlayers: null,
+
+    //Game
     map: [[]],
     selectedCard: null,
+
+    //UI
+    uiBgImg: 'bg-game-01',
   }))
 )
 export default gameStore
 
-// Setters
-export const setGameInfo = (gameInfo: IApiGames) => gameStore.setState({ gameInfo })
-
 // Debug
-if (typeof window !== 'undefined') window.gameStore = gameStore
+if (typeof window !== 'undefined') Object.assign(window, { gameStore })
