@@ -1,11 +1,20 @@
-import { $, component$ } from '@builder.io/qwik'
+import { $, component$, useVisibleTask$ } from '@builder.io/qwik'
 
-import { joinRoomByNameAndId } from '../../core/controllers/roomController'
+import { joinRoomByNameAndId, setGameIdToLocal } from '../../../core/controllers/roomController'
 import { useLocation, useNavigate } from '@builder.io/qwik-city'
+import api from 'packages/frontend/src/core/network/api'
 
 export default component$(() => {
+  const loc = useLocation()
+  const gameId = loc.params.gameId
+
+  useVisibleTask$(async () => {
+    const gameIdEl = document.querySelector('#game-id') as HTMLInputElement
+    gameIdEl.value = gameId
+  })
+
   const nav = useNavigate()
-  const handleClick = $(async () => {
+  const goRoom = $(async () => {
     const name: string = (document.querySelector('#name') as HTMLInputElement)?.value || ''
     const gameId: string = (document.querySelector('#game-id') as HTMLInputElement)?.value || ''
     const res = await joinRoomByNameAndId(name, gameId)
@@ -22,7 +31,7 @@ export default component$(() => {
         <div class="flex flex-col max-w-[500px] space-y-3">
           <input id="name" class="border mb-1" placeholder="你的名字"></input>
           <input id="game-id" class="border mb-1" placeholder="房間Id"></input>
-          <button onClick$={handleClick} class="bg-slate-300 p-1 rounded-sm">
+          <button onClick$={goRoom} class="bg-slate-300 p-1 rounded-sm">
             送出
           </button>
         </div>

@@ -10,6 +10,8 @@ import { setGameIdToLocal } from '../../../core/controllers/roomController'
 import Map from '../../../game/map'
 import Players from 'packages/frontend/src/game/players'
 
+import BtnShareUI from '../../../game/components/btnShareUI'
+
 export default component$(() => {
   setUIBg('game')
 
@@ -24,6 +26,7 @@ export default component$(() => {
   return (
     <>
       <Players />
+      <BtnShareUI {...{ gameId }} />
       {/* 測試=====START */}
       {/* 狀態管理測試 */}
       {/* <TesterStore /> */}
