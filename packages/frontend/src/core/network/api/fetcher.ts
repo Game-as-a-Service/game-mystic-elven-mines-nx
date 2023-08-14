@@ -12,27 +12,16 @@ export const fetcher = async ({ url, body, type }: fetcherType) => {
       },
     }
     if (body) config.body = JSON.stringify(body)
-
     const response = await fetch(url, config)
-    interceptor(response)
 
-    // TODO跟後端討論一下api
-    // 目前沒有統一傳來前端的格式
-    // 前端預想接收到的格式
-    return await response.json()
+    const res = await interceptor(response)
+    return res
   } catch (error) {
-    //
-
     console.error('API Request Error:', error)
-    // toast(error.message);
   }
 }
 
 const interceptor = (response: any) => {
-  if (response.status !== 200) {
-    console.log('error')
-    // toast(response.message);
-  }
-
-  return response
+  if (!response.ok) console.error(response)
+  if (response.ok) return response.json()
 }
