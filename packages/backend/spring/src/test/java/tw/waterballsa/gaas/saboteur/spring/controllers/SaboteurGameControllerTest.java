@@ -77,7 +77,8 @@ class SaboteurGameControllerTest {
             .andExpect(jsonPath("$.players[0].id").value(A.getId()))
             .andExpect(jsonPath("$.players[0].name").value(A.getName()))
             .andExpect(jsonPath("$.players[1].id").exists())
-            .andExpect(jsonPath("$.players[1].name").value("BB"));
+            .andExpect(jsonPath("$.players[1].name").value("BB"))
+            .andExpect(jsonPath("$.playerId").exists());
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------
