@@ -14,6 +14,8 @@ interface IGameStore {
 
 const gameStore = createStore(
   subscribeWithSelector<IGameStore>(() => ({
+    socket: null,
+
     //Room
     roomInfo: null,
     roomPlayers: null,

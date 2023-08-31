@@ -8,7 +8,7 @@ import { routeLoader$, useLocation } from '@builder.io/qwik-city'
 import api from '../../../core/network/api'
 import { setGameIdToLocal } from '../../../core/controllers/roomController'
 import Map from '../../../game/map'
-import Players from 'packages/frontend/src/game/players'
+import Players from '../../../game/players'
 
 import BtnShareUI from '../../../game/components/btnShareUI'
 
@@ -21,6 +21,7 @@ export default component$(() => {
   useVisibleTask$(async () => {
     setGameIdToLocal(gameId)
     const result = await api.queryGame()
+    console.log('result', result)
   })
 
   return (
