@@ -3,6 +3,7 @@ import useGameStore, { gameStore } from '../core/stores/index'
 
 import '../core/styles/game.css'
 import ToastMessage from '../game/components/toastMessage'
+import { gameBase } from '../core/gameBase'
 
 export default component$(() => {
   const bgFileName = useSignal<'bg-game-01' | 'bg-create'>(useGameStore.getState().uiBgImg)

@@ -4,6 +4,7 @@ import { RouterHead } from './app/components/router-head/router-head'
 
 import globalStyles from './core/styles/global.css?inline'
 import { initControllers } from './core/controllers'
+import { gameBase } from './core/gameBase'
 
 export default component$(() => {
   /**
@@ -15,6 +16,7 @@ export default component$(() => {
 
   useVisibleTask$(() => {
     initControllers()
+    Object.assign(window, { gameBase })
   })
   useStyles$(globalStyles)
 

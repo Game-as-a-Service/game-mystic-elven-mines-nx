@@ -10,7 +10,7 @@ interface IInitSocket {
 export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
   if (!isNil(gameBase.socket)) setSocket(null)
 
-  const socket = io('http://localhost:8888/websocket', {
+  const config = {
     query: {
       userId,
       gameId,
@@ -24,11 +24,23 @@ export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
     extraHeaders: {
       // auth_token: token,
     },
-  })
+  }
+  const socket = io('http://localhost:8888/websocket', config)
 
   setSocket(socket)
+
+  onConnect(socket)
   onPlayerJoined(socket)
   onPlayerLeft(socket)
+}
+
+const onConnect = (socket: Socket) => {
+  socket.on('connect', () => {
+    if (socket.recovered) {
+      console.log('%cSocket 恢復連線', 'color:lightgreen')
+    }
+    console.log('%cSocket Connected', 'color:lightgreen')
+  })
 }
 
 const onPlayerJoined = (socket: Socket) => {
