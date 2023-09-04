@@ -14,9 +14,9 @@ public class JoinGamePresenter implements JoinGameUsecase.Presenter {
     private JoinGameViewModel viewModel;
 
     @Override
-    public void renderGame(SaboteurGame game) {
+    public void renderGame(SaboteurGame game, String id) {
         List<PlayerView> players = game.getPlayers().stream().map(PlayerView::toView).toList();
-        viewModel = new JoinGameViewModel(players);
+        viewModel = new JoinGameViewModel(players, id);
     }
 
     public JoinGameViewModel present() {
@@ -28,5 +28,6 @@ public class JoinGamePresenter implements JoinGameUsecase.Presenter {
     @AllArgsConstructor
     public static class JoinGameViewModel {
         private List<PlayerView> players;
+        private String playerId;
     }
 }

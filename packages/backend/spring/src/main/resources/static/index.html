@@ -3,15 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <script src="socket.io-2.2.0.js"></script>
+  <script>
+
+    // create game api
+    function createGame() {
+      fetch('/api/games', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          host: 'user' + Math.floor(Math.random() * 10000),
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+        document.getElementById('gameId').value = myJson.gameId;
+        connectSocket(myJson.host.id, myJson.gameId);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    // find game api
+    function findGame() {
+      // get gameId
+      const gameId = document.getElementById('gameId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    // join game api
+    function joinGame() {
+      // get gameId
+      const gameId = document.getElementById('gameId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: 'user' + Math.floor(Math.random() * 10000),
+        })
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+        connectSocket(myJson.playerId, gameId);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    function connectSocket(userId, gameId) {
+      // socket.io client
+      const socket = io(`http://127.0.0.1:8888/websocket?userId=${userId}&gameId=${gameId}`);
+
+      // 連線
+      socket.on('connect', function () {
+        console.log('The client has connected with the server.');
+      });
+
+      socket.on('disconnect', function () {
+        console.log('The client has disconnected!');
+      });
+      socket.on('reconnect_attempt', (attempts) => {
+        console.log('Try to reconnect at ' + attempts + ' attempt(s).');
+      });
+
+      // 接收訊息，可參考 SocketChannel.java
+      socket.on('PLAYER_JOINED', function (data) {
+        console.log('player joined', data);
+      });
+      socket.on('PLAYER_LEFT', function (data) {
+        console.log('player left', data);
+      });
+    }
+  </script>
 </head>
 <body>
 <h1>Success</h1>
 <div>
-  <!-- 大家環境都 OK 時，就能刪掉此檔案了 -->
-  <p>測試 Walking Skeleton API:</p>
-  <p><a href="/api/test/hello">測試哈囉 /api/test/hello</a></p>
-  <p><a href="/api/test/createGame/gameId01">建立遊戲 (路徑最後一個是遊戲 id) /api/test/createGame/gameId01</a></p>
-  <p><a href="/api/test/findGame/gameId01">查詢遊戲 (路徑最後一個是遊戲 id) /api/test/findGame/gameId01</a></p>
+  <p>測試用 API:</p>
+  <p>
+    <label for="gameId">game id:</label>
+    <input type="text" id="gameId">
+  </p>
+  <p>
+    <button onclick="createGame()">建立遊戲</button>
+  </p>
+  <p>
+    <button onclick="findGame()">查詢遊戲</button>
+  </p>
+  <p>
+    <button onclick="joinGame()">加入遊戲</button>
+  </p>
+
   <p><a href="/swagger-ui/index.html"> Swagger UI </a></p>
 </div>
 </body>
