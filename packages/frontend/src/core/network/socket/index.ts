@@ -34,13 +34,13 @@ export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
 const onPlayerJoined = (socket: Socket) => {
   // 监听玩家加入事件
   socket.on('PLAYER_JOINED', (userId: string) => {
-    console.log('玩家加入了游戏')
+    console.log('%c玩家加入了遊戲', 'color:lightgreen', userId)
   })
 }
 
 const onPlayerLeft = (socket: Socket) => {
   // 监听玩家离开事件
   socket.on('PLAYER_LEFT', (userId: string) => {
-    console.log('玩家离开了游戏')
+    console.log('玩家離開了遊戲', 'color:lightgreen', userId)
   })
 }

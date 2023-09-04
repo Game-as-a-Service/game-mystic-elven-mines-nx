@@ -1,4 +1,4 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useVisibleTask$ } from '@builder.io/qwik'
 import TesterCard from '../../../game/tester.card'
 import { CardTypeEnum, Paths } from '../../../core/types/Card'
 import { setUIBg } from '../../../core/stores/storeUI'
@@ -7,9 +7,17 @@ import Map from '../../../game/map'
 import Players from '../../../game/players'
 
 import BtnShareUI from '../../../game/components/btnShare'
+import { connectRoomSocket } from 'packages/frontend/src/core/network/socket'
 
 export default component$(() => {
   setUIBg('game')
+
+  useVisibleTask$(() => {
+    // 連接socket
+    const gameId = localStorage.getItem('gameId') || ''
+    const userId = localStorage.getItem('userId') || ''
+    if (gameId && userId) connectRoomSocket({ gameId, userId })
+  })
 
   return (
     <>

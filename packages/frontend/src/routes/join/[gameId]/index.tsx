@@ -3,6 +3,8 @@ import { $, component$, useVisibleTask$ } from '@builder.io/qwik'
 import { joinRoomByNameAndId, setGameIdToLocal } from '../../../core/controllers/roomController'
 import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import api from 'packages/frontend/src/core/network/api'
+import { gameBase } from 'packages/frontend/src/core/gameBase'
+import { connectRoomSocket } from 'packages/frontend/src/core/network/socket'
 
 export default component$(() => {
   const loc = useLocation()
