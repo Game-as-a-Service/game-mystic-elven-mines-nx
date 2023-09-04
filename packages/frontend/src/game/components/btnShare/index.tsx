@@ -1,8 +1,9 @@
 import { $, component$ } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
 
-export default component$(({ gameId }: { gameId: string }) => {
+export default component$(() => {
   const loc = useLocation()
+  const gameId = loc.params.gameId
 
   const handleClick = $(async () => {
     const url = loc.url.origin + '/join/' + gameId

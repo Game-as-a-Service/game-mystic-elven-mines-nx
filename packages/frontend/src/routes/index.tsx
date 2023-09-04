@@ -1,5 +1,6 @@
-import { component$, $ } from '@builder.io/qwik'
+import { component$, $, useVisibleTask$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
+import { gameStore, useGameStore } from '../core/stores/index'
 
 import { setUIBg } from '../core/stores/storeUI'
 
@@ -12,6 +13,11 @@ export default component$(() => {
 
   const gotoJoinPage = $(() => {
     window.location.href = './join'
+  })
+
+  useVisibleTask$(() => {
+    console.log('useVisibleTask$')
+    gameStore.on('roomInfo', (v, t) => console.log('roomInfo', v, t))
   })
 
   return (

@@ -1,21 +1,18 @@
-import { component$, Slot, useTask$, $, useVisibleTask$, useSignal } from '@builder.io/qwik'
-import Header from '../app/components/header/header'
-import gameStore from '../core/stores/index'
+import { component$, Slot, useVisibleTask$, useSignal } from '@builder.io/qwik'
+import useGameStore, { gameStore } from '../core/stores/index'
 
 import '../core/styles/game.css'
-import { setUIBg } from '../core/stores/storeUI'
+import ToastMessage from '../game/components/toastMessage'
+
 export default component$(() => {
-  let bgFileName = useSignal<string>(gameStore.getState().uiBgImg)
+  const bgFileName = useSignal<'bg-game-01' | 'bg-create'>(useGameStore.getState().uiBgImg)
 
   useVisibleTask$(({ cleanup }) => {
-    const bgSub = gameStore.subscribe(
-      (s) => s.uiBgImg,
-      (v) => (bgFileName.value = v)
-    )
+    const sub = gameStore.on('uiBgImg', (v) => (bgFileName.value = v))
 
     cleanup(() => {
+      sub.unsubscribe()
       console.log('clean up')
-      bgSub.unSubscribe()
     })
   })
 
@@ -31,6 +28,7 @@ export default component$(() => {
       <main>
         <Slot />
       </main>
+      <ToastMessage />
     </>
   )
 })

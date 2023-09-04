@@ -1,9 +1,10 @@
-import { $, component$, useTask$, useVisibleTask$ } from '@builder.io/qwik'
+import { $, component$, useTask$ } from '@builder.io/qwik'
 import { DocumentHead, useNavigate } from '@builder.io/qwik-city'
 
 import { setUIBg } from '../../core/stores/storeUI'
 import api from '../../core/network/api'
 import { createGameAndGetId } from '../../core/controllers/roomController'
+import ToastMessage from '../../game/components/toastMessage'
 
 export default component$(() => {
   const nav = useNavigate()

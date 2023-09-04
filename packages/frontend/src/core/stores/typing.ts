@@ -1,4 +1,4 @@
-import { MapType } from '../../game/map/mapController'
+import { ColListType } from '../../game/map/mapController'
 import { IApiCreateGame } from '../network/api/type'
 import { CardTypeEnum, Paths } from '../types/Card'
 

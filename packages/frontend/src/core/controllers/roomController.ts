@@ -14,18 +14,21 @@ export const createGameAndGetId = async (host: string) => {
   const res = await api.createGame({ host })
   setMyNameToLocal(host)
   setGameIdToLocal(res.gameId)
+  setUserIdToLocal(res.host.id)
   return res.gameId
 }
 
 export const queryGame = async () => {
-  const gamePlayers = await api.queryGame()
-  return gamePlayers
+  return await api.queryGame()
 }
 
 export const joinRoomByNameAndId = async (name: string, gameId: string) => {
   const res = await api.joinGame({ name })
+  console.log('join', res)
   setGameIdToLocal(gameId)
   setMyNameToLocal(name)
+  setUserIdToLocal(res.players[res.players.length - 1].id)
+  // setUserIdToLocal(res.playersId) or setUserIdToLocal(res.userId)
   return res
 }
 
@@ -37,4 +40,8 @@ export const setGameIdToLocal = (gameId: string) => {
 export const setMyNameToLocal = (name: string) => {
   localStorage.setItem('myName', name)
   Constants.myName = name
+}
+export const setUserIdToLocal = (userId: string) => {
+  localStorage.setItem('userId', userId)
+  Constants.userId = userId
 }

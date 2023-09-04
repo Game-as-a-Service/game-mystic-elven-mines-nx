@@ -2,26 +2,28 @@ import { $, component$, Slot, useSignal, useVisibleTask$ } from '@builder.io/qwi
 import { Image } from '@unpic/qwik'
 
 import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
-import { convertToMapRow, MapType, MapCardType } from './mapController'
+import { convertToMapData, ColListType, IMapCard } from './mapController'
 import { mockCards } from './mock'
 import './map.css'
 
-import gameStore from '../../core/stores'
+import useGameStore, { gameStore } from '../../core/stores'
 
 // NOTE
 // 目标x坐标 = 第10格的左边界 + （格子宽度 - 卡牌宽度）/ 2
 // 目标y坐标 = 第10格的上边界 + （格子高度 - 卡牌高度）/ 2
 
 // 資料
-const mockData = convertToMapRow(mockCards)
+const mockData = convertToMapData(mockCards)
 
 // 地圖
 export default component$(() => {
-  const data = useSignal<MapType>(mockData)
+  const data = useSignal<ColListType>(mockData)
 
   useVisibleTask$(() => {
-    gameStore.setState({ map: mockData })
-    gameStore.subscribe(({ map }) => (data.value = map))
+    gameStore.set('map', mockData)
+    gameStore.on('map', (v) => (data.value = v))
+    gameStore.on('map', (v) => console.log('map', v))
+    // useGameStore.subscribe(({ map }) => (data.value = map))
   })
 
   return (
@@ -49,11 +51,11 @@ const Col = component$((props: any) => {
     //console.log({ selfY, selfX })
     if (hasCard) return
 
-    const hasSelectedCard = Boolean(gameStore.getState().selectedCard?.cardName)
+    const hasSelectedCard = Boolean(useGameStore.getState().selectedCard?.cardName)
     if (!hasSelectedCard) return
 
-    const map = gameStore.getState().map
-    const card = gameStore.getState().selectedCard
+    const map = useGameStore.getState().map
+    const card = useGameStore.getState().selectedCard
 
     const mapCards = map.map((r) => {
       r.map((mapCard) => {
@@ -66,7 +68,7 @@ const Col = component$((props: any) => {
       return r
     })
 
-    gameStore.setState({ map: mapCards })
+    useGameStore.setState({ map: mapCards })
   })
 
   return (
@@ -76,8 +78,8 @@ const Col = component$((props: any) => {
   )
 })
 
-export const MapCard = component$((props: MapCardType & { hasCard: boolean }) => {
-  let propsData = useSignal(props)
+export const MapCard = component$((props: IMapCard & { hasCard: boolean }) => {
+  const propsData = useSignal(props)
   useVisibleTask$(() => {
     //  console.log('useVisibleTask MapCard', propsData.value)
   })

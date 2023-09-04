@@ -1,6 +1,6 @@
 import { component$, $, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 import { CardTypeEnum, Paths } from '../../core/types/Card'
-import gameStore from '../../core/stores'
+import useGameStore from '../../core/stores'
 import { SelectCardType } from '../../core/stores/typing'
 
 export default component$(
@@ -20,8 +20,8 @@ export default component$(
       const card: SelectCardType = { cardName: cName, cardType: cType }
 
       isSelected.value = !isSelected.value
-      if (isSelected.value) gameStore.setState({ selectedCard: card })
-      else if (!isSelected.value) gameStore.setState({ selectedCard: null })
+      if (isSelected.value) useGameStore.setState({ selectedCard: card })
+      else if (!isSelected.value) useGameStore.setState({ selectedCard: null })
     })
 
     return (

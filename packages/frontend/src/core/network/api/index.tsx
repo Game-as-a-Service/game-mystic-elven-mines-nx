@@ -1,4 +1,4 @@
-import gameStore from '../../stores'
+import useGameStore from '../../stores'
 import { setGameInfo } from '../../stores/storeRoom'
 import { fetcher } from './fetcher'
 import { IApiCreateGame, IApiJoinGame, IApiQueryGame, IplayCard } from './type'

@@ -1,5 +1,5 @@
 import io, { Socket } from 'socket.io-client'
-import { gameBase, setSocket } from '../gameBase'
+import { gameBase, setSocket } from '../../gameBase'
 
 import { isNil } from 'ramda'
 

@@ -1,6 +1,5 @@
 // API
-
-export type IPlayer = {
+export interface IPlayer {
   id: 'UUID'
   name: '$playerName'
 }
@@ -8,7 +7,7 @@ export type IPlayer = {
 export interface IApiCreateGame {
   gameId: 'string'
   host: {
-    id: 'string'
+    id: 'string' // 開會這裡改 userId
     name: 'string'
   }
 }
@@ -19,6 +18,7 @@ export interface IApiQueryGame {
 
 export interface IApiJoinGame {
   players: IPlayer[]
+  playerId: 'string'
 }
 
 // 玩家打牌 棄牌

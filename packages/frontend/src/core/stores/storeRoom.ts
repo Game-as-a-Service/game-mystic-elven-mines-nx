@@ -1,5 +1,6 @@
-import gameStore from '.'
+import useGameStore from '.'
 import { IApiCreateGame } from '../network/api/type'
 
 // Room
-export const setGameInfo = (gameInfo: IApiCreateGame) => gameStore.setState({ roomInfo: gameInfo })
+export const setGameInfo = (gameInfo: IApiCreateGame) => useGameStore.setState({ roomInfo: gameInfo })
+  
