@@ -1,5 +1,7 @@
 import { component$, $, useStore, useVisibleTask$ } from '@builder.io/qwik'
 
+import { isServer } from '@builder.io/qwik/build'
+
 import { setToastMessage, setUIBg } from '../../../core/stores/storeUI'
 import { connectRoomSocket } from '../../../core/network/socket'
 
@@ -10,10 +12,18 @@ import BtnCircleUI from '../../../game/components/btnCircleUI'
 import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { gameBase } from '../../../core/gameBase'
 import { PlayerData } from '../../../game/players/playerData'
+import { gameStore } from '../../../core/stores'
+import { IPlayer } from '../../../core/network/api/type'
+
+interface IStore {
+  userName: string
+  players: IPlayer[]
+  hasWelcome: boolean //第一次進房間會有歡迎詞
+}
 
 export default component$(() => {
   setUIBg('game')
-  const store = useStore({ userName: '' })
+  const store = useStore<IStore>({ userName: '', players: [], hasWelcome: false })
   const nav = useNavigate()
   const loc = useLocation()
 
@@ -28,14 +38,29 @@ export default component$(() => {
     nav(`/`)
   })
 
+  // 連接socket
   useVisibleTask$(() => {
-    // 連接socket
+    gameStore.on('roomPlayers', (list) => (store.players = list))
     const gameId = localStorage.getItem('gameId') || ''
     const userId = localStorage.getItem('userId') || ''
     store.userName = localStorage.getItem('userName') || ''
-    console.log('store.userName', store.userName)
-
     if (gameId && userId) connectRoomSocket({ gameId, userId })
+  })
+
+  // welcome
+  useVisibleTask$(({ track }) => {
+    if (!store.hasWelcome) {
+      track(() => store.players)
+      const value = store.players
+      const update = () => (store.players = value)
+      isServer
+        ? update() // don't delay on server render value as part of SSR
+        : delay(500).then(update) // Delay in browser
+      if (value?.length > 0) {
+        setToastMessage('歡迎來到精靈礦坑,目前有' + value?.length + '位玩家在遊戲中')
+        store.hasWelcome = true
+      }
+    }
   })
 
   return (
@@ -70,7 +95,7 @@ export default component$(() => {
             <div class="h-5"></div>
           </section>
           <section class="p-5 flex-initial w-2/3 flex flex-row justify-center">
-            <div class=" w-2/3 fixed bottom-[-2.5rem]">
+            <div class=" w-2/3 max-w-[650px] fixed bottom-[-2.5rem]">
               <PlayingHands />
             </div>
           </section>
@@ -80,3 +105,5 @@ export default component$(() => {
     </main>
   )
 })
+
+const delay = (time: number) => new Promise((res) => setTimeout(res, time))

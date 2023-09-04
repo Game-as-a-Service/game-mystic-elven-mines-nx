@@ -7,6 +7,7 @@ import { mockCards } from './mock'
 import './map.css'
 
 import useGameStore, { gameStore } from '../../core/stores'
+import { setMap } from '../../core/stores/storeUI'
 
 // NOTE
 // 目标x坐标 = 第10格的左边界 + （格子宽度 - 卡牌宽度）/ 2
@@ -20,9 +21,9 @@ export default component$(() => {
   const data = useSignal<ColListType>(mockData)
 
   useVisibleTask$(() => {
-    gameStore.set('map', mockData)
-    gameStore.on('map', (v) => (data.value = v))
-    gameStore.on('map', (v) => console.log('map', v))
+    // gameStore.set('map', mockData)
+    // gameStore.on('map', (v) => (data.value = v))
+    // gameStore.on('map', (v) => console.log('map', v))
     // useGameStore.subscribe(({ map }) => (data.value = map))
   })
 
@@ -68,7 +69,7 @@ const ColData = component$((props: any) => {
       return r
     })
 
-    useGameStore.setState({ map: mapCards })
+    setMap(mapCards)
   })
 
   return (

@@ -1,15 +1,11 @@
 import io, { Socket } from 'socket.io-client'
-import { gameBase, setSocket } from '../../gameBase'
-
-import { isNil } from 'ramda'
+import { setSocket } from '../../gameBase'
 
 interface IInitSocket {
   userId: string
   gameId: string
 }
 export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
-  if (!isNil(gameBase.socket)) setSocket(null)
-
   const config = {
     query: {
       userId,
@@ -25,10 +21,8 @@ export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
       // auth_token: token,
     },
   }
-  const socket = io('http://localhost:8888/websocket', config)
-
+  const socket = io('ws://localhost:8888/websocket', config)
   setSocket(socket)
-
   onConnect(socket)
   onPlayerJoined(socket)
   onPlayerLeft(socket)

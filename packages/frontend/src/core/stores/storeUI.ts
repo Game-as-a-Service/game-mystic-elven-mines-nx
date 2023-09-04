@@ -1,4 +1,5 @@
 import useGameStore from '.'
+import { ColListType } from '../../game/map/mapController'
 
 // UI
 export const setUIBg = (key: 'game' | 'create') => {
@@ -8,4 +9,8 @@ export const setUIBg = (key: 'game' | 'create') => {
 
 export const setToastMessage = (msg: string | null) => {
   useGameStore.setState({ toastMessage: msg })
+}
+
+export const setMap = (map: ColListType) => {
+  useGameStore.setState({ map })
 }

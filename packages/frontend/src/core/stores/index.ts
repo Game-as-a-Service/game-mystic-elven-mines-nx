@@ -1,11 +1,12 @@
-import { StoreApi, createStore } from 'zustand/vanilla'
+import { createStore } from 'zustand/vanilla'
 import { SelectCardType } from './typing'
-import { IApiCreateGame, IApiQueryGame } from '../network/api/type'
+import { IApiCreateGame, IPlayer } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
+import { gameBase } from '../../core/gameBase'
 
 interface IGameState {
   roomInfo: IApiCreateGame | null
-  roomPlayers: IApiQueryGame | null
+  roomPlayers: IPlayer[]
   map: ColListType
   selectedCard: SelectCardType | null
   uiBgImg: 'bg-game-01' | 'bg-create'
@@ -15,7 +16,7 @@ interface IGameState {
 export const useGameStore = createStore<IGameState>((set) => ({
   // Room
   roomInfo: null,
-  roomPlayers: null,
+  roomPlayers: [],
 
   // Game
   map: [[]],
@@ -50,6 +51,8 @@ export const gameStore: IGameStore<IGameState> = {
   },
   set: (selector, value) => useGameStore.setState({ [selector]: value }),
   get: (selector) => useGameStore.getState()[selector],
+  getAll: () => useGameStore.getState(),
 }
 
+Object.assign(gameBase, { gameStore })
 export default useGameStore

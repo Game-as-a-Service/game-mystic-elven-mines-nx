@@ -1,5 +1,5 @@
 import useGameStore from '../../stores'
-import { setGameInfo } from '../../stores/storeRoom'
+import { setRoomInfo } from '../../stores/storeRoom'
 import { fetcher } from './fetcher'
 import { IApiCreateGame, IApiJoinGame, IApiQueryGame, IplayCard } from './type'
 import Constants from '../../Constants'
