@@ -10,7 +10,7 @@ interface IInitSocket {
 export const connectRoomSocket = ({ userId, gameId }: IInitSocket) => {
   if (!isNil(gameBase.socket)) setSocket(null)
 
-  const socket = io('http://127.0.0.1:8888/websocket', {
+  const socket = io('http://localhost:8888/websocket', {
     query: {
       userId,
       gameId,
