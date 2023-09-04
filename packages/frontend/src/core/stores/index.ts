@@ -9,7 +9,7 @@ interface IGameState {
   map: ColListType
   selectedCard: SelectCardType | null
   uiBgImg: 'bg-game-01' | 'bg-create'
-  showToastMessage: string | null
+  toastMessage: string | null //null就是關閉
 }
 
 export const useGameStore = createStore<IGameState>((set) => ({
@@ -23,7 +23,7 @@ export const useGameStore = createStore<IGameState>((set) => ({
 
   // UI
   uiBgImg: 'bg-game-01',
-  showToastMessage: null,
+  toastMessage: null,
 }))
 
 // 封裝的功能

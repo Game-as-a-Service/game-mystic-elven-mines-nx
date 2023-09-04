@@ -1,14 +1,14 @@
 // API
 export interface IPlayer {
-  id: 'UUID'
-  name: '$playerName'
+  id: string
+  name: string
 }
 
 export interface IApiCreateGame {
-  gameId: 'string'
+  gameId: string
   host: {
-    id: 'string' // 開會這裡改 userId
-    name: 'string'
+    id: string // 開會這裡改 userId
+    name: string
   }
 }
 
@@ -18,7 +18,7 @@ export interface IApiQueryGame {
 
 export interface IApiJoinGame {
   players: IPlayer[]
-  playerId: 'string'
+  playerId: string
 }
 
 // 玩家打牌 棄牌

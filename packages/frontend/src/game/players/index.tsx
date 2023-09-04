@@ -1,4 +1,4 @@
-import { component$, useSignal, useStore, useTask$, useVisibleTask$ } from '@builder.io/qwik'
+import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
 import { queryGame } from '../../core/controllers/roomController'
 import { IPlayer } from '../../core/network/api/type'
 import { PlayerData } from './playerData'
@@ -10,15 +10,15 @@ export default component$(() => {
   useVisibleTask$(async ({ track }) => {
     track(() => room)
     const data = await queryGame()
+    console.log('api queryGame', data)
     room.players = data.players
   })
 
   return (
-    <div class="fixed z-[100] top-2 left-2 border bg-[rgb(255,255,255,0.6)] p-5 rounded w-[300px]">
-      <h1 class="text-2xl text-black">線上玩家</h1>
+    <>
       {room.players?.map((player: IPlayer) => {
-        return <PlayerData key={player.id} name={player.name} id={player.id} />
+        return <PlayerData key={player.id} name={player.name} id={player.id} color="players" />
       })}
-    </div>
+    </>
   )
 })

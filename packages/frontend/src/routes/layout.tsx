@@ -25,10 +25,10 @@ export default component$(() => {
         style={{
           backgroundImage: `url('/images/bg/${bgFileName.value}.jpg')`,
         }}
-      ></div>
-      <main>
+      >
         <Slot />
-      </main>
+      </div>
+
       <ToastMessage />
     </>
   )

@@ -7,12 +7,12 @@ export const initRoomControllers = () => {
   const localGameId = localStorage.getItem('gameId')
   if (localGameId) setGameIdToLocal(localGameId)
   const localMyName = localStorage.getItem('myName')
-  if (localMyName) setMyNameToLocal(localMyName)
+  if (localMyName) setUserNameToLocal(localMyName)
 }
 
 export const createGameAndGetId = async (host: string) => {
   const res = await api.createGame({ host })
-  setMyNameToLocal(host)
+  setUserNameToLocal(host)
   setGameIdToLocal(res.gameId)
   setUserIdToLocal(res.host.id)
   return res.gameId
@@ -26,7 +26,7 @@ export const joinRoomByNameAndId = async (name: string, gameId: string) => {
   const res = await api.joinGame({ name })
   console.log('join', res)
   setGameIdToLocal(gameId)
-  setMyNameToLocal(name)
+  setUserNameToLocal(name)
   setUserIdToLocal(res.players[res.players.length - 1].id)
   // setUserIdToLocal(res.playersId) or setUserIdToLocal(res.userId)
   return res
@@ -37,8 +37,8 @@ export const setGameIdToLocal = (gameId: string) => {
   localStorage.setItem('gameId', gameId)
   Constants.gameId = gameId
 }
-export const setMyNameToLocal = (name: string) => {
-  localStorage.setItem('myName', name)
+export const setUserNameToLocal = (name: string) => {
+  localStorage.setItem('userName', name)
   Constants.myName = name
 }
 export const setUserIdToLocal = (userId: string) => {

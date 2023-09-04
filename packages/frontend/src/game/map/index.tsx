@@ -31,9 +31,9 @@ export default component$(() => {
       {data.value.map((r, y) => (
         <div key={`row-${y}`} class="map-row">
           {r.map((col, x) => (
-            <Col {...{ x, y, ...col }}>
+            <ColData key={'col-' + x} {...{ x, y, ...col }}>
               <MapCard q:slot="SlotCard" key={`mapCard-${x}-${col.cardName}`} {...col} />
-            </Col>
+            </ColData>
           ))}
         </div>
       ))}
@@ -41,7 +41,7 @@ export default component$(() => {
   )
 })
 
-const Col = component$((props: any) => {
+const ColData = component$((props: any) => {
   //console.log('props', props)
   // 格子
   const { selfY, selfX, hasCard } = { ...props, selfX: props.x + 1, selfY: props.y + 1, hasCard: props.hasCard }
@@ -54,15 +54,15 @@ const Col = component$((props: any) => {
     const hasSelectedCard = Boolean(useGameStore.getState().selectedCard?.cardName)
     if (!hasSelectedCard) return
 
-    const map = useGameStore.getState().map
-    const card = useGameStore.getState().selectedCard
+    const map = gameStore.get('map')
+    const card = gameStore.get('selectedCard')
 
     const mapCards = map.map((r) => {
       r.map((mapCard) => {
         if (mapCard.row === selfY && mapCard.col === selfX) {
           mapCard.hasCard = true
-          mapCard.cardName = card.cardName || 'no name'
-          mapCard.cardType = card.cardType || 'no path name'
+          mapCard.cardName = card?.cardName || 'no name'
+          mapCard.cardType = card?.cardType || 'no path name'
         }
       })
       return r
@@ -79,16 +79,13 @@ const Col = component$((props: any) => {
 })
 
 export const MapCard = component$((props: IMapCard & { hasCard: boolean }) => {
-  const propsData = useSignal(props)
-  useVisibleTask$(() => {
-    //  console.log('useVisibleTask MapCard', propsData.value)
-  })
-  return (
-    propsData?.value?.hasCard && (
-      <button class="relative text-left">
-        <small class="absolute top-[50%]">{propsData.value.cardName}</small>
-        <Image src={getImageUrlByApiCardName(propsData.value.cardName)} alt="地圖卡"></Image>
-      </button>
-    )
+  return props?.hasCard ? (
+    <button class="absolute w-full h-full left-0 right-0">
+      <Image class="w-full" src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
+    </button>
+  ) : (
+    <div class="opacity-0">
+      <Image src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
+    </div>
   )
 })

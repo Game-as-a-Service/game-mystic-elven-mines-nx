@@ -1,4 +1,4 @@
-import { Slot, component$, useSignal, useStore } from '@builder.io/qwik'
+import { Slot, component$, useSignal, useStore, useVisibleTask$ } from '@builder.io/qwik'
 import { identical, isNil } from 'ramda'
 import { isZero } from '../../core/utils/isZero'
 import clsx from 'clsx'
@@ -13,8 +13,19 @@ export const Ratio = component$(({ ratio, width, height }: IRatioProps) => {
     w: 'w-[' + width + 'px]',
     h: 'h-[' + height + 'px]',
   })
-  if (isNil(width) && isZero(width)) store.w = 'w-full'
-  if (isNil(height) && isZero(height)) store.w = 'h-full'
+  useVisibleTask$(() => {
+    //store
+
+    if (isNil(width) && isZero(width)) store.w = 'w-full'
+    if (isNil(height) && isZero(height)) store.w = 'h-full'
+    if (width && height && width > height) {
+      store.h = 'h-[' + width / ratio + 'px]'
+    }
+
+    if (width && height && width < height) {
+      store.w = 'w-[' + height * ratio + 'px]'
+    }
+  })
 
   return (
     <div class={clsx(store.w, store.h, 'relative')}>
