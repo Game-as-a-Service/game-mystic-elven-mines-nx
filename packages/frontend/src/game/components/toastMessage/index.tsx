@@ -27,12 +27,9 @@ export default component$(() => {
         setTimeout(() => {
           store.isShow = false
           store.txt = ''
+          setToastMessage(null)
         }, 1000)
-      } else if (isNil(msg)) {
-        store.isShow = false
-        store.txt = ''
       }
-      //setTimeout(() => setToastMessage(null), 1000)
     })
   })
   return (
