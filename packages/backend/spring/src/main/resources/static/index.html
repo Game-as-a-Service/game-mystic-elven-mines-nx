@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="socket.io-2.2.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.0/socket.io.js" integrity="sha512-g6IDmcVyjQOptVso4kf6adJ5TOfiAznQLg47qiscWvor/cMHje2RCh2tU39DB4udBIm5ZhL4CPcvVDHEzo0HgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
 
     // create game api
@@ -81,7 +81,7 @@
 
     function connectSocket(userId, gameId) {
       // socket.io client
-      const socket = io(`http://127.0.0.1:8888/websocket?userId=${userId}&gameId=${gameId}`);
+      const socket = io("ws://127.0.0.1:8888/websocket", {query: {userId: userId, gameId: gameId}});
 
       // 連線
       socket.on('connect', function () {

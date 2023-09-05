@@ -38,8 +38,15 @@ public class SocketIOService implements SocketService {
     private ConnectListener onConnected() {
         return client -> {
             String session = client.getSessionId().toString();
-            String gameId = getGameId(client).orElseThrow(() -> new NotFoundException("gameId is required."));
-            String userId = getUserId(client).orElseThrow(() -> new NotFoundException("userId is required."));
+            Optional<String> gameIdOpt = getGameId(client);
+            Optional<String> userIdOpt = getUserId(client);
+            if(gameIdOpt.isEmpty() || userIdOpt.isEmpty()) {
+                log.warn("connect fail. sessionId: {}.", session);
+                client.disconnect();
+                return;
+            }
+            String gameId = gameIdOpt.get();
+            String userId = userIdOpt.get();
             log.info("connect sessionId: {}. gameId: {}. userId: {}.", session, gameId, userId);
             // send PLAYER_JOINED event to other clients
             sendMessageByGameId(gameId, PLAYER_JOINED, userId);
@@ -54,7 +61,7 @@ public class SocketIOService implements SocketService {
             String session = client.getSessionId().toString();
             SocketIOClient clientData = clientBySession.get(session);
             String gameId = getGameId(clientData).orElseThrow(() -> new NotFoundException("gameId is required."));
-            String userId = getUserId(clientData).orElseThrow(() -> new NotFoundException("gameId is required."));
+            String userId = getUserId(clientData).orElseThrow(() -> new NotFoundException("userId is required."));
             log.info("disconnect sessionId: {}. gameId: {}. userId: {}.", session, gameId, userId);
             client.disconnect();
             // remove client Map
