@@ -45,7 +45,7 @@ class SaboteurGameControllerTest {
                     }"""))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.gameId").exists())
-            .andExpect(jsonPath("$.player.playerId").exists())
+            .andExpect(jsonPath("$.playerId").exists())
             .andExpect(jsonPath("$.player.playerName").value("A"));
     }
 
@@ -57,7 +57,6 @@ class SaboteurGameControllerTest {
         mockMvc.perform(get("/api/games/{gameId}", game.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
-            .andExpect(jsonPath("$.players[0].playerId").value(A.getId()))
             .andExpect(jsonPath("$.players[0].playerName").value(A.getName()));
     }
 
@@ -74,11 +73,23 @@ class SaboteurGameControllerTest {
                     }"""))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
-            .andExpect(jsonPath("$.players[0].playerId").value(A.getId()))
             .andExpect(jsonPath("$.players[0].playerName").value(A.getName()))
-            .andExpect(jsonPath("$.players[1].playerId").exists())
             .andExpect(jsonPath("$.players[1].playerName").value("BB"))
             .andExpect(jsonPath("$.playerId").exists());
+    }
+
+    @Test
+    public void givenPlayerJoinGame_whenSamePlayerName_thenFail() throws Exception {
+        Player A = defaultPlayer("A");
+        SaboteurGame game = givenGameStarted(A);
+
+        mockMvc.perform(post("/api/games/{gameId}", game.getId())
+                .contentType(APPLICATION_JSON)
+                .content("""
+                    {
+                        "playerName": "A"
+                    }"""))
+            .andExpect(status().is4xxClientError());
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------

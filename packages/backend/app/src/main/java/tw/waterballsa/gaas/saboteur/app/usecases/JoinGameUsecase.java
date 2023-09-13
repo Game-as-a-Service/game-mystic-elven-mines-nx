@@ -28,7 +28,7 @@ public class JoinGameUsecase {
 
         // 改
         Player player = defaultPlayerBuilder(randomUUID().toString())
-            .name(request.name)
+            .name(request.playerName)
             .build();
         saboteurGame.addPlayer(player);
 
@@ -45,7 +45,7 @@ public class JoinGameUsecase {
     @AllArgsConstructor
     public static class Request {
         private String gameId;
-        private String name;
+        private String playerName;
     }
 
     public interface Presenter {

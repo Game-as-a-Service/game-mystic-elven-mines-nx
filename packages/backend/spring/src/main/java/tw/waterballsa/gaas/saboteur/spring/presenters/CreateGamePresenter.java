@@ -14,8 +14,8 @@ public class CreateGamePresenter implements CreateGameUsecase.Presenter {
 
     @Override
     public void renderGame(SaboteurGame game) {
-        Player host = game.getPlayers().get(0);
-        viewModel = new CreateGameViewModel(game.getId(), PlayerView.toView(host));
+        Player player = game.getPlayers().get(0);
+        viewModel = new CreateGameViewModel(game.getId(), player.getId(), PlayerView.toView(player));
     }
 
     public CreateGameViewModel present() {
@@ -27,6 +27,7 @@ public class CreateGamePresenter implements CreateGameUsecase.Presenter {
     @AllArgsConstructor
     public static class CreateGameViewModel {
         private String gameId;
+        private String playerId;
         private PlayerView player;
     }
 

@@ -9,10 +9,9 @@ import tw.waterballsa.gaas.saboteur.domain.Player;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlayerView {
-    private String playerId;
     private String playerName;
 
     public static PlayerView toView(Player player) {
-        return new PlayerView(player.getId(), player.getName());
+        return new PlayerView(player.getName());
     }
 }

@@ -8,11 +8,19 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import tw.waterballsa.gaas.saboteur.app.outport.SaboteurGameRepository;
 import tw.waterballsa.gaas.saboteur.app.socket.SocketChannel;
 import tw.waterballsa.gaas.saboteur.app.socket.SocketService;
+import tw.waterballsa.gaas.saboteur.domain.Player;
+import tw.waterballsa.gaas.saboteur.domain.SaboteurGame;
 import tw.waterballsa.gaas.saboteur.domain.exceptions.NotFoundException;
+import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter;
+import tw.waterballsa.gaas.saboteur.spring.presenters.FindGamePresenter.FindGameViewModel;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static java.util.Collections.emptyList;
@@ -29,8 +37,11 @@ public class SocketIOService implements SocketService {
     // Map<gameId, clients>
     private final Map<String, List<SocketIOClient>> gameIdToPlayers = new ConcurrentHashMap<>();
 
+    private final SaboteurGameRepository saboteurGameRepository;
+
     @Autowired
-    public SocketIOService(SocketIOServer server) {
+    public SocketIOService(SocketIOServer server, SaboteurGameRepository saboteurGameRepository) {
+        this.saboteurGameRepository = saboteurGameRepository;
         SocketIONamespace namespace = server.addNamespace("/websocket");
         namespace.addConnectListener(onConnected());
         namespace.addDisconnectListener(onDisconnected());
@@ -41,7 +52,7 @@ public class SocketIOService implements SocketService {
             String session = client.getSessionId().toString();
             Optional<String> gameIdOpt = getParam(client, "gameId");
             Optional<String> playerIdOpt = getParam(client, "playerId");
-            if(gameIdOpt.isEmpty() || playerIdOpt.isEmpty()) {
+            if (gameIdOpt.isEmpty() || playerIdOpt.isEmpty()) {
                 log.warn("connect fail. sessionId: {}.", session);
                 client.disconnect();
                 return;
@@ -49,12 +60,22 @@ public class SocketIOService implements SocketService {
             String gameId = gameIdOpt.get();
             String playerId = playerIdOpt.get();
             log.info("connect sessionId: {}. gameId: {}. playerId: {}.", session, gameId, playerId);
+            // get FindGameViewModel
+            FindGameViewModel present = getGameViewModel(gameId);
             // send PLAYER_JOINED event to other clients
-            sendMessageToGamePlayers(gameId, PLAYER_JOINED, playerId);
+            sendMessageToGamePlayers(gameId, PLAYER_JOINED, present);
             // save client Map
             sessionIdToPlayer.put(session, client);
             gameIdToPlayers.computeIfAbsent(gameId, k -> new ArrayList<>()).add(client);
         };
+    }
+
+    private FindGameViewModel getGameViewModel(String gameId) {
+        SaboteurGame game = saboteurGameRepository.findById(gameId)
+            .orElseThrow(() -> new NotFoundException("Game not found"));
+        var presenter = new FindGamePresenter();
+        presenter.renderGame(game);
+        return presenter.present();
     }
 
     private DisconnectListener onDisconnected() {
@@ -71,9 +92,10 @@ public class SocketIOService implements SocketService {
             sessionIdToPlayer.remove(sessionId);
             List<SocketIOClient> players = gameIdToPlayers.get(gameId);
             players.remove(client);
-            if(players.isEmpty()) {
+            if (players.isEmpty()) {
                 gameIdToPlayers.remove(gameId);
             }
+            // TODO remove player use case ?
             // send PLAYER_LEFT event to other clients
             sendMessageToGamePlayers(gameId, PLAYER_LEFT, playerId);
         };
@@ -96,7 +118,7 @@ public class SocketIOService implements SocketService {
     }
 
     @Override
-    public void sendMessageToGamePlayers(String gameId, SocketChannel channel, String message) {
+    public void sendMessageToGamePlayers(String gameId, SocketChannel channel, Object message) {
         gameIdToPlayers.getOrDefault(gameId, emptyList())
             .forEach(c -> c.sendEvent(channel.name(), message));
     }

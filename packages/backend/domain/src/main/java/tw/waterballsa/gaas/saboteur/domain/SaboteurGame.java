@@ -120,6 +120,26 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
     }
 
     public void addPlayer(Player player) {
+        checkPlayersNumber();
+        checkPlayerName(player.getName());
         players.add(player);
+    }
+
+    private void checkPlayersNumber() {
+        if (players.size() >= 10) {
+            throw new SaboteurGameException("玩家人數已達上限 10 人");
+        }
+    }
+
+    private void checkPlayerName(String playerName) {
+        players.stream().filter(p -> p.getName().equals(playerName))
+            .findAny()
+            .ifPresent(p -> {
+                throw new SaboteurGameException(format("玩家名稱 %s 已存在", playerName));
+            });
+    }
+
+    public void removePlayer(Player player) {
+        players.remove(player);
     }
 }
