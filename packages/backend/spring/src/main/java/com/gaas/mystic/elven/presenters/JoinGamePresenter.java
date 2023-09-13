@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.presenters;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.SaboteurGame;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.presenters.views.PlayerView;
 import com.gaas.mystic.elven.usecases.JoinGameUsecase;
 import lombok.AllArgsConstructor;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class JoinGamePresenter implements JoinGameUsecase.Presenter {
 
-    private SaboteurGame game;
+    private ElvenGame game;
     private Player player;
 
     @Override
-    public void renderGame(SaboteurGame game) {
+    public void renderGame(ElvenGame game) {
         this.game = game;
     }
 

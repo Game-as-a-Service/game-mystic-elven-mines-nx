@@ -1,11 +1,13 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.ElvenGame;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.events.DomainEvent;
 
 import java.util.List;
 
 /**
- * @author johnny@waterballsa.tw
+ * 卡片
  */
 @FunctionalInterface
 public interface Card {
@@ -16,7 +18,7 @@ public interface Card {
         public String playerId;
         public int handCardIndex;
 
-        public SaboteurGame game;
+        public ElvenGame game;
         public Card card;
         public Player player;
 

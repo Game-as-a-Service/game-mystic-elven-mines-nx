@@ -1,7 +1,10 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.events.DomainEvent;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,21 +14,21 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author johnny@waterballsa.tw
+ * 修復卡 (修復道具)
  */
 @Getter
 @AllArgsConstructor
-public class Repair extends ActionCard {
+public class FixCard extends ActionCard {
     protected ToolName toolName;
 
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {
         Parameters params = (Parameters) parameters;
         Player targetPlayer = parameters.game.getPlayer(params.getTargetPlayerId());
-        Repair r = (Repair) params.card;
+        FixCard r = (FixCard) params.card;
         Tool tool = targetPlayer.getTool(r.getToolName());
         if (tool.isAvailable()) {
-            throw new SaboteurGameException("you cannot repair an available tool");
+            throw new ElvenGameException("you cannot fix an available tool");
         } else {
             tool.setAvailable(true);
             return Collections.emptyList();

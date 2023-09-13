@@ -1,8 +1,8 @@
 package com.gaas.mystic.elven.usecases;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.SaboteurGame;
-import com.gaas.mystic.elven.outport.SaboteurGameRepository;
+import com.gaas.mystic.elven.domain.ElvenGame;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,7 @@ import static java.util.UUID.randomUUID;
 @RequiredArgsConstructor
 public class CreateGameUsecase {
 
-    private final SaboteurGameRepository saboteurGameRepository;
+    private final ElvenGameRepository elvenGameRepository;
 
     // createGame
     public void execute(Request request, Presenter presenter) {
@@ -28,7 +28,7 @@ public class CreateGameUsecase {
             .build();
 
         // 存
-        var game = saboteurGameRepository.save(new SaboteurGame(List.of(host)));
+        var game = elvenGameRepository.save(new ElvenGame(List.of(host)));
 
         // 推
         presenter.renderGame(game);
@@ -42,7 +42,7 @@ public class CreateGameUsecase {
     }
 
     public interface Presenter {
-        void renderGame(SaboteurGame game);
+        void renderGame(ElvenGame game);
     }
 }
 

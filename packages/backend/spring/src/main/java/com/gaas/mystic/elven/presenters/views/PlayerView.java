@@ -1,6 +1,6 @@
 package com.gaas.mystic.elven.presenters.views;
 
-import com.gaas.mystic.elven.Player;
+import com.gaas.mystic.elven.domain.role.Player;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

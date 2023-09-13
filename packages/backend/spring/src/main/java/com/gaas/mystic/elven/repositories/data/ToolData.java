@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.Tool;
-import com.gaas.mystic.elven.ToolName;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

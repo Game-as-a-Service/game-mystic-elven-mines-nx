@@ -1,5 +1,6 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain;
 
+import com.gaas.mystic.elven.domain.card.PathCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,13 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author johnny@waterballsa.tw
+ * 道路 (已放在地圖上的道路卡)
  */
 @Data
 @AllArgsConstructor
 public class Path {
+    // 地圖的 index
     protected final int row, col;
-    protected final PathCard pathCard; // 十字路口, T...
+    // 道路卡，可以分為十字路口, T 型... 等
+    protected final PathCard pathCard;
+    // 是否翻轉 (只能轉 180 度)
     protected final boolean flipped;
 
     public Path(int row, int col, PathCard pathCard) {

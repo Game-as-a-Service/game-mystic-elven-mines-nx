@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.utils;
 
-import com.gaas.mystic.elven.Path;
-import com.gaas.mystic.elven.PathCard;
+import com.gaas.mystic.elven.domain.Path;
+import com.gaas.mystic.elven.domain.card.PathCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

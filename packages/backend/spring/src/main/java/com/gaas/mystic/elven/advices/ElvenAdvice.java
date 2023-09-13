@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.advices;
 
 import com.gaas.mystic.elven.exceptions.NotFoundException;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,10 +13,10 @@ import static java.util.stream.Collectors.joining;
 import static org.springframework.http.HttpStatus.*;
 
 @RestControllerAdvice
-public class SaboteurAdvice {
+public class ElvenAdvice {
     @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler({SaboteurGameException.class})
-    public String badRequest(SaboteurGameException exception) {
+    @ExceptionHandler({ElvenGameException.class})
+    public String badRequest(ElvenGameException exception) {
         return exception.getMessage();
     }
 

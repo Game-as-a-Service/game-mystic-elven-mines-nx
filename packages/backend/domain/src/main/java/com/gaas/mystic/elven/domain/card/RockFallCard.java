@@ -1,5 +1,6 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.Maze;
 import com.gaas.mystic.elven.events.DomainEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,14 +10,14 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 
 /**
- * @author johnny@waterballsa.tw
+ * 落石卡
  */
 @Getter
 @AllArgsConstructor
-public class RockFall extends ActionCard {
+public class RockFallCard extends ActionCard {
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {
-        var params = (RockFall.Parameters) parameters;
+        var params = (RockFallCard.Parameters) parameters;
         Maze maze = parameters.game.getMaze();
         maze.removePath(params.row, params.col);
         return emptyList();

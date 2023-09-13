@@ -1,8 +1,8 @@
 package com.gaas.mystic.elven.domain;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.Tool;
-import com.gaas.mystic.elven.ToolName;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Collections.emptyList;
@@ -22,9 +22,9 @@ class PlayerTest {
         assertThrows(RuntimeException.class,
             () -> new Player("id", "id",
                 emptyList(),
-                new Tool(ToolName.PICK, true),
-                new Tool(ToolName.PICK, true),
-                new Tool(ToolName.LANTERN, true))
+                new Tool(ToolName.STARLIGHT_WAND, true),
+                new Tool(ToolName.STARLIGHT_WAND, true),
+                new Tool(ToolName.HARP_OF_HARMONY, true))
         );
     }
 }

@@ -1,8 +1,11 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.tool;
+
+import lombok.Getter;
 
 /**
- * @author johnny@waterballsa.tw
+ * 道具
  */
+@Getter
 public class Tool {
     // 遊戲會瘋狂出現的新的 tool 來逼你擴充嗎
     // 擴充時很累嗎？
@@ -12,14 +15,6 @@ public class Tool {
     public Tool(ToolName toolName, boolean available) {
         this.toolName = toolName;
         this.available = available;
-    }
-
-    public ToolName getToolName() {
-        return toolName;
-    }
-
-    public boolean isAvailable() {
-        return available;
     }
 
     public void setAvailable(boolean available) {

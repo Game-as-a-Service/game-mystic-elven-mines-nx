@@ -1,7 +1,10 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain;
 
+import com.gaas.mystic.elven.domain.card.Card;
+import com.gaas.mystic.elven.domain.card.GoalCard;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.events.DomainEvent;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,11 +18,11 @@ import static java.util.Objects.requireNonNullElseGet;
 import static java.util.UUID.randomUUID;
 
 /**
+ * Elven Game
  * Controller -> Service -> Data (聽 ORM 的話) (Repository/data access layer)
- *
- * @author johnny@waterballsa.tw
+ * ElvenGame 他才是老大 <-- Domain Driven Design
  */
-public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
+public class ElvenGame {
     public static final int DESTINATION_CARDS_COUNT = 3;
     private static final Random RANDOM = new Random();
     // @Id (UUID)
@@ -28,17 +31,17 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
     private final List<Player> players;
     private final Maze maze;
 
-    private final List<Destination> destinations = new ArrayList<>(DESTINATION_CARDS_COUNT);
+    private final List<GoalCard> goalCards = new ArrayList<>(DESTINATION_CARDS_COUNT);
 
-    public SaboteurGame(List<Player> players) {
+    public ElvenGame(List<Player> players) {
         this(randomUUID().toString(), players);
     }
 
-    public SaboteurGame(String id, List<Player> players) {
+    public ElvenGame(String id, List<Player> players) {
         this(id, players, new Maze());
     }
 
-    public SaboteurGame(String id, List<Player> players, Maze maze) {
+    public ElvenGame(String id, List<Player> players, Maze maze) {
         this.id = id;
         this.players = requireNonNullElseGet(players, Collections::emptyList);
 
@@ -70,12 +73,12 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
 
     public boolean isGameOver() {
         return players.stream()
-                .allMatch(p -> p.getHands().isEmpty());
+            .allMatch(p -> p.getHands().isEmpty());
     }
 
     public Player getPlayer(String id) {
         return findFirst(players, p -> p.getId().equals(id))
-                .orElseThrow(() -> new IllegalArgumentException(format("Player %s not found.", id)));
+            .orElseThrow(() -> new IllegalArgumentException(format("Player %s not found.", id)));
     }
 
     public void setId(String id) {
@@ -87,9 +90,9 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
     }
 
     private void setupDestinationCards(int goldenDestinationCardIndex) {
-        destinations.clear();
+        goalCards.clear();
         for (int i = 0; i < DESTINATION_CARDS_COUNT; i++) {
-            destinations.add(new Destination(8, 2 * i, i == goldenDestinationCardIndex));
+            goalCards.add(new GoalCard(8, 2 * i, i == goldenDestinationCardIndex));
         }
     }
 
@@ -101,22 +104,22 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
         return List.copyOf(players);
     }
 
-    public List<Destination> getDestinations() {
-        return List.copyOf(destinations);
+    public List<GoalCard> getDestinations() {
+        return List.copyOf(goalCards);
     }
 
     public Maze getMaze() {
         return maze;
     }
 
-    public Destination getDestinationCardByIndex(int destinationCardIndex) {
-        checkIndex(destinationCardIndex, destinations.size());
-        return destinations.get(destinationCardIndex);
+    public GoalCard getDestinationCardByIndex(int destinationCardIndex) {
+        checkIndex(destinationCardIndex, goalCards.size());
+        return goalCards.get(destinationCardIndex);
     }
 
     public Path getPath(int row, int col) {
         return maze.getPath(row, col)
-                .orElseThrow(() -> new SaboteurGameException(format("Path not found. (row: %d, col: %d)", row, col)));
+            .orElseThrow(() -> new ElvenGameException(format("Path not found. (row: %d, col: %d)", row, col)));
     }
 
     public void addPlayer(Player player) {
@@ -127,7 +130,7 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
 
     private void checkPlayersNumber() {
         if (players.size() >= 10) {
-            throw new SaboteurGameException("玩家人數已達上限 10 人");
+            throw new ElvenGameException("玩家人數已達上限 10 人");
         }
     }
 
@@ -135,7 +138,7 @@ public class SaboteurGame /*他才是老大 <-- Domain Driven Design*/ {
         players.stream().filter(p -> p.getName().equals(playerName))
             .findAny()
             .ifPresent(p -> {
-                throw new SaboteurGameException(format("玩家名稱 %s 已存在", playerName));
+                throw new ElvenGameException(format("玩家名稱 %s 已存在", playerName));
             });
     }
 

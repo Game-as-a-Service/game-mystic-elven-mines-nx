@@ -1,7 +1,10 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.events.DomainEvent;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,22 +14,21 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * @author johnny@waterballsa.tw
+ * 破壞卡 (破壞道具)
  */
 @Getter
 @AllArgsConstructor
-public class Sabotage implements Card {
+public class BrokenCard extends ActionCard {
     private ToolName toolName;
-
 
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {
         Parameters params = (Parameters) parameters;
         Player targetPlayer = parameters.game.getPlayer(params.getTargetPlayerId());
-        Sabotage sabotage = (Sabotage) params.card;
-        Tool tool = targetPlayer.getTool(sabotage.getToolName());
+        BrokenCard brokenCard = (BrokenCard) params.card;
+        Tool tool = targetPlayer.getTool(brokenCard.getToolName());
         if (!tool.isAvailable()) {
-            throw new SaboteurGameException("You cannot sabotage an unavailable tool");
+            throw new ElvenGameException("You cannot broke an unavailable tool");
         } else {
             tool.setAvailable(false);
             return Collections.emptyList();

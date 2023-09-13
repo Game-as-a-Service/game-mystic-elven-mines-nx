@@ -1,8 +1,8 @@
 package com.gaas.mystic.elven.usecases;
 
-import com.gaas.mystic.elven.SaboteurGame;
+import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
-import com.gaas.mystic.elven.outport.SaboteurGameRepository;
+import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,11 +14,11 @@ import javax.inject.Named;
 @RequiredArgsConstructor
 public class FindGameUsecase {
 
-    private final SaboteurGameRepository saboteurGameRepository;
+    private final ElvenGameRepository elvenGameRepository;
 
     public void execute(String gameId, Presenter presenter) {
         // 查
-        var game = saboteurGameRepository.findById(gameId)
+        var game = elvenGameRepository.findById(gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
 
         // 推
@@ -33,7 +33,7 @@ public class FindGameUsecase {
     }
 
     public interface Presenter {
-        void renderGame(SaboteurGame game);
+        void renderGame(ElvenGame game);
     }
 }
 

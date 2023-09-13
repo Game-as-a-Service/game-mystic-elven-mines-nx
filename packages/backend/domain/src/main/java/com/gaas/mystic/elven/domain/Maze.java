@@ -1,6 +1,7 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain;
 
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.domain.card.PathCard;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import com.gaas.mystic.elven.utils.LoggingUtils;
 
 import java.awt.*;
@@ -14,7 +15,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 /**
- * @author johnny@waterballsa.tw
+ * 迷宮 (地圖)
  */
 public class Maze {
 
@@ -32,7 +33,7 @@ public class Maze {
                 .flatMap(p -> p.getPoints().stream())
                 .collect(toSet());
         this.origin = findFirst(paths, p -> p.getRow() == 0 && p.getCol() == 0)
-                .orElseThrow(() -> new SaboteurGameException("origin should exist at (0,0)."));
+                .orElseThrow(() -> new ElvenGameException("origin should exist at (0,0)."));
     }
 
     public Optional<Path> getPath(int row, int col) {
@@ -49,7 +50,7 @@ public class Maze {
             paths.add(path);
             points.addAll(path.getPoints());
         } else {
-            throw new SaboteurGameException("Cannot connect to the origin");
+            throw new ElvenGameException("Cannot connect to the origin");
         }
 
     }

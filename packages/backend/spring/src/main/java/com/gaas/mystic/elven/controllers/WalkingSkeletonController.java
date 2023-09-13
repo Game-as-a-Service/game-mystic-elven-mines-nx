@@ -1,9 +1,9 @@
 package com.gaas.mystic.elven.controllers;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.SaboteurGame;
+import com.gaas.mystic.elven.domain.ElvenGame;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.builders.Players;
-import com.gaas.mystic.elven.repositories.SpringSaboteurGameRepository;
+import com.gaas.mystic.elven.repositories.SpringElvenGameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,7 @@ import static org.springframework.http.ResponseEntity.notFound;
 @RequestMapping("/api/test")
 public class WalkingSkeletonController {
 
-    private final SpringSaboteurGameRepository repository;
+    private final SpringElvenGameRepository repository;
 
     @GetMapping("/hello")
     public String hello() {
@@ -31,7 +31,7 @@ public class WalkingSkeletonController {
         Player playerB = Players.defaultPlayerBuilder("B").build();
         Player playerC = Players.defaultPlayerBuilder("C").build();
         // create game
-        var game = new SaboteurGame(gameId, List.of(playerA, playerB, playerC));
+        var game = new ElvenGame(gameId, List.of(playerA, playerB, playerC));
         // save game
         repository.save(game);
 

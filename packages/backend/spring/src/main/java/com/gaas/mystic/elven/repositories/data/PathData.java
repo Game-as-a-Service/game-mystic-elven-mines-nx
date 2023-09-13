@@ -1,8 +1,8 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.Destination;
-import com.gaas.mystic.elven.Path;
-import com.gaas.mystic.elven.PathCard;
+import com.gaas.mystic.elven.domain.card.GoalCard;
+import com.gaas.mystic.elven.domain.Path;
+import com.gaas.mystic.elven.domain.card.PathCard;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -33,16 +33,16 @@ public class PathData {
             pathCard.getName(), path.isFlipped(), null);
     }
 
-    public static PathData toData(Destination destination) {
-        PathCard pathCard = destination.getPathCard();
-        return new PathData(destination.getRow(), destination.getCol(),
-            pathCard.getName(), destination.isFlipped(), destination.isGold());
+    public static PathData toData(GoalCard goalCard) {
+        PathCard pathCard = goalCard.getPathCard();
+        return new PathData(goalCard.getRow(), goalCard.getCol(),
+            pathCard.getName(), goalCard.isFlipped(), goalCard.isGold());
     }
 
     public Path toDomain() {
         PathCard pathCard = getPathCard();
         return gold == null ? new Path(row, col, pathCard, flipped) :
-            new Destination(row, col, pathCard, gold);
+            new GoalCard(row, col, pathCard, gold);
     }
 
     private PathCard getPathCard() {

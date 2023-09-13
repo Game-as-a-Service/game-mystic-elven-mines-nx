@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.Tool;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
 import com.gaas.mystic.elven.utils.StreamUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;

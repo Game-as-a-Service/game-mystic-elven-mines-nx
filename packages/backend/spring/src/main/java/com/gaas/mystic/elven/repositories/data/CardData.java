@@ -1,7 +1,8 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.*;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.domain.card.*;
+import com.gaas.mystic.elven.domain.tool.ToolName;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ import static java.util.Objects.requireNonNull;
 public class CardData {
     private Type type;
 
-    // REPAIR & SABOTAGE
+    // FIX & BROKEN
     private ToolName toolName;
 
     // DESTINATION
@@ -31,35 +32,35 @@ public class CardData {
     private Boolean isGold;
 
     public static CardData toData(Card card) {
-        if (card instanceof Repair r) {
-            return toRepairCardData(r);
-        } else if (card instanceof Sabotage s) {
-            return toSabotageCardData(s);
-        } else if (card instanceof RockFall r) {
+        if (card instanceof FixCard r) {
+            return toFixCardData(r);
+        } else if (card instanceof BrokenCard s) {
+            return toBrokenCardData(s);
+        } else if (card instanceof RockFallCard r) {
             return toRockFallCardData(r);
         } else if (card instanceof PathCard p) {
             return toPathCardData(p);
         } else if (card instanceof MapCard) {
             return toMapCardData();
         }
-        throw new SaboteurGameException("unsupported card class " + card.getClass());
+        throw new ElvenGameException("unsupported card class " + card.getClass());
     }
 
-    private static CardData toRepairCardData(Repair card) {
+    private static CardData toFixCardData(FixCard card) {
         return CardData.builder()
-            .type(Type.REPAIR)
+            .type(Type.FIX)
             .toolName(card.getToolName())
             .build();
     }
 
-    private static CardData toSabotageCardData(Sabotage card) {
+    private static CardData toBrokenCardData(BrokenCard card) {
         return CardData.builder()
-            .type(Type.SABOTEUR)
+            .type(Type.BROKEN)
             .toolName(card.getToolName())
             .build();
     }
 
-    private static CardData toRockFallCardData(RockFall card) {
+    private static CardData toRockFallCardData(RockFallCard card) {
         return CardData.builder()
             .type(Type.ROCK_FALL)
             .build();
@@ -81,9 +82,9 @@ public class CardData {
 
     public Card toDomain() {
         return switch (type) {
-            case REPAIR -> new Repair(requireNonNull(toolName));
-            case SABOTEUR -> new Sabotage(requireNonNull(toolName));
-            case ROCK_FALL -> new RockFall();
+            case FIX -> new FixCard(requireNonNull(toolName));
+            case BROKEN -> new BrokenCard(requireNonNull(toolName));
+            case ROCK_FALL -> new RockFallCard();
             case MAP -> new MapCard();
             case DESTINATION -> toPathCard();
         };
@@ -100,7 +101,7 @@ public class CardData {
     }
 
     public enum Type {
-        REPAIR, SABOTEUR, ROCK_FALL, MAP, DESTINATION
+        FIX, BROKEN, ROCK_FALL, MAP, DESTINATION
     }
 
 }

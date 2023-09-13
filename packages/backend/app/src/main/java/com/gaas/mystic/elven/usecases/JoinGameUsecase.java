@@ -1,10 +1,10 @@
 package com.gaas.mystic.elven.usecases;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.SaboteurGame;
+import com.gaas.mystic.elven.domain.ElvenGame;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.builders.Players;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
-import com.gaas.mystic.elven.outport.SaboteurGameRepository;
+import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,22 +18,22 @@ import static java.util.UUID.randomUUID;
 @RequiredArgsConstructor
 public class JoinGameUsecase {
 
-    private final SaboteurGameRepository saboteurGameRepository;
+    private final ElvenGameRepository elvenGameRepository;
 
     // createGame
     public void execute(Request request, Presenter presenter) {
         // 查
-        SaboteurGame saboteurGame = saboteurGameRepository.findById(request.gameId)
+        ElvenGame elvenGame = elvenGameRepository.findById(request.gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
 
         // 改
         Player player = Players.defaultPlayerBuilder(randomUUID().toString())
             .name(request.playerName)
             .build();
-        saboteurGame.addPlayer(player);
+        elvenGame.addPlayer(player);
 
         // 存
-        var game = saboteurGameRepository.save(saboteurGame);
+        var game = elvenGameRepository.save(elvenGame);
 
         // 推
         presenter.renderGame(game);
@@ -49,7 +49,7 @@ public class JoinGameUsecase {
     }
 
     public interface Presenter {
-        void renderGame(SaboteurGame game);
+        void renderGame(ElvenGame game);
 
         void renderPlayer(Player player);
 

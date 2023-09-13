@@ -1,9 +1,10 @@
 package com.gaas.mystic.elven.usecases;
 
-import com.gaas.mystic.elven.*;
+import com.gaas.mystic.elven.domain.*;
+import com.gaas.mystic.elven.domain.card.*;
 import com.gaas.mystic.elven.events.DomainEvent;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
-import com.gaas.mystic.elven.outport.SaboteurGameRepository;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
+import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,29 +22,29 @@ import static java.lang.String.format;
 @RequiredArgsConstructor
 public class PlayCardUsecase {
 
-    private final SaboteurGameRepository saboteurGameRepository;
+    private final ElvenGameRepository elvenGameRepository;
 
     public void execute(Request request, Presenter presenter) {
         // 查
-        SaboteurGame game = findGame(request);
+        ElvenGame game = findGame(request);
 
         List<DomainEvent> events = switch (CardType.valueOf(request.cardType)) {
             case MAP ->
                     game.playCard(new MapCard.Parameters(request.playerId, request.handIndex, request.destinationCardIndex));
             case PATH ->
                     game.playCard(new PathCard.Parameters(request.playerId, request.handIndex, request.row, request.col, request.flipped));
-            case REPAIR ->
-                    game.playCard(new Repair.Parameters(request.playerId, request.handIndex, request.targetPlayerId));
-            case SABOTAGE ->
-                    game.playCard(new Sabotage.Parameters(request.playerId, request.handIndex, request.targetPlayerId));
+            case FIX ->
+                    game.playCard(new FixCard.Parameters(request.playerId, request.handIndex, request.targetPlayerId));
+            case BROKEN ->
+                    game.playCard(new BrokenCard.Parameters(request.playerId, request.handIndex, request.targetPlayerId));
             case ROCKFALL ->
-                    game.playCard(new RockFall.Parameters(request.playerId, request.handIndex, request.row, request.col));
+                    game.playCard(new RockFallCard.Parameters(request.playerId, request.handIndex, request.row, request.col));
         };
 
         // TDD: write test  -> write just enough code to pass the test -> refactor
 
         // 存
-        saboteurGameRepository.save(game);
+        elvenGameRepository.save(game);
 
         // 推
         presenter.present(events);
@@ -52,15 +53,15 @@ public class PlayCardUsecase {
     enum CardType {
         MAP,
         PATH,
-        REPAIR,
-        SABOTAGE,
+        FIX,
+        BROKEN,
         ROCKFALL
     }
 
-    private SaboteurGame findGame(Request request) {
+    private ElvenGame findGame(Request request) {
         String gameId = request.getGameId();
-        return saboteurGameRepository.findById(gameId)
-                .orElseThrow(() -> new SaboteurGameException(format("Game {%s} not found.", gameId)));
+        return elvenGameRepository.findById(gameId)
+                .orElseThrow(() -> new ElvenGameException(format("Game {%s} not found.", gameId)));
     }
 
     @Data

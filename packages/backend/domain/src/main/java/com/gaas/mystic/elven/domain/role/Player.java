@@ -1,5 +1,8 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.role;
 
+import com.gaas.mystic.elven.domain.card.Card;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import lombok.Builder;
 import lombok.Singular;
 
@@ -11,7 +14,7 @@ import static java.util.Arrays.stream;
 import static java.util.List.copyOf;
 
 /**
- * @author johnny@waterballsa.tw
+ * 玩家
  */
 @Builder
 public class Player {

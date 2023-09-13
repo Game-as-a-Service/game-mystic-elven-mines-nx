@@ -28,7 +28,7 @@ import static org.springframework.http.ResponseEntity.noContent;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/games")
-public class SaboteurController {
+public class ElvenController {
 
     private final CreateGameUsecase createGameUsecase;
     private final FindGameUsecase findGameUsecase;
@@ -82,7 +82,7 @@ public class SaboteurController {
         @NotBlank
         String cardType;
 
-        // play repair card
+        // play fix card
         String targetPlayerId;
 
         // play map card

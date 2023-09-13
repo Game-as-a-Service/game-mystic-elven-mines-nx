@@ -1,8 +1,8 @@
 package com.gaas.mystic.elven.builders;
 
-import com.gaas.mystic.elven.Player;
-import com.gaas.mystic.elven.Tool;
-import com.gaas.mystic.elven.ToolName;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ public class Players {
                 .id(id)
                 .name(id)
                 .tools(new Tool[]{
-                        new Tool(ToolName.MINE_CART, true),
-                        new Tool(ToolName.LANTERN, true),
-                        new Tool(ToolName.PICK, true)
+                        new Tool(ToolName.FLYING_BOOTS, true),
+                        new Tool(ToolName.HARP_OF_HARMONY, true),
+                        new Tool(ToolName.STARLIGHT_WAND, true)
                 })
                 .hands(new ArrayList<>());
     }

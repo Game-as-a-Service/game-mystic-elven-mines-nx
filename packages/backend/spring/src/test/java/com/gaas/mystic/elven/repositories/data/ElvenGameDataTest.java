@@ -1,6 +1,10 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.*;
+import com.gaas.mystic.elven.domain.*;
+import com.gaas.mystic.elven.domain.card.*;
+import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.tool.Tool;
+import com.gaas.mystic.elven.domain.tool.ToolName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -8,28 +12,28 @@ import java.util.List;
 import java.util.Set;
 
 import static com.gaas.mystic.elven.builders.Players.defaultPlayerBuilder;
-import static com.gaas.mystic.elven.repositories.data.SaboteurGameData.toData;
+import static com.gaas.mystic.elven.repositories.data.ElvenGameData.toData;
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toSet;
 import static org.junit.jupiter.api.Assertions.*;
 
-class SaboteurGameDataTest {
+class ElvenGameDataTest {
 
     @Test
     void testToData() {
         // given
         final String ID = "GameId";
-        var game = new SaboteurGame(
+        var game = new ElvenGame(
             ID, asList(defaultPlayerBuilder("A")
                 .name("A")
                 .hands(asList(
-                    new Repair(ToolName.PICK),
-                    new Repair(ToolName.LANTERN),
+                    new FixCard(ToolName.STARLIGHT_WAND),
+                    new FixCard(ToolName.HARP_OF_HARMONY),
                     new MapCard()
                 )).build(),
-            defaultPlayerBuilder("B").name("B").hand(new Sabotage(ToolName.MINE_CART)).build(),
-            defaultPlayerBuilder("C").name("C").hand(new RockFall()).build()
+            defaultPlayerBuilder("B").name("B").hand(new BrokenCard(ToolName.FLYING_BOOTS)).build(),
+            defaultPlayerBuilder("C").name("C").hand(new RockFallCard()).build()
         ),
             new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
                 new Path(0, 1, PathCard.十字路口(), true),
@@ -38,7 +42,7 @@ class SaboteurGameDataTest {
                 new Path(-1, 1, PathCard.右彎(), true))));
         game.setGoldInDestinationCard(1);
 
-        SaboteurGameData data = toData(game);
+        ElvenGameData data = toData(game);
 
         // assert
         assertEquals(game.getId(), data.getId());
@@ -54,18 +58,18 @@ class SaboteurGameDataTest {
             CardData ACard1 = A.getHands().get(1);
             CardData ACard2 = A.getHands().get(2);
             assertEquals(3, A.getHands().size());
-            assertEquals(CardData.Type.REPAIR, ACard0.getType());
-            assertEquals(CardData.Type.REPAIR, ACard1.getType());
+            assertEquals(CardData.Type.FIX, ACard0.getType());
+            assertEquals(CardData.Type.FIX, ACard1.getType());
             assertEquals(CardData.Type.MAP, ACard2.getType());
-            assertEquals(ToolName.PICK, ACard0.getToolName());
-            assertEquals(ToolName.LANTERN, ACard1.getToolName());
+            assertEquals(ToolName.STARLIGHT_WAND, ACard0.getToolName());
+            assertEquals(ToolName.HARP_OF_HARMONY, ACard1.getToolName());
 
             PlayerData B = players.get(1);
             assertEquals("B", B.getId());
             assertEquals("B", B.getName());
             CardData BCard0 = B.getHands().get(0);
-            assertEquals(CardData.Type.SABOTEUR, BCard0.getType());
-            assertEquals(ToolName.MINE_CART, BCard0.getToolName());
+            assertEquals(CardData.Type.BROKEN, BCard0.getType());
+            assertEquals(ToolName.FLYING_BOOTS, BCard0.getToolName());
 
             PlayerData C = players.get(2);
             assertEquals("C", C.getId());
@@ -98,26 +102,26 @@ class SaboteurGameDataTest {
         assertAll("player should have three available tools", () -> {
             var distinctTools = player.getTools().stream().map(ToolData::getToolName).collect(toSet());
             assertEquals(3, distinctTools.size());
-            var toolSet = Set.of(ToolName.MINE_CART, ToolName.LANTERN, ToolName.PICK);
+            var toolSet = Set.of(ToolName.FLYING_BOOTS, ToolName.HARP_OF_HARMONY, ToolName.STARLIGHT_WAND);
             assertEquals(toolSet, distinctTools);
         });
     }
 
     @Test
     void testToDomain() {
-        List<ToolData> tools = asList(new ToolData(ToolName.LANTERN, true),
-            new ToolData(ToolName.PICK, true),
-            new ToolData(ToolName.MINE_CART, true));
-        SaboteurGameData data = new SaboteurGameData("G",
+        List<ToolData> tools = asList(new ToolData(ToolName.HARP_OF_HARMONY, true),
+            new ToolData(ToolName.STARLIGHT_WAND, true),
+            new ToolData(ToolName.FLYING_BOOTS, true));
+        ElvenGameData data = new ElvenGameData("G",
             asList(new PlayerData("A", "A", tools,
-                    asList(CardData.toData(new Repair(ToolName.LANTERN)),
+                    asList(CardData.toData(new FixCard(ToolName.HARP_OF_HARMONY)),
                         CardData.toData(new MapCard()))),
                 new PlayerData("B", "B", tools,
-                    asList(CardData.toData(new Repair(ToolName.MINE_CART)),
-                        CardData.toData(new Sabotage(ToolName.PICK)))),
+                    asList(CardData.toData(new FixCard(ToolName.FLYING_BOOTS)),
+                        CardData.toData(new BrokenCard(ToolName.STARLIGHT_WAND)))),
                 new PlayerData("C", "C", tools,
-                    asList(CardData.toData(new Repair(ToolName.PICK)),
-                        CardData.toData(new RockFall())))
+                    asList(CardData.toData(new FixCard(ToolName.STARLIGHT_WAND)),
+                        CardData.toData(new RockFallCard())))
             ),
             new MazeData(List.of(
                 new PathData(0, 0, PathCard.十字路口, false, null),
@@ -125,11 +129,11 @@ class SaboteurGameDataTest {
                 new PathData(0, 2, PathCard.T型死路, false, null),
                 new PathData(1, 1, PathCard.右彎, false, null),
                 new PathData(-1, 1, PathCard.右彎, true, null))),
-            asList(PathData.toData(new Destination(8, 0, false)),
-                PathData.toData(new Destination(8, 2, true)),
-                PathData.toData(new Destination(8, 4, false))));
+            asList(PathData.toData(new GoalCard(8, 0, false)),
+                PathData.toData(new GoalCard(8, 2, true)),
+                PathData.toData(new GoalCard(8, 4, false))));
 
-        SaboteurGame game = data.toDomain();
+        ElvenGame game = data.toDomain();
         List<Player> players = game.getPlayers();
         Player A = players.get(0);
         Player B = players.get(1);
@@ -145,11 +149,11 @@ class SaboteurGameDataTest {
         assertEquals("A", A.getName());
         assertEquals("B", B.getName());
         assertEquals("C", C.getName());
-        assertHasRepairCard(A, 0, ToolName.LANTERN);
-        assertHasRepairCard(B, 0, ToolName.MINE_CART);
-        assertHasRepairCard(C, 0, ToolName.PICK);
+        assertHasFixCard(A, 0, ToolName.HARP_OF_HARMONY);
+        assertHasFixCard(B, 0, ToolName.FLYING_BOOTS);
+        assertHasFixCard(C, 0, ToolName.STARLIGHT_WAND);
         assertHasMapCard(A, 1);
-        assertHasSabotageCard(B, 1, ToolName.PICK);
+        assertHasBrokenCard(B, 1, ToolName.STARLIGHT_WAND);
         assertHasRockFallCard(C, 1);
 
         Maze maze = game.getMaze();
@@ -162,16 +166,16 @@ class SaboteurGameDataTest {
         assertEquals(expectedPaths, actualPaths);
     }
 
-    private void assertHasRepairCard(Player player, int handIndex, ToolName repairToolName) {
+    private void assertHasFixCard(Player player, int handIndex, ToolName fixToolName) {
         Card card = player.getHandCard(handIndex);
-        assertEquals(Repair.class, card.getClass());
-        assertEquals(repairToolName, ((Repair) card).getToolName());
+        assertEquals(FixCard.class, card.getClass());
+        assertEquals(fixToolName, ((FixCard) card).getToolName());
     }
 
-    private void assertHasSabotageCard(Player player, int handIndex, ToolName sabotageToolName) {
+    private void assertHasBrokenCard(Player player, int handIndex, ToolName brokenToolName) {
         Card card = player.getHandCard(handIndex);
-        assertEquals(Sabotage.class, card.getClass());
-        assertEquals(sabotageToolName, ((Sabotage) card).getToolName());
+        assertEquals(BrokenCard.class, card.getClass());
+        assertEquals(brokenToolName, ((BrokenCard) card).getToolName());
     }
 
     private void assertHasMapCard(Player player, int handIndex) {
@@ -181,7 +185,7 @@ class SaboteurGameDataTest {
 
     private void assertHasRockFallCard(Player player, int handIndex) {
         Card card = player.getHandCard(handIndex);
-        assertEquals(RockFall.class, card.getClass());
+        assertEquals(RockFallCard.class, card.getClass());
     }
 
     private void assertThreeAvailableTools(Player player) {

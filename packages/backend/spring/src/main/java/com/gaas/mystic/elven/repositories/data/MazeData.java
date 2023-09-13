@@ -1,6 +1,6 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.Maze;
+import com.gaas.mystic.elven.domain.Maze;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

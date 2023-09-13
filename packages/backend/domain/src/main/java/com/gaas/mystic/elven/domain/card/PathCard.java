@@ -1,7 +1,9 @@
-package com.gaas.mystic.elven;
+package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.Maze;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.events.DomainEvent;
-import com.gaas.mystic.elven.exceptions.SaboteurGameException;
+import com.gaas.mystic.elven.exceptions.ElvenGameException;
 import lombok.Value;
 
 import java.util.Collections;
@@ -10,7 +12,7 @@ import java.util.List;
 import static java.lang.Math.abs;
 
 /**
- * @author johnny@waterballsa.tw
+ * 道路卡
  */
 @Value
 public class PathCard implements Card {
@@ -56,7 +58,7 @@ public class PathCard implements Card {
         Card playCard = parameters.card;
 
         if (!player.allToolsAreAvailable()) {
-            throw new SaboteurGameException("Can play path cards only if his tools are all available.");
+            throw new ElvenGameException("Can play path cards only if his tools are all available.");
         }
 
         Maze maze = parameters.game.getMaze();

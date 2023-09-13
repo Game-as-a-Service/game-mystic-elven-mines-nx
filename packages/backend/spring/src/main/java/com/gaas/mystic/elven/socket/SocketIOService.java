@@ -5,9 +5,9 @@ import com.corundumstudio.socketio.SocketIONamespace;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import com.gaas.mystic.elven.SaboteurGame;
+import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
-import com.gaas.mystic.elven.outport.SaboteurGameRepository;
+import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import com.gaas.mystic.elven.presenters.FindGamePresenter;
 import com.gaas.mystic.elven.presenters.FindGamePresenter.FindGameViewModel;
 import lombok.extern.slf4j.Slf4j;
@@ -32,11 +32,11 @@ public class SocketIOService implements SocketService {
     // Map<gameId, clients>
     private final Map<String, List<SocketIOClient>> gameIdToPlayers = new ConcurrentHashMap<>();
 
-    private final SaboteurGameRepository saboteurGameRepository;
+    private final ElvenGameRepository elvenGameRepository;
 
     @Autowired
-    public SocketIOService(SocketIOServer server, SaboteurGameRepository saboteurGameRepository) {
-        this.saboteurGameRepository = saboteurGameRepository;
+    public SocketIOService(SocketIOServer server, ElvenGameRepository elvenGameRepository) {
+        this.elvenGameRepository = elvenGameRepository;
         SocketIONamespace namespace = server.addNamespace("/websocket");
         namespace.addConnectListener(onConnected());
         namespace.addDisconnectListener(onDisconnected());
@@ -66,7 +66,7 @@ public class SocketIOService implements SocketService {
     }
 
     private FindGameViewModel getGameViewModel(String gameId) {
-        SaboteurGame game = saboteurGameRepository.findById(gameId)
+        ElvenGame game = elvenGameRepository.findById(gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
         var presenter = new FindGamePresenter();
         presenter.renderGame(game);
