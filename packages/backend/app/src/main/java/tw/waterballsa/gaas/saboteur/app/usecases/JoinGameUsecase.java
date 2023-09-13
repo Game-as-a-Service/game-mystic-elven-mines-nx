@@ -36,7 +36,8 @@ public class JoinGameUsecase {
         var game = saboteurGameRepository.save(saboteurGame);
 
         // 推
-        presenter.renderGame(game, player.getId());
+        presenter.renderGame(game);
+        presenter.renderPlayer(player);
     }
 
     @Data
@@ -48,7 +49,10 @@ public class JoinGameUsecase {
     }
 
     public interface Presenter {
-        void renderGame(SaboteurGame game, String id);
+        void renderGame(SaboteurGame game);
+
+        void renderPlayer(Player player);
+
     }
 }
 

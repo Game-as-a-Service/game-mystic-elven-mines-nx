@@ -1,5 +1,6 @@
 package tw.waterballsa.gaas.saboteur.spring.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,7 @@ public class SaboteurController {
     private final JoinGameUsecase joinGameUsecase;
     private final PlayCardUsecase playCardUsecase;
 
+    @Operation(summary = "建立遊戲")
     @PostMapping
     public CreateGameViewModel createGame(@Valid @RequestBody CreateGameRequest request) {
         var presenter = new CreateGamePresenter();
@@ -41,6 +43,7 @@ public class SaboteurController {
         return presenter.present();
     }
 
+    @Operation(summary = "查詢遊戲")
     @GetMapping("/{gameId}")
     public FindGameViewModel findGame(@PathVariable String gameId) {
         var presenter = new FindGamePresenter();
@@ -48,6 +51,7 @@ public class SaboteurController {
         return presenter.present();
     }
 
+    @Operation(summary = "加入遊戲")
     @PostMapping("/{gameId}")
     public JoinGameViewModel joinGame(@PathVariable String gameId,
                                       @Valid @RequestBody JoinGameRequest request) {
@@ -56,6 +60,7 @@ public class SaboteurController {
         return presenter.present();
     }
 
+    @Operation(summary = "出牌 (未完成)")
     @PostMapping("/{gameId}:playCard")
     public ResponseEntity<?> playCard(@PathVariable String gameId,
                                       @Valid @RequestBody PlayCardRequest request) {
@@ -99,12 +104,12 @@ public class SaboteurController {
     @AllArgsConstructor
     public static class CreateGameRequest {
 
-        @NotBlank(message = "Host name is required")
-        private String host;
+        @NotBlank(message = "Player name is required")
+        private String playerName;
 
         // toRequest
         public CreateGameUsecase.Request toRequest() {
-            return new CreateGameUsecase.Request(host);
+            return new CreateGameUsecase.Request(playerName);
         }
     }
 
@@ -112,12 +117,12 @@ public class SaboteurController {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinGameRequest {
-        @NotBlank(message = "Name is required")
-        private String name;
+        @NotBlank(message = "Player name is required")
+        private String playerName;
 
         // toRequest
         public JoinGameUsecase.Request toRequest(String gameId) {
-            return new JoinGameUsecase.Request(gameId, name);
+            return new JoinGameUsecase.Request(gameId, playerName);
         }
     }
 

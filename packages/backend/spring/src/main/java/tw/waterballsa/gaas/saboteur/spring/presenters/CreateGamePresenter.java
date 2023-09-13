@@ -27,7 +27,7 @@ public class CreateGamePresenter implements CreateGameUsecase.Presenter {
     @AllArgsConstructor
     public static class CreateGameViewModel {
         private String gameId;
-        private PlayerView host;
+        private PlayerView player;
     }
 
 }

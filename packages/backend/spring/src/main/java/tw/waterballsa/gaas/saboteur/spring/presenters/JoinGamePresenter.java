@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import tw.waterballsa.gaas.saboteur.app.usecases.JoinGameUsecase;
+import tw.waterballsa.gaas.saboteur.domain.Player;
 import tw.waterballsa.gaas.saboteur.domain.SaboteurGame;
 import tw.waterballsa.gaas.saboteur.spring.presenters.views.PlayerView;
 
@@ -11,16 +12,22 @@ import java.util.List;
 
 public class JoinGamePresenter implements JoinGameUsecase.Presenter {
 
-    private JoinGameViewModel viewModel;
+    private SaboteurGame game;
+    private Player player;
 
     @Override
-    public void renderGame(SaboteurGame game, String id) {
-        List<PlayerView> players = game.getPlayers().stream().map(PlayerView::toView).toList();
-        viewModel = new JoinGameViewModel(players, id);
+    public void renderGame(SaboteurGame game) {
+        this.game = game;
+    }
+
+    @Override
+    public void renderPlayer(Player player) {
+        this.player = player;
     }
 
     public JoinGameViewModel present() {
-        return viewModel;
+        List<PlayerView> players = game.getPlayers().stream().map(PlayerView::toView).toList();
+        return new JoinGameViewModel(players, player.getId());
     }
 
     @Data

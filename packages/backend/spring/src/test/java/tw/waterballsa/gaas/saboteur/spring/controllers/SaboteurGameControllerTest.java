@@ -41,12 +41,12 @@ class SaboteurGameControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content("""
                     {
-                        "host": "A"
+                        "playerName": "A"
                     }"""))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.gameId").exists())
-            .andExpect(jsonPath("$.host.id").exists())
-            .andExpect(jsonPath("$.host.name").value("A"));
+            .andExpect(jsonPath("$.player.playerId").exists())
+            .andExpect(jsonPath("$.player.playerName").value("A"));
     }
 
     @Test
@@ -57,8 +57,8 @@ class SaboteurGameControllerTest {
         mockMvc.perform(get("/api/games/{gameId}", game.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
-            .andExpect(jsonPath("$.players[0].id").value(A.getId()))
-            .andExpect(jsonPath("$.players[0].name").value(A.getName()));
+            .andExpect(jsonPath("$.players[0].playerId").value(A.getId()))
+            .andExpect(jsonPath("$.players[0].playerName").value(A.getName()));
     }
 
     @Test
@@ -70,14 +70,14 @@ class SaboteurGameControllerTest {
                 .contentType(APPLICATION_JSON)
                 .content("""
                     {
-                        "name": "BB"
+                        "playerName": "BB"
                     }"""))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
-            .andExpect(jsonPath("$.players[0].id").value(A.getId()))
-            .andExpect(jsonPath("$.players[0].name").value(A.getName()))
-            .andExpect(jsonPath("$.players[1].id").exists())
-            .andExpect(jsonPath("$.players[1].name").value("BB"))
+            .andExpect(jsonPath("$.players[0].playerId").value(A.getId()))
+            .andExpect(jsonPath("$.players[0].playerName").value(A.getName()))
+            .andExpect(jsonPath("$.players[1].playerId").exists())
+            .andExpect(jsonPath("$.players[1].playerName").value("BB"))
             .andExpect(jsonPath("$.playerId").exists());
     }
 

@@ -15,6 +15,7 @@ import tw.waterballsa.gaas.saboteur.domain.exceptions.NotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.util.Collections.emptyList;
 import static tw.waterballsa.gaas.saboteur.app.socket.SocketChannel.PLAYER_JOINED;
 import static tw.waterballsa.gaas.saboteur.app.socket.SocketChannel.PLAYER_LEFT;
 
@@ -23,10 +24,10 @@ import static tw.waterballsa.gaas.saboteur.app.socket.SocketChannel.PLAYER_LEFT;
 public class SocketIOService implements SocketService {
 
     // Map<sessionId, client>
-    private final Map<String, SocketIOClient> clientBySession = new ConcurrentHashMap<>();
+    private final Map<String, SocketIOClient> sessionIdToPlayer = new ConcurrentHashMap<>();
 
     // Map<gameId, clients>
-    private final Map<String, List<SocketIOClient>> clientsByGame = new ConcurrentHashMap<>();
+    private final Map<String, List<SocketIOClient>> gameIdToPlayers = new ConcurrentHashMap<>();
 
     @Autowired
     public SocketIOService(SocketIOServer server) {
@@ -38,56 +39,65 @@ public class SocketIOService implements SocketService {
     private ConnectListener onConnected() {
         return client -> {
             String session = client.getSessionId().toString();
-            Optional<String> gameIdOpt = getGameId(client);
-            Optional<String> userIdOpt = getUserId(client);
-            if(gameIdOpt.isEmpty() || userIdOpt.isEmpty()) {
+            Optional<String> gameIdOpt = getParam(client, "gameId");
+            Optional<String> playerIdOpt = getParam(client, "playerId");
+            if(gameIdOpt.isEmpty() || playerIdOpt.isEmpty()) {
                 log.warn("connect fail. sessionId: {}.", session);
                 client.disconnect();
                 return;
             }
             String gameId = gameIdOpt.get();
-            String userId = userIdOpt.get();
-            log.info("connect sessionId: {}. gameId: {}. userId: {}.", session, gameId, userId);
+            String playerId = playerIdOpt.get();
+            log.info("connect sessionId: {}. gameId: {}. playerId: {}.", session, gameId, playerId);
             // send PLAYER_JOINED event to other clients
-            sendMessageByGameId(gameId, PLAYER_JOINED, userId);
+            sendMessageToGamePlayers(gameId, PLAYER_JOINED, playerId);
             // save client Map
-            clientBySession.put(session, client);
-            clientsByGame.computeIfAbsent(gameId, k -> new ArrayList<>()).add(client);
+            sessionIdToPlayer.put(session, client);
+            gameIdToPlayers.computeIfAbsent(gameId, k -> new ArrayList<>()).add(client);
         };
     }
 
     private DisconnectListener onDisconnected() {
         return client -> {
-            String session = client.getSessionId().toString();
-            SocketIOClient clientData = clientBySession.get(session);
-            String gameId = getGameId(clientData).orElseThrow(() -> new NotFoundException("gameId is required."));
-            String userId = getUserId(clientData).orElseThrow(() -> new NotFoundException("userId is required."));
-            log.info("disconnect sessionId: {}. gameId: {}. userId: {}.", session, gameId, userId);
+            String sessionId = client.getSessionId().toString();
+            SocketIOClient clientData = sessionIdToPlayer.get(sessionId);
+            String gameId = getParam(clientData, "gameId")
+                .orElseThrow(() -> new NotFoundException("gameId is required."));
+            String playerId = getParam(clientData, "playerId")
+                .orElseThrow(() -> new NotFoundException("playerId is required."));
+            log.info("disconnect sessionId: {}. gameId: {}. playerId: {}.", sessionId, gameId, playerId);
             client.disconnect();
             // remove client Map
-            clientBySession.remove(session);
-            clientsByGame.get(gameId).remove(client);
-            if(clientsByGame.get(gameId).isEmpty()) {
-                clientsByGame.remove(gameId);
+            sessionIdToPlayer.remove(sessionId);
+            List<SocketIOClient> players = gameIdToPlayers.get(gameId);
+            players.remove(client);
+            if(players.isEmpty()) {
+                gameIdToPlayers.remove(gameId);
             }
             // send PLAYER_LEFT event to other clients
-            sendMessageByGameId(gameId, PLAYER_LEFT, userId);
+            sendMessageToGamePlayers(gameId, PLAYER_LEFT, playerId);
         };
     }
 
-    private Optional<String> getUserId(SocketIOClient client) {
-        Map<String, List<String>> params = client.getHandshakeData().getUrlParams();
-        return Optional.ofNullable(params.get("userId")).map(id -> id.get(0));
+    private Optional<String> getParam(SocketIOClient client, String param) {
+        return client.getHandshakeData()
+            .getUrlParams()
+            .getOrDefault(param, emptyList())
+            .stream()
+            .findFirst();
     }
 
     private Optional<String> getGameId(SocketIOClient client) {
-        Map<String, List<String>> params = client.getHandshakeData().getUrlParams();
-        return Optional.ofNullable(params.get("gameId")).map(id -> id.get(0));
+        return client.getHandshakeData()
+            .getUrlParams()
+            .getOrDefault("gameId", emptyList())
+            .stream()
+            .findFirst();
     }
 
     @Override
-    public void sendMessageByGameId(String gameId, SocketChannel channel, String message) {
-        clientsByGame.getOrDefault(gameId, Collections.emptyList())
+    public void sendMessageToGamePlayers(String gameId, SocketChannel channel, String message) {
+        gameIdToPlayers.getOrDefault(gameId, emptyList())
             .forEach(c -> c.sendEvent(channel.name(), message));
     }
 
