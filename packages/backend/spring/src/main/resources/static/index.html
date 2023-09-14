@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="socket.io-2.2.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.0/socket.io.js" integrity="sha512-g6IDmcVyjQOptVso4kf6adJ5TOfiAznQLg47qiscWvor/cMHje2RCh2tU39DB4udBIm5ZhL4CPcvVDHEzo0HgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
 
     // create game api
@@ -14,14 +14,14 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          host: 'user' + Math.floor(Math.random() * 10000),
+          playerName: 'user' + Math.floor(Math.random() * 10000),
         })
       }).then(function (response) {
         return response.json();
       }).then(function (myJson) {
         console.log(myJson);
         document.getElementById('gameId').value = myJson.gameId;
-        connectSocket(myJson.host.id, myJson.gameId);
+        connectSocket(myJson.player.playerId, myJson.gameId);
       }).catch(function (err) {
         console.log(err);
       });
@@ -67,7 +67,7 @@
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          name: 'user' + Math.floor(Math.random() * 10000),
+          playerName: 'user' + Math.floor(Math.random() * 10000),
         })
       }).then(function (response) {
         return response.json();
@@ -79,9 +79,9 @@
       });
     }
 
-    function connectSocket(userId, gameId) {
+    function connectSocket(playerId, gameId) {
       // socket.io client
-      const socket = io(`http://127.0.0.1:8888/websocket?userId=${userId}&gameId=${gameId}`);
+      const socket = io("ws://127.0.0.1:8888/websocket", {query: {playerId: playerId, gameId: gameId}});
 
       // 連線
       socket.on('connect', function () {
