@@ -1,10 +1,10 @@
 import { component$ } from '@builder.io/qwik'
-import { IPlayer } from '../../core/network/api/type'
+import { IRoomHost } from '../../core/network/api/type'
 import clsx from 'clsx'
 
-type PropType = IPlayer & { key: string; color: 'players' | 'me' }
+type PropType = IRoomHost & { key: string; color: 'players' | 'me' }
 
-export const PlayerData = component$(({ key, name, id, color }: PropType) => {
+export const PlayerData = component$(({ key, playerName: name, id, color }: PropType) => {
   const css = color === 'players' ? 'bg-white text-black' : 'bg-[#272727] text-white'
   return (
     <section key={key} class={clsx('w-full p-2', css)}>

@@ -6,15 +6,15 @@ import Constants from '../Constants'
 export const initRoomControllers = () => {
   const localGameId = localStorage.getItem('gameId')
   if (localGameId) setGameIdToLocal(localGameId)
-  const localMyName = localStorage.getItem('myName')
-  if (localMyName) setUserNameToLocal(localMyName)
+  const localMyPlayerName = localStorage.getItem('myPlayerName')
+  if (localMyPlayerName) setMyPlayerNameToLocal(localMyPlayerName)
 }
 
-export const createGameAndGetId = async (host: string) => {
-  const res = await api.createGame({ host })
-  setUserNameToLocal(host)
+export const createGameAndGetId = async (playerName: string) => {
+  const res = await api.createGame({ playerName: playerName })
+  setMyPlayerNameToLocal(playerName)
   setGameIdToLocal(res.gameId)
-  setUserIdToLocal(res.host.id)
+  setUserIdToLocal(res.player.playerName)
   return res.gameId
 }
 
@@ -22,12 +22,12 @@ export const queryGame = async () => {
   return await api.queryGame()
 }
 
-export const joinRoomByNameAndId = async (name: string, gameId: string) => {
-  const res = await api.joinGame({ name })
+export const joinRoomByNameAndId = async (playerName: string, gameId: string) => {
+  const res = await api.joinGame({ playerName: playerName })
   console.log('join', res)
   setGameIdToLocal(gameId)
-  setUserNameToLocal(name)
-  setUserIdToLocal(res.players[res.players.length - 1].id)
+  setMyPlayerNameToLocal(playerName)
+
   // setUserIdToLocal(res.playersId) or setUserIdToLocal(res.userId)
   return res
 }
@@ -37,9 +37,9 @@ export const setGameIdToLocal = (gameId: string) => {
   localStorage.setItem('gameId', gameId)
   Constants.gameId = gameId
 }
-export const setUserNameToLocal = (name: string) => {
-  localStorage.setItem('userName', name)
-  Constants.myName = name
+export const setMyPlayerNameToLocal = (playerName: string) => {
+  localStorage.setItem('playerName', playerName)
+  Constants.myPlayerName = playerName
 }
 export const setUserIdToLocal = (userId: string) => {
   localStorage.setItem('userId', userId)

@@ -13,17 +13,17 @@ import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { gameBase } from '../../../core/gameBase'
 import { PlayerData } from '../../../game/players/playerData'
 import { gameStore } from '../../../core/stores'
-import { IPlayer } from '../../../core/network/api/type'
+import { IRoomHost } from '../../../core/network/api/type'
 
 interface IStore {
-  userName: string
-  players: IPlayer[]
+  myPlayerName: string
+  players: IRoomHost[]
   hasWelcome: boolean //第一次進房間會有歡迎詞
 }
 
 export default component$(() => {
   setUIBg('game')
-  const store = useStore<IStore>({ userName: '', players: [], hasWelcome: false })
+  const store = useStore<IStore>({ myPlayerName: '', players: [], hasWelcome: false })
   const nav = useNavigate()
   const loc = useLocation()
 
@@ -43,7 +43,7 @@ export default component$(() => {
     gameStore.on('roomPlayers', (list) => (store.players = list))
     const gameId = localStorage.getItem('gameId') || ''
     const userId = localStorage.getItem('userId') || ''
-    store.userName = localStorage.getItem('userName') || ''
+    store.myPlayerName = localStorage.getItem('myPlayerName') || ''
     if (gameId && userId) connectRoomSocket({ gameId, userId })
   })
 
@@ -90,7 +90,7 @@ export default component$(() => {
         <div class="relative w-full flex flex-row justify-between">
           <section class="p-5 flex-1 flex flex-col gap-2">
             <div class="h-[2rem]">
-              <PlayerData key={'player-me'} name={store.userName} id={'player-me'} color="me" />
+              <PlayerData key={'player-me'} playerName={store.myPlayerName} id={'player-me'} color="me" />
             </div>
             <div class="h-5"></div>
           </section>

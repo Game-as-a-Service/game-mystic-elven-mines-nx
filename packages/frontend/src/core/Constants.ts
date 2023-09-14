@@ -1,5 +1,5 @@
 export default {
   gameId: '',
-  myName: '',
+  myPlayerName: '',
   userId: '',
 }

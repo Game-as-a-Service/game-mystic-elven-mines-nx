@@ -1,12 +1,12 @@
 import { createStore } from 'zustand/vanilla'
 import { SelectCardType } from './typing'
-import { IApiCreateGame, IPlayer } from '../network/api/type'
+import { IApiCreateGame, IRoomHost } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
 import { gameBase } from '../../core/gameBase'
 
 interface IGameState {
   roomInfo: IApiCreateGame | null
-  roomPlayers: IPlayer[]
+  roomPlayers: IRoomHost[]
   map: ColListType
   selectedCard: SelectCardType | null
   uiBgImg: 'bg-game-01' | 'bg-create'

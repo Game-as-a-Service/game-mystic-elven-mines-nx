@@ -1,34 +1,46 @@
 // API
-export interface IPlayer {
-  id: string
-  name: string
+export interface IRoomHost {
+  gameId: 'string'
+  playerId: 'string'
+  player: {
+    playerName: 'string'
+  }
 }
 
 export interface IApiCreateGame {
   gameId: string
-  host: {
-    id: string // 開會這裡改 userId
-    name: string
+  player: {
+    playerName: string
   }
 }
 
 export interface IApiQueryGame {
-  players: IPlayer[]
+  players: { playerName: 'string' }[]
 }
 
 export interface IApiJoinGame {
-  players: IPlayer[]
-  playerId: string
+  players: { playerName: 'string' }[]
+  playerId: 'string'
 }
 
-// 玩家打牌 棄牌
-export interface IplayCard {
-  playerId: string
-  card: {
-    x: number
-    y: number
-    cardIndex: number
-    cardId: string
-    cardName: string
-  } //1張
+export interface ICard {
+  cardType: 'string'
+  targetPlayerId: 'string'
+  destinationCardIndex: 0
+  row: 0
+  col: 0
+  flipped: true
 }
+// 玩家打牌 棄牌
+export type PlayCardType = {
+  playerId: string
+  handIndex: number
+} & ICard
+
+// card: {
+//   x: number
+//   y: number
+//   cardIndex: number
+//   cardId: string
+//   cardName: string
+// } //1張
