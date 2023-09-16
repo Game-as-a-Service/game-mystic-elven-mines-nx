@@ -9,7 +9,7 @@ public class GoalCard extends Path {
     private final boolean isGold;
 
     public GoalCard(int row, int col, boolean isGold) {
-        this(row, col, PathCard.十字路口(), isGold
+        this(row, col, PathCard.cross(), isGold
                 /*預設是十字路口*/);
     }
 

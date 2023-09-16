@@ -12,9 +12,6 @@ import java.util.List;
 import static com.gaas.mystic.elven.utils.StreamUtils.mapToList;
 import static java.util.stream.IntStream.range;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -22,9 +22,6 @@ import javax.validation.constraints.NotBlank;
 import static java.util.Objects.requireNonNullElse;
 import static org.springframework.http.ResponseEntity.noContent;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/games")

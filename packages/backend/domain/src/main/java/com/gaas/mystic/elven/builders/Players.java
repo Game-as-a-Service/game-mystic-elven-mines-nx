@@ -7,9 +7,6 @@ import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @UtilityClass
 public class Players {
 

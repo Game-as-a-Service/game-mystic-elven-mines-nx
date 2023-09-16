@@ -24,7 +24,7 @@ public class Maze {
     private final Set<Point> points;
 
     public Maze() {
-        this(singletonList(new Path(0, 0, PathCard.十字路口())));
+        this(singletonList(new Path(0, 0, PathCard.cross())));
     }
 
     public Maze(List<Path> paths) {

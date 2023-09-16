@@ -35,11 +35,11 @@ class ElvenGameDataTest {
             defaultPlayerBuilder("B").name("B").hand(new BrokenCard(ToolName.FLYING_BOOTS)).build(),
             defaultPlayerBuilder("C").name("C").hand(new RockFallCard()).build()
         ),
-            new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
-                new Path(0, 1, PathCard.十字路口(), true),
-                new Path(0, 2, PathCard.T型死路()),
-                new Path(1, 1, PathCard.右彎()),
-                new Path(-1, 1, PathCard.右彎(), true))));
+            new Maze(List.of(new Path(0, 0, PathCard.cross()),
+                new Path(0, 1, PathCard.cross(), true),
+                new Path(0, 2, PathCard.deadEndStraightT()),
+                new Path(1, 1, PathCard.rightCurve()),
+                new Path(-1, 1, PathCard.rightCurve(), true))));
         game.setGoldInDestinationCard(1);
 
         ElvenGameData data = toData(game);
@@ -90,11 +90,11 @@ class ElvenGameDataTest {
         MazeData maze = data.getMaze();
         Set<PathData> actualPaths = new HashSet<>(maze.getPaths());
         var expectedPaths = Set.of(
-            new PathData(0, 0, PathCard.十字路口, false, null),
-            new PathData(0, 1, PathCard.十字路口, true, null),
-            new PathData(0, 2, PathCard.T型死路, false, null),
-            new PathData(1, 1, PathCard.右彎, false, null),
-            new PathData(-1, 1, PathCard.右彎, true, null));
+            new PathData(0, 0, PathCard.CROSS, false, null),
+            new PathData(0, 1, PathCard.CROSS, true, null),
+            new PathData(0, 2, PathCard.DEAD_END_STRAIGHT_T, false, null),
+            new PathData(1, 1, PathCard.RIGHT_CURVE, false, null),
+            new PathData(-1, 1, PathCard.RIGHT_CURVE, true, null));
         assertEquals(expectedPaths, actualPaths);
     }
 
@@ -124,11 +124,11 @@ class ElvenGameDataTest {
                         CardData.toData(new RockFallCard())))
             ),
             new MazeData(List.of(
-                new PathData(0, 0, PathCard.十字路口, false, null),
-                new PathData(0, 1, PathCard.十字路口, true, null),
-                new PathData(0, 2, PathCard.T型死路, false, null),
-                new PathData(1, 1, PathCard.右彎, false, null),
-                new PathData(-1, 1, PathCard.右彎, true, null))),
+                new PathData(0, 0, PathCard.CROSS, false, null),
+                new PathData(0, 1, PathCard.CROSS, true, null),
+                new PathData(0, 2, PathCard.DEAD_END_STRAIGHT_T, false, null),
+                new PathData(1, 1, PathCard.RIGHT_CURVE, false, null),
+                new PathData(-1, 1, PathCard.RIGHT_CURVE, true, null))),
             asList(PathData.toData(new GoalCard(8, 0, false)),
                 PathData.toData(new GoalCard(8, 2, true)),
                 PathData.toData(new GoalCard(8, 4, false))));
@@ -158,11 +158,11 @@ class ElvenGameDataTest {
 
         Maze maze = game.getMaze();
         Set<Path> actualPaths = new HashSet<>(maze.getPaths());
-        var expectedPaths = Set.of(new Path(0, 0, PathCard.十字路口()),
-            new Path(0, 1, PathCard.十字路口(), true),
-            new Path(0, 2, PathCard.T型死路()),
-            new Path(1, 1, PathCard.右彎()),
-            new Path(-1, 1, PathCard.右彎(), true));
+        var expectedPaths = Set.of(new Path(0, 0, PathCard.cross()),
+            new Path(0, 1, PathCard.cross(), true),
+            new Path(0, 2, PathCard.deadEndStraightT()),
+            new Path(1, 1, PathCard.rightCurve()),
+            new Path(-1, 1, PathCard.rightCurve(), true));
         assertEquals(expectedPaths, actualPaths);
     }
 

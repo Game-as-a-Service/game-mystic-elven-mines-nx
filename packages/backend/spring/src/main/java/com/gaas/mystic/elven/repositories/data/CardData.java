@@ -10,9 +10,6 @@ import lombok.NoArgsConstructor;
 
 import static java.util.Objects.requireNonNull;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -92,10 +89,10 @@ public class CardData {
 
     private PathCard toPathCard() {
         return switch (name) {
-            case PathCard.十字路口 -> PathCard.十字路口();
-            case PathCard.T型死路 -> PathCard.T型死路();
-            case PathCard.一字型 -> PathCard.一字型();
-            case PathCard.右彎 -> PathCard.右彎();
+            case PathCard.CROSS -> PathCard.cross();
+            case PathCard.DEAD_END_STRAIGHT_T -> PathCard.deadEndStraightT();
+            case PathCard.STRAIGHT -> PathCard.straight();
+            case PathCard.RIGHT_CURVE -> PathCard.rightCurve();
             default -> new PathCard(name, path);
         };
     }

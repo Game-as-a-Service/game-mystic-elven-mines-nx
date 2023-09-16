@@ -11,9 +11,6 @@ import java.util.List;
 
 import static com.gaas.mystic.elven.utils.StreamUtils.mapToList;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

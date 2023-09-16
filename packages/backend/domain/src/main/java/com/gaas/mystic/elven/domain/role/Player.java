@@ -4,6 +4,7 @@ import com.gaas.mystic.elven.domain.card.Card;
 import com.gaas.mystic.elven.domain.tool.Tool;
 import com.gaas.mystic.elven.domain.tool.ToolName;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Singular;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import static java.util.List.copyOf;
 /**
  * 玩家
  */
+@Getter
 @Builder
 public class Player {
     protected String id;
@@ -43,14 +45,6 @@ public class Player {
 
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
     public void addHandCard(Card card) {
         hands.add(card);
     }
@@ -60,10 +54,6 @@ public class Player {
             .filter(tool -> tool.getToolName().equals(toolName))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException(format("Tool %s not found.", toolName)));
-    }
-
-    public Tool[] getTools() {
-        return tools;
     }
 
     public List<Card> getHands() {

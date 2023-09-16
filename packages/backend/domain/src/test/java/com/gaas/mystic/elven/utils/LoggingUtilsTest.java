@@ -26,7 +26,7 @@ class LoggingUtilsTest {
 
     @Test
     void testLog_T型死路() {
-        log(new Path(0, 2, PathCard.T型死路()).getPoints());
+        log(new Path(0, 2, PathCard.deadEndStraightT()).getPoints());
 
         assertEquals("=====\n" +
                         "-O-\n" +
@@ -37,11 +37,11 @@ class LoggingUtilsTest {
 
     @Test
     void testLog() {
-        var points = Stream.of(new Path(0, 0, PathCard.十字路口()),
-                        new Path(0, 1, PathCard.十字路口()),
-                        new Path(0, 2, PathCard.T型死路()),
-                        new Path(1, 1, PathCard.右彎()),
-                        new Path(-1, 1, PathCard.右彎(), true))
+        var points = Stream.of(new Path(0, 0, PathCard.cross()),
+                        new Path(0, 1, PathCard.cross()),
+                        new Path(0, 2, PathCard.deadEndStraightT()),
+                        new Path(1, 1, PathCard.rightCurve()),
+                        new Path(-1, 1, PathCard.rightCurve(), true))
                 .flatMap(p -> p.getPoints().stream())
                 .collect(toSet());
         log(points);

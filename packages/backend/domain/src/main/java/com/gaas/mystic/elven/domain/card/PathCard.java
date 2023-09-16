@@ -16,36 +16,36 @@ import static java.lang.Math.abs;
  */
 @Value
 public class PathCard implements Card {
-    public static final String 十字路口 = "十字路口";
-    public static final String T型死路 = "T型死路";
-    public static final String 一字型 = "一字型";
-    public static final String 右彎 = "右彎";
+    public static final String CROSS = "十字";
+    public static final String DEAD_END_STRAIGHT_T = "直T死路";
+    public static final String STRAIGHT = "直線";
+    public static final String RIGHT_CURVE = "右彎";
     String name;
     boolean[] path;
 
-    public static PathCard 十字路口() {
-        return new PathCard(十字路口, new boolean[]{
+    public static PathCard cross() {
+        return new PathCard(CROSS, new boolean[]{
             false, true, false,
             true, true, true,
             false, true, false});
     }
 
-    public static PathCard T型死路() {
-        return new PathCard(T型死路, new boolean[]{
+    public static PathCard deadEndStraightT() {
+        return new PathCard(DEAD_END_STRAIGHT_T, new boolean[]{
             false, true, false,
             true, false, true,
             false, false, false});
     }
 
-    public static PathCard 一字型() {
-        return new PathCard(一字型, new boolean[]{
+    public static PathCard straight() {
+        return new PathCard(STRAIGHT, new boolean[]{
             false, false, false,
             true, true, true,
             false, false, false});
     }
 
-    public static PathCard 右彎() {
-        return new PathCard(右彎, new boolean[]{
+    public static PathCard rightCurve() {
+        return new PathCard(RIGHT_CURVE, new boolean[]{
             false, false, false,
             true, true, false,
             false, true, false});

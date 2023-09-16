@@ -99,9 +99,9 @@ class ElvenGameTest {
     @Test
     void test十字路口_happyPath() {
         var game = new ElvenGame(
-                asList(defaultPlayerBuilder("A").hand(十字路口()).hand(十字路口()).build(),
-                        defaultPlayerBuilder("B").hand(十字路口()).hand(十字路口()).build(),
-                        defaultPlayerBuilder("C").hand(十字路口()).hand(十字路口()).build()));
+                asList(defaultPlayerBuilder("A").hand(cross()).hand(cross()).build(),
+                        defaultPlayerBuilder("B").hand(cross()).hand(cross()).build(),
+                        defaultPlayerBuilder("C").hand(cross()).hand(cross()).build()));
 
         String path = """
                 -0-
@@ -125,9 +125,9 @@ class ElvenGameTest {
     void whenPutPathIntoMaze_theNewPathShouldConnectThroughPathsToTheOrigin() {
         // given
         var game = new ElvenGame(
-                asList(defaultPlayerBuilder("A").hand(十字路口()).hand(右彎()).build(),
-                        defaultPlayerBuilder("B").hand(右彎()).hand(T型死路()).hand(右彎()).build(),
-                        defaultPlayerBuilder("C").hand(十字路口()).build())
+                asList(defaultPlayerBuilder("A").hand(cross()).hand(rightCurve()).build(),
+                        defaultPlayerBuilder("B").hand(rightCurve()).hand(deadEndStraightT()).hand(rightCurve()).build(),
+                        defaultPlayerBuilder("C").hand(cross()).build())
         );
 
         // when & then
@@ -189,9 +189,9 @@ class ElvenGameTest {
 
         ElvenGame game = new ElvenGame("GameId", asList(a, b, c),
                 new Maze(List.of(
-                        new Path(0, 0, PathCard.十字路口()),
-                        new Path(0, 1, PathCard.十字路口()),
-                        new Path(-1, 1, PathCard.右彎(), true)
+                        new Path(0, 0, PathCard.cross()),
+                        new Path(0, 1, PathCard.cross()),
+                        new Path(-1, 1, PathCard.rightCurve(), true)
                 )));
         game.playCard(new RockFallCard.Parameters("A", 0, 0, 1));
         assertThrows(Exception.class, () -> game.getPath(0, 1));
@@ -199,7 +199,7 @@ class ElvenGameTest {
 
     @Test
     void playerCanPlayPathCardOnlyIfAllHisToolsAreAvailable() {
-        Player a = defaultPlayerBuilder("A").hand(PathCard.T型死路())
+        Player a = defaultPlayerBuilder("A").hand(PathCard.deadEndStraightT())
                 .tools(new Tool[]{
                         new Tool(ToolName.FLYING_BOOTS, true),
                         new Tool(ToolName.HARP_OF_HARMONY, false),

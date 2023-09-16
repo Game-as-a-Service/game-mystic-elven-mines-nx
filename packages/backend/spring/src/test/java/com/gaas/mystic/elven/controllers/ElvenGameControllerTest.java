@@ -230,7 +230,7 @@ class ElvenGameControllerTest {
     void 工具如果被破壞了就不能蓋路了() throws Exception {
         // Given
         Player A = Players.defaultPlayerBuilder("A")
-            .hand(PathCard.T型死路()) // <--- code with me 在搞
+            .hand(PathCard.deadEndStraightT()) // <--- code with me 在搞
             .tools(new Tool[]{
                 new Tool(ToolName.FLYING_BOOTS, true),
                 new Tool(ToolName.HARP_OF_HARMONY, false),
@@ -290,9 +290,9 @@ class ElvenGameControllerTest {
         Player C = Players.defaultPlayer("C");
 
         var game = givenGameStarted(new ElvenGame("GameId", List.of(A, B, C),
-            new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
-                new Path(0, 1, PathCard.十字路口()),
-                new Path(-1, 1, PathCard.右彎(), true)))));
+            new Maze(List.of(new Path(0, 0, PathCard.cross()),
+                new Path(0, 1, PathCard.cross()),
+                new Path(-1, 1, PathCard.rightCurve(), true)))));
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
@@ -313,14 +313,14 @@ class ElvenGameControllerTest {
     void test迷宮案例1() throws Exception {
         // Given
         Player A = Players.defaultPlayerBuilder("A")
-            .hand(PathCard.十字路口())
+            .hand(PathCard.cross())
             .build();
         Player B = Players.defaultPlayerBuilder("B")
-            .hand(PathCard.T型死路())
+            .hand(PathCard.deadEndStraightT())
             .build();
         Player C = Players.defaultPlayerBuilder("C")
-            .hand(PathCard.一字型())
-            .hand(PathCard.右彎())
+            .hand(PathCard.straight())
+            .hand(PathCard.rightCurve())
             .build();
 
         ElvenGame game = givenGameStarted(A, B, C);
@@ -345,10 +345,10 @@ class ElvenGameControllerTest {
         var actualGame = gameRepository.findById(game.getId()).orElseThrow();
         Maze maze = actualGame.getMaze();
 
-        Assertions.assertEquals(PathCard.十字路口(), maze.getPath(0, 1)
+        Assertions.assertEquals(PathCard.cross(), maze.getPath(0, 1)
             .map(Path::getPathCard).orElseThrow());
 
-        Assertions.assertEquals(PathCard.T型死路(), maze.getPath(0, 2)
+        Assertions.assertEquals(PathCard.deadEndStraightT(), maze.getPath(0, 2)
             .map(Path::getPathCard).orElseThrow());
 
         Path actual右彎 = maze.getPath(-1, 1).orElseThrow();
