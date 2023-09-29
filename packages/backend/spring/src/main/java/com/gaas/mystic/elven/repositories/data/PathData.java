@@ -33,7 +33,7 @@ public class PathData {
     public static PathData toData(GoalCard goalCard) {
         PathCard pathCard = goalCard.getPathCard();
         return new PathData(goalCard.getRow(), goalCard.getCol(),
-            pathCard.getName(), goalCard.isFlipped(), goalCard.isGold());
+            pathCard.getName(), goalCard.isFlipped(), goalCard.isGoal());
     }
 
     public Path toDomain() {

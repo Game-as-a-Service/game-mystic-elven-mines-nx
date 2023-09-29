@@ -53,7 +53,7 @@ class ElvenGameControllerTest {
     }
 
     @Test
-    public void testPlayerFindGame() throws Exception {
+    public void testPlayerFindPlayersInfoBeforeGameStarted() throws Exception {
         Player A = Players.defaultPlayer("A");
         ElvenGame game = givenGameStarted(A);
 
@@ -96,7 +96,18 @@ class ElvenGameControllerTest {
     }
 
     @Test
-    public void testPlayerFindPlayersAfterGameStarted() throws Exception {
+    public void testGameStart() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+
+        mockMvc.perform(post("/api/games/{gameId}:start", game.getId()))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testPlayerFindPlayersInfoAfterGameStarted() throws Exception {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
@@ -213,7 +224,7 @@ class ElvenGameControllerTest {
     }
 
     @Test
-    public void 看終點底下有無金礦喔() throws Exception {
+    public void 看終點底下有無神聖遺物喔() throws Exception {
         Player A = Players.defaultPlayerBuilder("A")
             .hand(new MapCard()).build();
         Player B = Players.defaultPlayer("B");

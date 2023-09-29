@@ -93,7 +93,7 @@ class ElvenGameTest {
         var game = new ElvenGame(anyThreePlayers());
 
         assertEquals(1, game.getDestinations()
-                .stream().filter(GoalCard::isGold).count(), "There must be one golden destination card.");
+                .stream().filter(GoalCard::isGoal).count(), "There must be one golden destination card.");
     }
 
     @Test

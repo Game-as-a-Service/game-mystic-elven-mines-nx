@@ -8,8 +8,8 @@ import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
-import com.gaas.mystic.elven.presenters.FindGamePresenter;
-import com.gaas.mystic.elven.presenters.FindGamePresenter.FindGameViewModel;
+import com.gaas.mystic.elven.presenters.FindPlayersPresenter;
+import com.gaas.mystic.elven.presenters.FindPlayersPresenter.FindPlayersViewModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,7 +56,7 @@ public class SocketIOService implements SocketService {
             String playerId = playerIdOpt.get();
             log.info("connect sessionId: {}. gameId: {}. playerId: {}.", session, gameId, playerId);
             // get FindGameViewModel
-            FindGameViewModel present = getGameViewModel(gameId);
+            FindPlayersViewModel present = getGameViewModel(gameId);
             // send PLAYER_JOINED event to other clients
             sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_JOINED, present);
             // save client Map
@@ -65,10 +65,10 @@ public class SocketIOService implements SocketService {
         };
     }
 
-    private FindGameViewModel getGameViewModel(String gameId) {
+    private FindPlayersViewModel getGameViewModel(String gameId) {
         ElvenGame game = elvenGameRepository.findById(gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
-        var presenter = new FindGamePresenter();
+        var presenter = new FindPlayersPresenter();
         presenter.renderGame(game);
         return presenter.present();
     }
