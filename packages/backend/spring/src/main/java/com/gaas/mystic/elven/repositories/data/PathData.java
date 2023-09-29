@@ -1,6 +1,6 @@
 package com.gaas.mystic.elven.repositories.data;
 
-import com.gaas.mystic.elven.domain.card.GoalCard;
+import com.gaas.mystic.elven.domain.GoalCard;
 import com.gaas.mystic.elven.domain.Path;
 import com.gaas.mystic.elven.domain.card.PathCard;
 import lombok.AllArgsConstructor;

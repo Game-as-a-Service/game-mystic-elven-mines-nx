@@ -1,7 +1,7 @@
 package com.gaas.mystic.elven.domain;
 
 import com.gaas.mystic.elven.domain.card.Card;
-import com.gaas.mystic.elven.domain.card.GoalCard;
+import com.gaas.mystic.elven.domain.card.PathCard;
 import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.events.DomainEvent;
 import com.gaas.mystic.elven.exceptions.ElvenGameException;
@@ -33,6 +33,8 @@ public class ElvenGame {
 
     private final List<GoalCard> goalCards = new ArrayList<>(DESTINATION_CARDS_COUNT);
 
+    private final List<Card> deck = new ArrayList<>();
+
     public ElvenGame(List<Player> players) {
         this(randomUUID().toString(), players);
     }
@@ -50,18 +52,63 @@ public class ElvenGame {
     }
 
     public void startGame() {
+        checkStartGameCondition();
+        initializeDeck();
+        dealCards();
+    }
+
+    private void checkStartGameCondition() {
         // check players count
-        if (players.size() < DESTINATION_CARDS_COUNT || players.size() > 10) {
+        if (players.size() < 3 || players.size() > 10) {
             throw new IllegalArgumentException("玩家人數必須介於 3 ~ 10 之間");
         }
-        // TODO: initialize game
+    }
+
+    private void initializeDeck() {
+        // clear deck
+        deck.clear();
+        // add cards
+        for (int i = 0; i < 5; i++) {
+            deck.add(PathCard.cross());
+            deck.add(PathCard.rightCurve());
+            deck.add(PathCard.horizontalT());
+            deck.add(PathCard.straightT());
+        }
+        for (int i = 0; i < 4; i++) {
+            deck.add(PathCard.leftCurve());
+            deck.add(PathCard.horizontal());
+        }
+        for (int i = 0; i < 3; i++) {
+            deck.add(PathCard.straight());
+        }
+        deck.add(PathCard.deadEndCross());
+        deck.add(PathCard.deadEndLeftCurve());
+        deck.add(PathCard.deadEndRightCurve());
+        deck.add(PathCard.deadEndHorizontal1());
+        deck.add(PathCard.deadEndHorizontal2());
+        deck.add(PathCard.deadEndStraight1());
+        deck.add(PathCard.deadEndStraight2());
+        deck.add(PathCard.deadEndHorizontalT());
+        deck.add(PathCard.deadEndStraightT());
+        // shuffle
+        Collections.shuffle(deck);
+    }
+
+    private void dealCards() {
+        // card number
+        int cardNumber = 5;
+        // deal cards
+        for (Player player : players) {
+            for (int i = 0; i < cardNumber; i++) {
+                player.addHandCard(deck.remove(0));
+            }
+        }
     }
 
 
     // 1. 封裝變動之處 (開出 各個 Card 類別 -> 來封裝各個行為）
     // 2. 萃取相同行為 (萃取出共同的部分到介面中）so sad
     // 3. 依賴抽象 (依賴抽象的 Card)
-
     public List<DomainEvent> playCard(Card.Parameters parameters) {
         parameters.player = getPlayer(parameters.playerId);
         parameters.card = parameters.player.getHandCard(parameters.handCardIndex);

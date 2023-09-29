@@ -9,6 +9,7 @@ import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.GreaterThan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,7 +57,7 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         ElvenGame game = givenGameStarted(A);
 
-        mockMvc.perform(get("/api/games/{gameId}", game.getId()))
+        mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
             .andExpect(jsonPath("$.players[0].playerName").value(A.getName()));
@@ -92,6 +93,36 @@ class ElvenGameControllerTest {
                         "playerName": "A"
                     }"""))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testPlayerFindPlayersAfterGameStarted() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+        game.startGame();
+        gameRepository.save(game);
+
+        mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.players").isArray())
+            .andExpect(jsonPath("$.players[0].playerName").value(A.getName()))
+            .andExpect(jsonPath("$.players[0].cardNum").exists())
+            .andExpect(jsonPath("$.players[0].cardNum").isNumber())
+            .andExpect(jsonPath("$.players[0].cardNum").value(5))
+            .andExpect(jsonPath("$.players[0].tools[0].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[0].toolName").value("FLYING_BOOTS"))
+            .andExpect(jsonPath("$.players[0].tools[0].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[0].available").value(true))
+            .andExpect(jsonPath("$.players[0].tools[1].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[1].toolName").value("HARP_OF_HARMONY"))
+            .andExpect(jsonPath("$.players[0].tools[1].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[1].available").value(true))
+            .andExpect(jsonPath("$.players[0].tools[2].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[2].toolName").value("STARLIGHT_WAND"))
+            .andExpect(jsonPath("$.players[0].tools[2].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[2].available").value(true));
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------

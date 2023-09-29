@@ -1,6 +1,7 @@
-package com.gaas.mystic.elven.domain.card;
+package com.gaas.mystic.elven.domain;
 
 import com.gaas.mystic.elven.domain.Path;
+import com.gaas.mystic.elven.domain.card.PathCard;
 
 /**
  * 終點卡

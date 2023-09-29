@@ -2,15 +2,12 @@ package com.gaas.mystic.elven.controllers;
 
 import com.gaas.mystic.elven.presenters.CreateGamePresenter;
 import com.gaas.mystic.elven.presenters.CreateGamePresenter.CreateGameViewModel;
-import com.gaas.mystic.elven.presenters.FindGamePresenter;
-import com.gaas.mystic.elven.presenters.FindGamePresenter.FindGameViewModel;
+import com.gaas.mystic.elven.presenters.FindPlayersPresenter;
+import com.gaas.mystic.elven.presenters.FindPlayersPresenter.FindPlayersViewModel;
 import com.gaas.mystic.elven.presenters.JoinGamePresenter;
 import com.gaas.mystic.elven.presenters.JoinGamePresenter.JoinGameViewModel;
 import com.gaas.mystic.elven.presenters.PlayCardPresenter;
-import com.gaas.mystic.elven.usecases.CreateGameUsecase;
-import com.gaas.mystic.elven.usecases.FindGameUsecase;
-import com.gaas.mystic.elven.usecases.JoinGameUsecase;
-import com.gaas.mystic.elven.usecases.PlayCardUsecase;
+import com.gaas.mystic.elven.usecases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.*;
 import org.springframework.http.ResponseEntity;
@@ -28,9 +25,10 @@ import static org.springframework.http.ResponseEntity.noContent;
 public class ElvenController {
 
     private final CreateGameUsecase createGameUsecase;
-    private final FindGameUsecase findGameUsecase;
+    private final FindPlayersUsecase findPlayersUsecase;
     private final JoinGameUsecase joinGameUsecase;
     private final PlayCardUsecase playCardUsecase;
+    private final StartGameUsecase startGameUsecase;
 
     @Operation(summary = "建立遊戲")
     @PostMapping
@@ -40,13 +38,13 @@ public class ElvenController {
         return presenter.present();
     }
 
-    @Operation(summary = "查詢遊戲")
-    @GetMapping("/{gameId}")
-    public FindGameViewModel findGame(@PathVariable String gameId) {
-        var presenter = new FindGamePresenter();
-        findGameUsecase.execute(gameId, presenter);
-        return presenter.present();
-    }
+//    @Operation(summary = "查詢遊戲")
+//    @GetMapping("/{gameId}")
+//    public FindGameViewModel findGame(@PathVariable String gameId) {
+//        var presenter = new FindGamePresenter();
+//        findPlayersUsecase.execute(gameId, presenter);
+//        return presenter.present();
+//    }
 
     @Operation(summary = "加入遊戲")
     @PostMapping("/{gameId}")
@@ -54,6 +52,23 @@ public class ElvenController {
                                       @Valid @RequestBody JoinGameRequest request) {
         var presenter = new JoinGamePresenter();
         joinGameUsecase.execute(request.toRequest(gameId), presenter);
+        return presenter.present();
+    }
+
+    @Operation(summary = "開始遊戲")
+    @PostMapping("/{gameId}/start")
+    public JoinGameViewModel startGame(@PathVariable String gameId) {
+//        var presenter = new JoinGamePresenter();
+        startGameUsecase.execute(gameId);
+//        return presenter.present();
+        return null;
+    }
+
+    @Operation(summary = "查詢玩家資訊")
+    @GetMapping("/{gameId}/players")
+    public FindPlayersViewModel findPlayers(@PathVariable String gameId) {
+        var presenter = new FindPlayersPresenter();
+        findPlayersUsecase.execute(gameId, presenter);
         return presenter.present();
     }
 

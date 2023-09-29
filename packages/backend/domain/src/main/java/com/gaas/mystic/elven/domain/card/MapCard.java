@@ -1,5 +1,6 @@
 package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.GoalCard;
 import com.gaas.mystic.elven.events.DestinationCardRevealedEvent;
 import com.gaas.mystic.elven.events.DomainEvent;
 
