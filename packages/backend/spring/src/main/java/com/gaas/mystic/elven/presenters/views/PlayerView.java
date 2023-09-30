@@ -21,9 +21,9 @@ public class PlayerView {
 
     public static PlayerView toView(Player player) {
         return PlayerView.builder()
-                .playerName(player.getName())
-                .cardNum(player.getHands().size())
-                .tools(Arrays.stream(player.getTools()).toList())
-                .build();
+            .playerName(player.getName())
+            .cardNum(player.getHands().size())
+            .tools(Arrays.asList(player.getTools()))
+            .build();
     }
 }

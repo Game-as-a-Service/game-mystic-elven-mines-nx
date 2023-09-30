@@ -55,8 +55,8 @@ public class SocketIOService implements SocketService {
             String gameId = gameIdOpt.get();
             String playerId = playerIdOpt.get();
             log.info("connect sessionId: {}. gameId: {}. playerId: {}.", session, gameId, playerId);
-            // get FindGameViewModel
-            FindPlayersViewModel present = getGameViewModel(gameId);
+            // get FindPlayersViewModel
+            FindPlayersViewModel present = getPlayersViewModel(gameId);
             // send PLAYER_JOINED event to other clients
             sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_JOINED, present);
             // save client Map
@@ -65,7 +65,7 @@ public class SocketIOService implements SocketService {
         };
     }
 
-    private FindPlayersViewModel getGameViewModel(String gameId) {
+    private FindPlayersViewModel getPlayersViewModel(String gameId) {
         ElvenGame game = elvenGameRepository.findById(gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
         var presenter = new FindPlayersPresenter();

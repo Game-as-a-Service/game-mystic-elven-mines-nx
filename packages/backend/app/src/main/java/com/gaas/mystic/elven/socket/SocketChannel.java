@@ -5,7 +5,7 @@ public enum SocketChannel {
     PLAYER_LEFT,
     GAME_STARTED,
     GAME_ENDED,
-    PLAYER_DREW_CARD,
-    PLAYER_PLACED_CARD,
+    PLAYER_CARD_DREW,
+    PLAYER_CARD_PLACED,
     ;
 }

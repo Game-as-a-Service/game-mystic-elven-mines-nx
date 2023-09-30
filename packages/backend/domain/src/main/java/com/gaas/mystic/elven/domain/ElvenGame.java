@@ -1,7 +1,6 @@
 package com.gaas.mystic.elven.domain;
 
 import com.gaas.mystic.elven.domain.card.Card;
-import com.gaas.mystic.elven.domain.card.PathCard;
 import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.domain.role.RoleCard;
 import com.gaas.mystic.elven.events.DomainEvent;
@@ -26,6 +25,7 @@ import static java.util.UUID.randomUUID;
  */
 public class ElvenGame {
     public static final int DESTINATION_CARDS_COUNT = 3;
+    public static final int NUMBER_OF_PLAYER_HAND_CARDS = 5;
     private static final Random RANDOM = new Random();
     // @Id (UUID)
     @Getter
@@ -37,7 +37,7 @@ public class ElvenGame {
 
     private final List<GoalCard> goalCards = new ArrayList<>(DESTINATION_CARDS_COUNT);
 
-    private final List<Card> deck = new ArrayList<>();
+    private final Deck deck = new Deck();
 
     public ElvenGame(List<Player> players) {
         this(randomUUID().toString(), players);
@@ -56,55 +56,17 @@ public class ElvenGame {
     }
 
     public void startGame() {
-        checkStartGameCondition();
-        initializeDeck();
+        ensureNumberOfPlayersIsCorrect();
+        deck.prepareDeck();
         dealRoles();
         dealCards();
     }
 
-    private void checkStartGameCondition() {
+    private void ensureNumberOfPlayersIsCorrect() {
         // check players count
         if (players.size() < 3 || players.size() > 10) {
             throw new IllegalArgumentException("玩家人數必須介於 3 ~ 10 之間");
         }
-    }
-
-    private void initializeDeck() {
-        // clear deck
-        deck.clear();
-        // add cards
-        addPathCards();
-        addDeadEndPathCards();
-        // shuffle
-        Collections.shuffle(deck);
-    }
-
-    private void addPathCards() {
-        for (int i = 0; i < 5; i++) {
-            deck.add(PathCard.cross());
-            deck.add(PathCard.rightCurve());
-            deck.add(PathCard.horizontalT());
-            deck.add(PathCard.straightT());
-        }
-        for (int i = 0; i < 4; i++) {
-            deck.add(PathCard.leftCurve());
-            deck.add(PathCard.horizontal());
-        }
-        for (int i = 0; i < 3; i++) {
-            deck.add(PathCard.straight());
-        }
-    }
-
-    private void addDeadEndPathCards() {
-        deck.add(PathCard.deadEndCross());
-        deck.add(PathCard.deadEndLeftCurve());
-        deck.add(PathCard.deadEndRightCurve());
-        deck.add(PathCard.deadEndHorizontal1());
-        deck.add(PathCard.deadEndHorizontal2());
-        deck.add(PathCard.deadEndStraight1());
-        deck.add(PathCard.deadEndStraight2());
-        deck.add(PathCard.deadEndHorizontalT());
-        deck.add(PathCard.deadEndStraightT());
     }
 
     private void dealRoles() {
@@ -163,13 +125,12 @@ public class ElvenGame {
         }
     }
 
+
     private void dealCards() {
-        // card number
-        int cardNumber = 5;
         // deal cards
         for (Player player : players) {
-            for (int i = 0; i < cardNumber; i++) {
-                player.addHandCard(deck.remove(0));
+            for (int i = 0; i < NUMBER_OF_PLAYER_HAND_CARDS; i++) {
+                player.addHandCard(deck.draw());
             }
         }
     }
