@@ -1,5 +1,6 @@
 package com.gaas.mystic.elven.domain.card;
 
+import com.gaas.mystic.elven.domain.GoalCard;
 import com.gaas.mystic.elven.events.DestinationCardRevealedEvent;
 import com.gaas.mystic.elven.events.DomainEvent;
 
@@ -16,7 +17,7 @@ public class MapCard extends ActionCard {
     public List<DomainEvent> execute(Card.Parameters parameters) {
         Parameters params = (Parameters) parameters;
         GoalCard card = parameters.game.getDestinationCardByIndex(params.destinationCardIndex);
-        return singletonList(new DestinationCardRevealedEvent(params.destinationCardIndex, card.isGold()));
+        return singletonList(new DestinationCardRevealedEvent(params.destinationCardIndex, card.isGoal()));
     }
 
     public static class Parameters extends Card.Parameters {

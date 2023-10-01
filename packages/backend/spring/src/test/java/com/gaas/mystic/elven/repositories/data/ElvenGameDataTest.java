@@ -141,9 +141,9 @@ class ElvenGameDataTest {
 
         var destinationCards = game.getDestinations();
         assertEquals(3, players.size());
-        assertFalse(destinationCards.get(0).isGold());
-        assertTrue(destinationCards.get(1).isGold());
-        assertFalse(destinationCards.get(2).isGold());
+        assertFalse(destinationCards.get(0).isGoal());
+        assertTrue(destinationCards.get(1).isGoal());
+        assertFalse(destinationCards.get(2).isGoal());
 
         players.forEach(this::assertThreeAvailableTools);
         assertEquals("A", A.getName());

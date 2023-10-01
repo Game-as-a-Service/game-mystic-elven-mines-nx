@@ -2,31 +2,31 @@ package com.gaas.mystic.elven.presenters;
 
 import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.presenters.views.PlayerView;
-import com.gaas.mystic.elven.usecases.FindGameUsecase;
+import com.gaas.mystic.elven.usecases.FindPlayersUsecase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class FindGamePresenter implements FindGameUsecase.Presenter {
+public class FindPlayersPresenter implements FindPlayersUsecase.Presenter {
 
-    private FindGameViewModel viewModel;
+    private FindPlayersViewModel viewModel;
 
     @Override
     public void renderGame(ElvenGame game) {
         List<PlayerView> players = game.getPlayers().stream().map(PlayerView::toView).toList();
-        viewModel = new FindGameViewModel(players);
+        viewModel = new FindPlayersViewModel(players);
     }
 
-    public FindGameViewModel present() {
+    public FindPlayersViewModel present() {
         return viewModel;
     }
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class FindGameViewModel {
+    public static class FindPlayersViewModel {
         private List<PlayerView> players;
     }
 

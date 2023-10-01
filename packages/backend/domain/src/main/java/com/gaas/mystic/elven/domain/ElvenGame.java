@@ -1,10 +1,11 @@
 package com.gaas.mystic.elven.domain;
 
 import com.gaas.mystic.elven.domain.card.Card;
-import com.gaas.mystic.elven.domain.card.GoalCard;
 import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.role.RoleCard;
 import com.gaas.mystic.elven.events.DomainEvent;
 import com.gaas.mystic.elven.exceptions.ElvenGameException;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,14 +25,19 @@ import static java.util.UUID.randomUUID;
  */
 public class ElvenGame {
     public static final int DESTINATION_CARDS_COUNT = 3;
+    public static final int NUMBER_OF_PLAYER_HAND_CARDS = 5;
     private static final Random RANDOM = new Random();
     // @Id (UUID)
+    @Getter
     private String id;
     // one-to-many relationship
     private final List<Player> players;
+    @Getter
     private final Maze maze;
 
     private final List<GoalCard> goalCards = new ArrayList<>(DESTINATION_CARDS_COUNT);
+
+    private final Deck deck = new Deck();
 
     public ElvenGame(List<Player> players) {
         this(randomUUID().toString(), players);
@@ -50,18 +56,89 @@ public class ElvenGame {
     }
 
     public void startGame() {
+        ensureNumberOfPlayersIsCorrect();
+        deck.prepareDeck();
+        dealRoles();
+        dealCards();
+    }
+
+    private void ensureNumberOfPlayersIsCorrect() {
         // check players count
-        if (players.size() < DESTINATION_CARDS_COUNT || players.size() > 10) {
+        if (players.size() < 3 || players.size() > 10) {
             throw new IllegalArgumentException("玩家人數必須介於 3 ~ 10 之間");
         }
-        // TODO: initialize game
+    }
+
+    private void dealRoles() {
+        // role number
+        int playerNumber = players.size();
+        // elven and goblin number
+        int elfNumber = 0;
+        int goblinNumber = 0;
+        switch (playerNumber) {
+            case 3 -> {
+                elfNumber = 2;
+                goblinNumber = 1;
+            }
+            case 4 -> {
+                elfNumber = 3;
+                goblinNumber = 1;
+            }
+            case 5 -> {
+                elfNumber = 3;
+                goblinNumber = 2;
+            }
+            case 6 -> {
+                elfNumber = 4;
+                goblinNumber = 2;
+            }
+            case 7 -> {
+                elfNumber = 5;
+                goblinNumber = 2;
+            }
+            case 8 -> {
+                elfNumber = 5;
+                goblinNumber = 3;
+            }
+            case 9 -> {
+                elfNumber = 6;
+                goblinNumber = 3;
+            }
+            case 10 -> {
+                elfNumber = 7;
+                goblinNumber = 3;
+            }
+        }
+        // init roles
+        List<RoleCard> roleCards = new ArrayList<>(playerNumber);
+        for (int i = 0; i < elfNumber; i++) {
+            roleCards.add(RoleCard.ELVEN);
+        }
+        for (int i = 0; i < goblinNumber; i++) {
+            roleCards.add(RoleCard.GOBLIN);
+        }
+        // shuffle
+        Collections.shuffle(roleCards);
+        // deal roles
+        for (int i = 0; i < playerNumber; i++) {
+            players.get(i).setRoleCard(roleCards.get(i));
+        }
+    }
+
+
+    private void dealCards() {
+        // deal cards
+        for (Player player : players) {
+            for (int i = 0; i < NUMBER_OF_PLAYER_HAND_CARDS; i++) {
+                player.addHandCard(deck.draw());
+            }
+        }
     }
 
 
     // 1. 封裝變動之處 (開出 各個 Card 類別 -> 來封裝各個行為）
     // 2. 萃取相同行為 (萃取出共同的部分到介面中）so sad
     // 3. 依賴抽象 (依賴抽象的 Card)
-
     public List<DomainEvent> playCard(Card.Parameters parameters) {
         parameters.player = getPlayer(parameters.playerId);
         parameters.card = parameters.player.getHandCard(parameters.handCardIndex);
@@ -96,20 +173,12 @@ public class ElvenGame {
         }
     }
 
-    public String getId() {
-        return id;
-    }
-
     public List<Player> getPlayers() {
         return List.copyOf(players);
     }
 
     public List<GoalCard> getDestinations() {
         return List.copyOf(goalCards);
-    }
-
-    public Maze getMaze() {
-        return maze;
     }
 
     public GoalCard getDestinationCardByIndex(int destinationCardIndex) {
