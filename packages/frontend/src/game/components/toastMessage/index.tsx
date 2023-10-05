@@ -20,8 +20,9 @@ export default component$(() => {
 
   useVisibleTask$(() => {
     gameStore.on('toastMessage', (msg) => {
-      console.log('toastMessage listen:', msg)
+
       if (msg) {
+        console.log('toastMessage listen:', msg)
         store.isShow = true
         store.txt = msg
         setTimeout(() => {

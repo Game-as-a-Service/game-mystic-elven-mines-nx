@@ -1,34 +1,50 @@
 import useGameStore from '../../stores'
 import { setRoomInfo } from '../../stores/storeRoom'
 import { fetcher } from './fetcher'
-import { IApiCreateGame, IApiJoinGame, IApiQueryGame, PlayCardType } from './type'
+import { IApiCreateGame, IApiGameStart, IApiJoinGame, IApiPlayCard, IApiGamePlayers , PlayCardType } from './type'
 import Constants from '../../Constants'
 
 const API_URL = import.meta.env.PUBLIC_API_URL
 
 // [GET] 建立遊戲
-const createGame = async (data: { playerName: string }) => {
+const gameCreate = async (data: { playerName: string }) => {
   const url = `${API_URL}/games`
   return fetcher({ type: 'POST', url, body: data }).then((res: IApiCreateGame) => {
     return res
   })
 }
 
-// [GET] 查詢遊戲
-const queryGame = async () => {
-  const url = `${API_URL}/games/${Constants.gameId}`
-  return fetcher({ type: 'GET', url }).then((res: IApiQueryGame) => {
-    return res
-  })
-}
-
 // [POST] 加入遊戲
-const joinGame = async (data: { playerName: string }) => {
+const gameJoin = async (data: { playerName: string }) => {
   const url = `${API_URL}/games/${Constants.gameId}`
   return fetcher({ type: 'POST', url, body: data }).then((res: IApiJoinGame) => {
     return res
   })
 }
+
+// [POST] 開始遊戲
+const gameStart = async (data: { playerName: string }) => {
+  const url = `${API_URL}/games/${Constants.gameId}:start`
+  return fetcher({ type: 'POST', url, body: data }).then((res: IApiGameStart) => {
+    return res
+  })
+}
+// [POST] 出牌
+const gamePlayCard = async (data: { playerName: string }) => {
+  const url = `${API_URL}/games/${Constants.gameId}:start`
+  return fetcher({ type: 'POST', url, body: data }).then((res: IApiPlayCard) => {
+    return res
+  })
+}
+
+// [GET] 查詢遊戲玩家資訊
+const gamePlayers = async () => {
+  const url = `${API_URL}/games/${Constants.gameId}/players`
+  return fetcher({ type: 'GET', url }).then((res: IApiGamePlayers) => {
+    return res
+  })
+}
+
 
 //  X [GET] 查玩家手上有甚麼牌
 export const getHandCards = async () => {
@@ -67,8 +83,8 @@ const helloTest = async () => {
 }
 
 export default {
-  createGame,
-  joinGame,
-  queryGame,
+  gameCreate,
+  gameJoin,
+  gamePlayers,
   helloTest,
 }

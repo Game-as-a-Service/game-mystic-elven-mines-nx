@@ -24,6 +24,7 @@
     "node-fetch": "~3.3.0",
     "nx": "16.1.1",
     "nx-cloud": "latest",
+    "socket.io-client": "4.3.0",
     "postcss": "~8.4.16",
     "prettier": "^2.6.2",
     "qwik-nx": "^1.0.0",
@@ -37,11 +38,12 @@
   },
   "dependencies": {
     "@types/ramda": "^0.29.3",
+    "@types/socket.io-client": "^3.0.0",
     "@unpic/qwik": "^0.0.23",
     "clsx": "^2.0.0",
     "framer-motion": "^10.16.2",
     "ramda": "^0.29.0",
-    "socket.io-client": "2.2.0",
+
     "zustand": "^4.4.1"
   }
 }

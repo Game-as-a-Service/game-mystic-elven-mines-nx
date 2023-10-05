@@ -4,44 +4,49 @@ import Constants from '../Constants'
 // 跟遊戲房間有關的Controllers
 
 export const initRoomControllers = () => {
-  const localGameId = localStorage.getItem('gameId')
-  if (localGameId) setGameIdToLocal(localGameId)
-  const localMyPlayerName = localStorage.getItem('myPlayerName')
-  if (localMyPlayerName) setMyPlayerNameToLocal(localMyPlayerName)
+  const id = localStorage.getItem(LocalStorageKey.GAME_ID)
+  if (id) setGameIdToLocal(id)
+  const name = localStorage.getItem(LocalStorageKey.PLAYER_NAME)
+  if (name) setPlayerNameToLocal(name)
 }
 
 export const createGameAndGetId = async (playerName: string) => {
-  const res = await api.createGame({ playerName: playerName })
-  setMyPlayerNameToLocal(playerName)
+  const res = await api.gameCreate({ playerName: playerName })
+  console.log('建立遊戲並拿到gameId',res)
+  setPlayerNameToLocal(playerName)
   setGameIdToLocal(res.gameId)
-  setUserIdToLocal(res.player.playerName)
+  setPlayerIdToLocal(res.playerId || '')
   return res.gameId
 }
 
-export const queryGame = async () => {
-  return await api.queryGame()
+export const gamePlayers = async () => {
+  return await api.gamePlayers()
 }
 
 export const joinRoomByNameAndId = async (playerName: string, gameId: string) => {
-  const res = await api.joinGame({ playerName: playerName })
-  console.log('join', res)
+  const res = await api.gameJoin({ playerName: playerName })
   setGameIdToLocal(gameId)
-  setMyPlayerNameToLocal(playerName)
+  setPlayerNameToLocal(playerName)
+  setPlayerIdToLocal(res.playerId)
+  return true
+}
 
-  // setUserIdToLocal(res.playersId) or setUserIdToLocal(res.userId)
-  return res
+export enum LocalStorageKey {
+  GAME_ID='gameID',
+  PLAYER_NAME='playerName',
+  PLAYER_ID='playerId'
 }
 
 // set to localStorage
 export const setGameIdToLocal = (gameId: string) => {
-  localStorage.setItem('gameId', gameId)
+  localStorage.setItem(LocalStorageKey.GAME_ID, gameId)
   Constants.gameId = gameId
 }
-export const setMyPlayerNameToLocal = (playerName: string) => {
-  localStorage.setItem('playerName', playerName)
-  Constants.myPlayerName = playerName
+export const setPlayerNameToLocal = (playerName: string) => {
+  localStorage.setItem(LocalStorageKey.PLAYER_NAME, playerName)
+  Constants.playerName = playerName
 }
-export const setUserIdToLocal = (userId: string) => {
-  localStorage.setItem('userId', userId)
-  Constants.userId = userId
+export const setPlayerIdToLocal = (playerId: string) => {
+  localStorage.setItem(LocalStorageKey.PLAYER_ID, playerId)
+  Constants.playerId = playerId
 }

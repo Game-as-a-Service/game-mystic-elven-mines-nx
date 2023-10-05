@@ -1,26 +1,43 @@
 // API
-export interface IRoomHost {
-  gameId: 'string'
-  playerId: 'string'
-  player: {
-    playerName: 'string'
-  }
-}
-
 export interface IApiCreateGame {
   gameId: string
-  player: {
-    playerName: string
+  player:{
+    playerName: IPlayer['playerName']
   }
+  playerId?: IPlayer['playerId']
 }
 
-export interface IApiQueryGame {
-  players: { playerName: 'string' }[]
+export type IPlayer = {
+    playerName: string,
+    playerId?: string,
+    cardNum: 0,
+    tools:{
+      toolName: string,
+      available: boolean
+    }[]
+}
+export interface IApiGamePlayers {
+    players:  IPlayer[]
 }
 
 export interface IApiJoinGame {
   players: { playerName: 'string' }[]
   playerId: 'string'
+}
+
+export interface IApiGameStart {
+  message:string
+}
+
+export interface IApiPlayCard {
+  "playerId": string,
+  "handIndex": number,
+  "cardType": string,
+  "targetPlayerId": string,
+  "destinationCardIndex": number,
+  "row": number,
+  "col":number,
+  "flipped": boolean
 }
 
 export interface ICard {

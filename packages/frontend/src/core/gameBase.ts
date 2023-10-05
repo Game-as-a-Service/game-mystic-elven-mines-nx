@@ -12,5 +12,4 @@ export const gameBase: IGameBase = {
 export const setSocket = (socket: Socket | null) => {
   if (isNil(socket)) gameBase.socket?.disconnect()
   gameBase.socket = socket
-  console.log('socket', socket)
 }

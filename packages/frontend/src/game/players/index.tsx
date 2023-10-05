@@ -1,25 +1,25 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
-import { queryGame } from '../../core/controllers/roomController'
-import { IRoomHost } from '../../core/network/api/type'
+import { gamePlayers } from '../../core/controllers/roomController'
+import { IApiGamePlayers, IPlayer, } from '../../core/network/api/type'
 import { PlayerData } from './playerData'
 import { setRoomPlayers } from '../../core/stores/storeRoom'
 
 // 左方玩家資料
 export default component$(() => {
-  const room = useStore<Record<'players', IRoomHost[]>>({ players: [] })
+  const room = useStore<IApiGamePlayers>({ players: [] })
 
   useVisibleTask$(async ({ track }) => {
     track(() => room)
-    const data = await queryGame()
-    console.log('api queryGame', data)
-    room.players = data.players
-    setRoomPlayers(data.players)
+    const{players} = await gamePlayers()
+    console.log('api gamePlayers', players)
+    room.players = players
+    setRoomPlayers(players)
   })
 
   return (
     <>
-      {room.players?.map((player: IRoomHost) => {
-        return <PlayerData key={player.id} playerName={player.playerName} id={player.id} color="players" />
+      {room.players?.map((player: IPlayer) => {
+        return <PlayerData key={player.playerName} playerName={player.playerName} id={player.playerName} color="players" />
       })}
     </>
   )
