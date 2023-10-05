@@ -43,7 +43,7 @@ const onConnect = (socket: Socket) => {
 }
 
 const onPlayersJoinLeft = (socket: Socket) => {
-  socket.on(SocketChannel.PLAYER_JOINED, (players: IPlayer[]) => {
+  socket.on(SocketChannel.PLAYER_JOINED, ({players}:{players:IPlayer[]}) => {
     console.log('%c玩家加入了遊戲', 'color:yellow', players)
     setRoomPlayerNameList(players.map(x=>x.playerName))
     setRoomPlayers(players)
