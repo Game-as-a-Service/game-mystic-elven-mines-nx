@@ -9,6 +9,7 @@ import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.GreaterThan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -52,11 +53,11 @@ class ElvenGameControllerTest {
     }
 
     @Test
-    public void testPlayerFindGame() throws Exception {
+    public void testPlayerFindPlayersInfoBeforeGameStarted() throws Exception {
         Player A = Players.defaultPlayer("A");
         ElvenGame game = givenGameStarted(A);
 
-        mockMvc.perform(get("/api/games/{gameId}", game.getId()))
+        mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.players").isArray())
             .andExpect(jsonPath("$.players[0].playerName").value(A.getName()));
@@ -92,6 +93,47 @@ class ElvenGameControllerTest {
                         "playerName": "A"
                     }"""))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void testGameStart() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+
+        mockMvc.perform(post("/api/games/{gameId}:start", game.getId()))
+            .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testPlayerFindPlayersInfoAfterGameStarted() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+        game.startGame();
+        gameRepository.save(game);
+
+        mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.players").isArray())
+            .andExpect(jsonPath("$.players[0].playerName").value(A.getName()))
+            .andExpect(jsonPath("$.players[0].cardNum").exists())
+            .andExpect(jsonPath("$.players[0].cardNum").isNumber())
+            .andExpect(jsonPath("$.players[0].cardNum").value(5))
+            .andExpect(jsonPath("$.players[0].tools[0].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[0].toolName").value("FLYING_BOOTS"))
+            .andExpect(jsonPath("$.players[0].tools[0].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[0].available").value(true))
+            .andExpect(jsonPath("$.players[0].tools[1].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[1].toolName").value("HARP_OF_HARMONY"))
+            .andExpect(jsonPath("$.players[0].tools[1].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[1].available").value(true))
+            .andExpect(jsonPath("$.players[0].tools[2].toolName").exists())
+            .andExpect(jsonPath("$.players[0].tools[2].toolName").value("STARLIGHT_WAND"))
+            .andExpect(jsonPath("$.players[0].tools[2].available").exists())
+            .andExpect(jsonPath("$.players[0].tools[2].available").value(true));
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------
@@ -182,7 +224,7 @@ class ElvenGameControllerTest {
     }
 
     @Test
-    public void 看終點底下有無金礦喔() throws Exception {
+    public void 看終點底下有無神聖遺物喔() throws Exception {
         Player A = Players.defaultPlayerBuilder("A")
             .hand(new MapCard()).build();
         Player B = Players.defaultPlayer("B");
@@ -230,7 +272,7 @@ class ElvenGameControllerTest {
     void 工具如果被破壞了就不能蓋路了() throws Exception {
         // Given
         Player A = Players.defaultPlayerBuilder("A")
-            .hand(PathCard.T型死路()) // <--- code with me 在搞
+            .hand(PathCard.deadEndStraightT()) // <--- code with me 在搞
             .tools(new Tool[]{
                 new Tool(ToolName.FLYING_BOOTS, true),
                 new Tool(ToolName.HARP_OF_HARMONY, false),
@@ -290,9 +332,9 @@ class ElvenGameControllerTest {
         Player C = Players.defaultPlayer("C");
 
         var game = givenGameStarted(new ElvenGame("GameId", List.of(A, B, C),
-            new Maze(List.of(new Path(0, 0, PathCard.十字路口()),
-                new Path(0, 1, PathCard.十字路口()),
-                new Path(-1, 1, PathCard.右彎(), true)))));
+            new Maze(List.of(new Path(0, 0, PathCard.cross()),
+                new Path(0, 1, PathCard.cross()),
+                new Path(-1, 1, PathCard.rightCurve(), true)))));
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
@@ -313,14 +355,14 @@ class ElvenGameControllerTest {
     void test迷宮案例1() throws Exception {
         // Given
         Player A = Players.defaultPlayerBuilder("A")
-            .hand(PathCard.十字路口())
+            .hand(PathCard.cross())
             .build();
         Player B = Players.defaultPlayerBuilder("B")
-            .hand(PathCard.T型死路())
+            .hand(PathCard.deadEndStraightT())
             .build();
         Player C = Players.defaultPlayerBuilder("C")
-            .hand(PathCard.一字型())
-            .hand(PathCard.右彎())
+            .hand(PathCard.straight())
+            .hand(PathCard.rightCurve())
             .build();
 
         ElvenGame game = givenGameStarted(A, B, C);
@@ -345,10 +387,10 @@ class ElvenGameControllerTest {
         var actualGame = gameRepository.findById(game.getId()).orElseThrow();
         Maze maze = actualGame.getMaze();
 
-        Assertions.assertEquals(PathCard.十字路口(), maze.getPath(0, 1)
+        Assertions.assertEquals(PathCard.cross(), maze.getPath(0, 1)
             .map(Path::getPathCard).orElseThrow());
 
-        Assertions.assertEquals(PathCard.T型死路(), maze.getPath(0, 2)
+        Assertions.assertEquals(PathCard.deadEndStraightT(), maze.getPath(0, 2)
             .map(Path::getPathCard).orElseThrow());
 
         Path actual右彎 = maze.getPath(-1, 1).orElseThrow();

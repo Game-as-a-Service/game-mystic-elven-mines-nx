@@ -4,6 +4,8 @@ import com.gaas.mystic.elven.domain.card.Card;
 import com.gaas.mystic.elven.domain.tool.Tool;
 import com.gaas.mystic.elven.domain.tool.ToolName;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.Singular;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import static java.util.List.copyOf;
 /**
  * 玩家
  */
+@Getter
 @Builder
 public class Player {
     protected String id;
@@ -24,13 +27,17 @@ public class Player {
     @Singular
     protected List<Card> hands;
 
+    @Setter
+    protected RoleCard roleCard;
+
     protected Tool[] tools;
+
 
     public Player(String id, String name, List<Card> hands, Tool... tools) {
         this.id = id;
         this.name = name;
         this.hands = new ArrayList<>(hands);
-        // TODO
+
         if (tools.length != 3) {
             throw new IllegalStateException("The number of tools should be 3");
         }
@@ -40,15 +47,10 @@ public class Player {
             throw new RuntimeException("The player must have mine cart and lantern and pick.");
         }
         this.tools = tools;
-
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public Player(String id, String name, List<Card> hands, RoleCard roleCard, Tool... tools) {
+        this(id, name, hands, tools);
     }
 
     public void addHandCard(Card card) {
@@ -60,10 +62,6 @@ public class Player {
             .filter(tool -> tool.getToolName().equals(toolName))
             .findFirst()
             .orElseThrow(() -> new IllegalArgumentException(format("Tool %s not found.", toolName)));
-    }
-
-    public Tool[] getTools() {
-        return tools;
     }
 
     public List<Card> getHands() {

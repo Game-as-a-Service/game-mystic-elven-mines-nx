@@ -15,9 +15,6 @@ import java.util.List;
 
 import static java.lang.String.format;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @Named
 @RequiredArgsConstructor
 public class PlayCardUsecase {

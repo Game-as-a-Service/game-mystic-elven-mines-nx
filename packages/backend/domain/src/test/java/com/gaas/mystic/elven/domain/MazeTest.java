@@ -12,13 +12,13 @@ class MazeTest {
     @Test
     void originShouldExistsAtR0C0() {
         assertThrows(ElvenGameException.class,
-                () -> new Maze(singletonList(new Path(0, 1, PathCard.十字路口()))));
+                () -> new Maze(singletonList(new Path(0, 1, PathCard.cross()))));
         assertThrows(ElvenGameException.class,
-                () -> new Maze(singletonList(new Path(0, 4, PathCard.十字路口()))));
+                () -> new Maze(singletonList(new Path(0, 4, PathCard.cross()))));
 
-        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.十字路口()))));
-        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.右彎()))));
-        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.一字型()))));
+        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.cross()))));
+        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.rightCurve()))));
+        assertDoesNotThrow(() -> new Maze(singletonList(new Path(0, 0, PathCard.straight()))));
     }
 
 }

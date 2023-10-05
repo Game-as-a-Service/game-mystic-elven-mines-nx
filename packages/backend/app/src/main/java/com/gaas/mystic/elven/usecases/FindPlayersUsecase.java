@@ -12,7 +12,7 @@ import javax.inject.Named;
 
 @Named
 @RequiredArgsConstructor
-public class FindGameUsecase {
+public class FindPlayersUsecase {
 
     private final ElvenGameRepository elvenGameRepository;
 

@@ -7,9 +7,6 @@ import java.util.Collection;
 
 import static java.lang.System.lineSeparator;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @UtilityClass
 public class LoggingUtils {
     public static void log(Collection<Point> points) {

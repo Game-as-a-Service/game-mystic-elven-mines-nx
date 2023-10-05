@@ -25,7 +25,6 @@ import static com.gaas.mystic.elven.repositories.data.ElvenGameData.toData;
  * DevOps:
  *  Walking Skeleton
  * Software Engineering Practice Stack
- * @author johnny@waterballsa.tw
  */
 @Repository
 @RequiredArgsConstructor

@@ -12,9 +12,6 @@ import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.*;
 import static java.util.stream.IntStream.range;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @UtilityClass
 public class StreamUtils {
     public static <T, R> List<T> flatMapToList(R[] array, Function<? super R, ? extends Stream<? extends T>> flatMapping) {

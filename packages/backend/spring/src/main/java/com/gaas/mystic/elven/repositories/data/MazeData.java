@@ -9,9 +9,6 @@ import java.util.Collection;
 
 import static com.gaas.mystic.elven.utils.StreamUtils.mapToList;
 
-/**
- * @author johnny@waterballsa.tw
- */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
