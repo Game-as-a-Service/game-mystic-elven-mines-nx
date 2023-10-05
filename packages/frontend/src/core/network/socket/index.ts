@@ -2,6 +2,8 @@ import { io,Socket } from 'socket.io-client';
 import { setSocket } from '../../gameBase'
 import { SocketChannel } from './types'
 import { IPlayer } from '../api/type';
+import { setGameProgress, setRoomPlayerNameList, setRoomPlayers } from '../../stores/storeRoom';
+import { setToastMessage } from '../../stores/storeUI';
 
 
 interface IInitSocket {
@@ -43,6 +45,8 @@ const onConnect = (socket: Socket) => {
 const onPlayersJoinLeft = (socket: Socket) => {
   socket.on(SocketChannel.PLAYER_JOINED, (players: IPlayer[]) => {
     console.log('%c玩家加入了遊戲', 'color:yellow', players)
+    setRoomPlayerNameList(players.map(x=>x.playerName))
+    setRoomPlayers(players)
   })
 
   socket.on(SocketChannel.PLAYER_LEFT, (players: IPlayer[]) => {
@@ -53,9 +57,12 @@ const onPlayersJoinLeft = (socket: Socket) => {
 const onGameProgress = (socket: Socket) => {
   socket.on(SocketChannel.GAME_STARTED, () => {
     console.log('%c遊戲開始了', 'color:lightgreen')
+    setGameProgress(SocketChannel.GAME_STARTED)
+    setToastMessage('遊戲開始了')
   })
   socket.on(SocketChannel.GAME_ENDED, () => {
     console.log('%c遊戲結束了', 'color:lightgreen')
+    setToastMessage('遊戲結束了')
   })
 }
 

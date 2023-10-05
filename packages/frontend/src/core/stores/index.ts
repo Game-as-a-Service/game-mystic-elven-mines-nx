@@ -1,27 +1,38 @@
 import { createStore } from 'zustand/vanilla'
 import { SelectCardType } from './typing'
-import { IApiCreateGame, IApiGamePlayers, IPlayer, IRoomHost } from '../network/api/type'
+import { IApiCreateGame, IPlayer, IPlayerMap  } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
 import { gameBase } from '../../core/gameBase'
 
 interface IGameState {
+  // Room
   roomInfo: IApiCreateGame | null
   roomPlayers:IPlayer[]
+  roomPlayersMap: IPlayerMap, //{playerName:{資料}}
   roomPlayerNameList:string[]
+
+  // Game
   map: ColListType
   selectedCard: SelectCardType | null
+  gameProgress: string
+
+  // UI
   uiBgImg: 'bg-game-01' | 'bg-create'
   toastMessage: string | null //null就是關閉
 }
 
-export const useGameStore = createStore<IGameState>((set) => ({
+export const useGameStore = createStore<IGameState>(() => ({
   // Room
   roomInfo: null,
   roomPlayers: [],
+  roomPlayersMap:{},
   roomPlayerNameList:[],
 
   // Game
   map: [[]],
+  gameProgress:'',
+
+  // Player
   selectedCard: null,
 
   // UI
@@ -44,12 +55,13 @@ interface IGameStore<T> {
   }
   set: <K extends keyof T>(selector: K, value: T[K]) => void
   get: <K extends keyof T>(selector: K) => T[K]
+  getAll: () => T
 }
 
 export const gameStore: IGameStore<IGameState> = {
   on: (selector, callback) => {
     const unsubscribe = useGameStore.subscribe((state, prevState) => callback(state[selector], prevState[selector]))
-    return unsubscribe
+    return { unsubscribe }
   },
   set: (selector, value) => useGameStore.setState({ [selector]: value }),
   get: (selector) => useGameStore.getState()[selector],

@@ -10,12 +10,21 @@ export interface IApiCreateGame {
 export type IPlayer = {
     playerName: string,
     playerId?: string,
-    cardNum: 0,
+    cardNum: number,
     tools:{
       toolName: string,
       available: boolean
     }[]
+    role?: "ELVEN"|"GOBLIN",
+  cards?: [
+    {
+      type: string
+      name: string
+    }
+  ]
 }
+
+export type IPlayerMap = Record<IPlayer['playerName'],IPlayer>
 export interface IApiGamePlayers {
     players:  IPlayer[]
 }

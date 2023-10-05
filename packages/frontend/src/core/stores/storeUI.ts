@@ -14,3 +14,4 @@ export const setToastMessage = (msg: string | null) => {
 export const setMap = (map: ColListType) => {
   useGameStore.setState({ map })
 }
+

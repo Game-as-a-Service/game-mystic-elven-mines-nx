@@ -1,8 +1,6 @@
-import useGameStore from '../../stores'
-import { setRoomInfo } from '../../stores/storeRoom'
 import { fetcher } from './fetcher'
 import { IApiCreateGame, IApiGameStart, IApiJoinGame, IApiPlayCard, IApiGamePlayers , PlayCardType } from './type'
-import Constants from '../../Constants'
+import { gameBase } from '../../gameBase'
 
 const API_URL = import.meta.env.PUBLIC_API_URL
 
@@ -16,7 +14,7 @@ const gameCreate = async (data: { playerName: string }) => {
 
 // [POST] 加入遊戲
 const gameJoin = async (data: { playerName: string }) => {
-  const url = `${API_URL}/games/${Constants.gameId}`
+  const url = `${API_URL}/games/${gameBase.gameId}`
   return fetcher({ type: 'POST', url, body: data }).then((res: IApiJoinGame) => {
     return res
   })
@@ -24,14 +22,15 @@ const gameJoin = async (data: { playerName: string }) => {
 
 // [POST] 開始遊戲
 const gameStart = async (data: { playerName: string }) => {
-  const url = `${API_URL}/games/${Constants.gameId}:start`
+  const url = `${API_URL}/games/${gameBase.gameId}:start`
   return fetcher({ type: 'POST', url, body: data }).then((res: IApiGameStart) => {
     return res
   })
 }
+
 // [POST] 出牌
 const gamePlayCard = async (data: { playerName: string }) => {
-  const url = `${API_URL}/games/${Constants.gameId}:start`
+  const url = `${API_URL}/games/${gameBase.gameId}:start`
   return fetcher({ type: 'POST', url, body: data }).then((res: IApiPlayCard) => {
     return res
   })
@@ -39,7 +38,7 @@ const gamePlayCard = async (data: { playerName: string }) => {
 
 // [GET] 查詢遊戲玩家資訊
 const gamePlayers = async () => {
-  const url = `${API_URL}/games/${Constants.gameId}/players`
+  const url = `${API_URL}/games/${gameBase.gameId}/players`
   return fetcher({ type: 'GET', url }).then((res: IApiGamePlayers) => {
     return res
   })
@@ -54,25 +53,25 @@ export const getHandCards = async () => {
 
 //  X [POST] 玩家打牌
 export const playCard = async (body: PlayCardType) => {
-  const url = `${API_URL}/games/${Constants.gameId}:playCard`
+  const url = `${API_URL}/games/${gameBase.gameId}:playCard`
   return fetcher({ type: 'POST', url, body })
 }
 
 //  X [POST] 玩家棄牌
 export const foldCard = async (body: PlayCardType) => {
-  const url = `${API_URL}/games/${Constants.gameId}:foldCard`
+  const url = `${API_URL}/games/${gameBase.gameId}:foldCard`
   return fetcher({ type: 'POST', url, body })
 }
 
 //  X [GET] 取得地圖資訊
 export const mapCards = async (body: PlayCardType) => {
-  const url = `${API_URL}/games/${Constants.gameId}/mapCards`
+  const url = `${API_URL}/games/${gameBase.gameId}/mapCards`
   return fetcher({ type: 'POST', url, body })
 }
 
 //  X [GET] 取得玩家資訊
 export const players = async (body: PlayCardType) => {
-  const url = `${API_URL}/games/${Constants.gameId}/players`
+  const url = `${API_URL}/games/${gameBase.gameId}/players`
   return fetcher({ type: 'POST', url, body })
 }
 
@@ -82,9 +81,15 @@ const helloTest = async () => {
   return fetcher({ type: 'GET', url })
 }
 
-export default {
+const defaultData =  {
   gameCreate,
   gameJoin,
   gamePlayers,
   helloTest,
+  gameStart,
+  gamePlayCard
 }
+
+gameBase.api = defaultData
+
+export default {...defaultData}

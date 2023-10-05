@@ -3,9 +3,17 @@ import { isNil } from 'ramda'
 
 interface IGameBase {
   socket: Socket | null
+  gameId: string
+  playerName: string
+  playerId: string
+  api: any
 }
 export const gameBase: IGameBase = {
   socket: null,
+  api: null,
+  gameId: '',
+  playerName: '',
+  playerId: '',
 }
 
 // Set Socket.io

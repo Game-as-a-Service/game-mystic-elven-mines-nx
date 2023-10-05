@@ -2,8 +2,8 @@ import { component$, Slot, useVisibleTask$, useSignal } from '@builder.io/qwik'
 import useGameStore, { gameStore } from '../core/stores/index'
 
 import '../core/styles/game.css'
-import ToastMessage from '../game/components/toastMessage'
-import { gameBase } from '../core/gameBase'
+import ToastMessage from '../game/toastMessage'
+import StartGame from '../game/startGame'
 
 export default component$(() => {
   const bgFileName = useSignal<'bg-game-01' | 'bg-create'>(useGameStore.getState().uiBgImg)

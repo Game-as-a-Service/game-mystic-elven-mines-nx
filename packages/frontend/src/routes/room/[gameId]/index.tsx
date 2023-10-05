@@ -1,20 +1,22 @@
 import { component$, $, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
-
+import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { isServer } from '@builder.io/qwik/build'
 
 import { setToastMessage, setUIBg } from '../../../core/stores/storeUI'
 import { connectRoomSocket } from '../../../core/network/socket'
 
-import Map from '../../../game/map'
-import Players from '../../../game/players'
-import PlayingHands from '../../../game/handCards'
-import BtnCircleUI from '../../../game/components/btnCircleUI'
-import { useLocation, useNavigate } from '@builder.io/qwik-city'
+
 import { gameBase } from '../../../core/gameBase'
-import { PlayerData } from '../../../game/players/playerData'
-import { gameStore } from '../../../core/stores'
-import { IPlayer } from 'packages/frontend/src/core/network/api/type'
-import { LocalStorageKey } from 'packages/frontend/src/core/controllers/roomController'
+
+import Map from '../../../game/map'
+import PlayingHands from '../../../game/handCards'
+import LeftPlayers from '../../../game/leftPlayers'
+import PlayerData from '../../../game/leftPlayers/playerData'
+import RightActions from '../../../game/rightActions'
+
+import { IPlayer } from '../../../core/network/api/type'
+import { LocalStorageKey } from '../../../core/controllers/roomController'
+import StartGame from 'packages/frontend/src/game/startGame'
 
 interface IStore {
   playerName: string
@@ -27,40 +29,14 @@ export default component$(() => {
 
   const nav = useNavigate()
   const loc = useLocation()
-  const copyValue = useSignal(loc.url.origin + '/join/' + loc.params.gameId || '')
+  const copyValue = useSignal<any>(loc.url.origin + '/join/' + loc.params.gameId || '')
   const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
-
-
-  const clickShareToFriend = $(async () => {
-
-    const textArea = document.getElementById('copy-area');
-    if(textArea){
-    try {
-      textArea?.select();
-      document.execCommand('copy');
-      } catch (err) {
-        console.error('Unable to copy', err);
-      }
-      finally{
-        setToastMessage('url已複製到剪貼簿, 請分享給朋友')
-        textArea.blur();
-      }
-    }
-  }
-  )
-
-  const clickExit = $(() => {
-    gameBase.socket?.disconnect() //斷開socket
-    nav(`/`)
-  })
 
   // 連接socket
   useVisibleTask$(() => {
-    gameStore.on('roomPlayers', (list) => (store.players = list))
     const gameId = localStorage.getItem(LocalStorageKey.GAME_ID) || ''
     const playerId = localStorage.getItem(LocalStorageKey.PLAYER_ID) || ''
     store.playerName = localStorage.getItem(LocalStorageKey.PLAYER_NAME) || ''
-
     if (gameId && playerId) connectRoomSocket({ gameId,playerId })
   })
 
@@ -80,28 +56,48 @@ export default component$(() => {
     }
   })
 
+
+  // Actions click
+  const clickShareToFriend = $(async () => {
+
+    const textArea = document.getElementById('copy-area');
+    if(textArea){
+    try {
+      textArea?.select();
+      document.execCommand('copy');
+      } catch (err) {
+        console.error('Unable to copy', err);
+      }
+      finally{
+        setToastMessage('url已複製到剪貼簿, 請分享給朋友')
+        textArea.blur();
+      }
+    }
+  }
+  )
+  const clickExit = $(() => {
+    gameBase.socket?.disconnect() //斷開socket
+    nav(`/`)
+  })
+
+
   return (
     <main class="relative over-flow-hidden h-screen flex flex-col">
+
       {/* Player Map Button */}
       <article class="flex flex-row justify-between over-flow-hidden">
         <section class="p-5 flex-1 flex flex-col gap-2">
           <div class="text-[#FFE794] font-bold text-center">神秘精靈礦</div>
 
           <textarea id="copy-area" class="fixed bottom-[100vh]">{copyValue}</textarea>
-          <Players />
+          <LeftPlayers />
         </section>
         <section class="p-5 flex-initial w-2/3 h-screen overflow-scroll no-scrollbar">
           <Map></Map>
           <div class="h-[5.5rem]" />
         </section>
-        <section class="p-5 pl-0 flex-1 flex flex-row justify-between">
-          <div class="opacity-0">_</div>
-          <div class="flex flex-col gap-3">
-            <BtnCircleUI>1/3</BtnCircleUI>
-            <BtnCircleUI cb={clickExit}>EXIT</BtnCircleUI>
-            <BtnCircleUI cb={clickShareToFriend}>邀請朋友</BtnCircleUI>
-          </div>
-        </section>
+
+        <RightActions data={{clickShareToFriend,clickExit}}/>
       </article>
 
       {/* Me HandCard  */}
@@ -109,7 +105,7 @@ export default component$(() => {
         <div class="relative w-full flex flex-row justify-between">
           <section class="p-5 flex-1 flex flex-col gap-2">
             <div class="h-[2rem]">
-              <PlayerData key={'player-me'} playerName={store.playerName} id={'player-me'} color="me" />
+              <PlayerData key={'player-me'} playerName={store.playerName} color="me" />
             </div>
             <div class="h-5"></div>
           </section>
@@ -121,8 +117,11 @@ export default component$(() => {
           <section class="p-5 pl-0 flex-1 flex flex-row justify-between"> </section>
         </div>
       </article>
+
+      <StartGame/>
     </main>
   )
 })
 
 const delay = (time: number) => new Promise((res) => setTimeout(res, time))
+

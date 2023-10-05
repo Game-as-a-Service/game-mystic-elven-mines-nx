@@ -1,3 +1,5 @@
+
+
 // 卡片
 export enum CardTypeEnum {
   Paths = 'Card_Path', // 道路卡
@@ -16,17 +18,17 @@ export enum FinishGroup {
   // RockCollapse = 'RockCollapse', // 岩石塌方
   MagicalInterference = 'MagicalInterference', // 魔法干擾
 }
-export enum Actions {
+export enum ToolName {
+  FLYING_BOOTS = 'FLYING_BOOTS', //飛行靴
+  HARP_OF_HARMONY = 'HARP_OF_HARMONY', //音樂之琴
+  STARLIGHT_WAND = 'STARLIGHT_WAND', //星光之杖
+
   //原本遊戲的
   Rockfall = 'Action_Rockfall', // 落石卡
   Map = 'Action_Map', //地圖卡,
-
-  //討論選一
-  FlyingBoots = 'Action_FlyingBoots', //飛行靴
+  //Other
   IllusionCrystalBall = 'Action_IllusionCrystalBall', //幻視水晶球
-  HarpOfHarmony = 'Action_HarpOfHarmony', //音樂之琴
   RainbowCloak = 'Action_RainbowCloak', //彩虹斗篷
-  StarlightWand = 'Action_StarlightWand', //星光之杖
   MysticMap = 'Action_MysticMap', //神秘地圖
 
   // 飛行靴:這對靴子能賦予精靈飛行的能力,讓他們能夠越過障礙物或跨越深淵。它們可以幫助精靈達到高處或遠離危險的地方,同時也提供了更大的行動自由度。

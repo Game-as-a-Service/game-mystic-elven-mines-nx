@@ -1,5 +1,5 @@
 import api from '../network/api'
-import Constants from '../Constants'
+import { gameBase } from '../gameBase'
 
 // 跟遊戲房間有關的Controllers
 
@@ -40,13 +40,13 @@ export enum LocalStorageKey {
 // set to localStorage
 export const setGameIdToLocal = (gameId: string) => {
   localStorage.setItem(LocalStorageKey.GAME_ID, gameId)
-  Constants.gameId = gameId
+  gameBase.gameId = gameId
 }
 export const setPlayerNameToLocal = (playerName: string) => {
   localStorage.setItem(LocalStorageKey.PLAYER_NAME, playerName)
-  Constants.playerName = playerName
+  gameBase.playerName = playerName
 }
 export const setPlayerIdToLocal = (playerId: string) => {
   localStorage.setItem(LocalStorageKey.PLAYER_ID, playerId)
-  Constants.playerId = playerId
+  gameBase.playerId = playerId
 }
