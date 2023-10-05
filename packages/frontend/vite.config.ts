@@ -24,6 +24,7 @@ export default defineConfig({
       // Allow serving files from the project root
       allow: ['../../'],
     },
+    host: true, //手機測試
   },
   preview: {
     headers: {

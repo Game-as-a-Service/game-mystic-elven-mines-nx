@@ -7,6 +7,7 @@ import { gameBase } from '../../core/gameBase'
 interface IGameState {
   roomInfo: IApiCreateGame | null
   roomPlayers:IPlayer[]
+  roomPlayerNameList:string[]
   map: ColListType
   selectedCard: SelectCardType | null
   uiBgImg: 'bg-game-01' | 'bg-create'
@@ -17,6 +18,7 @@ export const useGameStore = createStore<IGameState>((set) => ({
   // Room
   roomInfo: null,
   roomPlayers: [],
+  roomPlayerNameList:[],
 
   // Game
   map: [[]],

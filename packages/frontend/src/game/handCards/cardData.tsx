@@ -22,7 +22,7 @@ export const CardData = component$(({ color, cName, cType }: { color: string; cN
 
   return (
     // <Ratio ratio={63 / 88} width={100} height={150}>
-    <div class={clsx('shadow-lg', 'w-full h-full')} onClick$={() => selectCard()}>
+    <div class={clsx('shadow-lg', 'w-full h-full')} onPointerUp$={() => selectCard()}>
       <small class="absolute top-[50%]">{cName}</small>
       <Image src={getImageUrlByApiCardName(cName)} alt="地圖卡"></Image>
     </div>

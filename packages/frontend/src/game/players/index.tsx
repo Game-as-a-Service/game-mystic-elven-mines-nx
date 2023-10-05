@@ -2,7 +2,7 @@ import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
 import { gamePlayers } from '../../core/controllers/roomController'
 import { IApiGamePlayers, IPlayer, } from '../../core/network/api/type'
 import { PlayerData } from './playerData'
-import { setRoomPlayers } from '../../core/stores/storeRoom'
+import { setRoomPlayerNameList, setRoomPlayers } from '../../core/stores/storeRoom'
 
 // 左方玩家資料
 export default component$(() => {
@@ -14,6 +14,7 @@ export default component$(() => {
     console.log('api gamePlayers', players)
     room.players = players
     setRoomPlayers(players)
+    setRoomPlayerNameList(players.map(x=>x.playerName))
   })
 
   return (

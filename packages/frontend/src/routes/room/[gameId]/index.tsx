@@ -1,4 +1,4 @@
-import { component$, $, useStore, useVisibleTask$ } from '@builder.io/qwik'
+import { component$, $, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
 
 import { isServer } from '@builder.io/qwik/build'
 
@@ -24,15 +24,30 @@ interface IStore {
 
 export default component$(() => {
   setUIBg('game')
-  const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
+
   const nav = useNavigate()
   const loc = useLocation()
+  const copyValue = useSignal(loc.url.origin + '/join/' + loc.params.gameId || '')
+  const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
+
 
   const clickShareToFriend = $(async () => {
-    const url = loc.url.origin + '/join/' + loc.params.gameId
-    await navigator.clipboard.writeText(url) // copy url to clipboard
-    setToastMessage('url已複製到剪貼簿, 請分享給朋友')
-  })
+
+    const textArea = document.getElementById('copy-area');
+    if(textArea){
+    try {
+      textArea?.select();
+      document.execCommand('copy');
+      } catch (err) {
+        console.error('Unable to copy', err);
+      }
+      finally{
+        setToastMessage('url已複製到剪貼簿, 請分享給朋友')
+        textArea.blur();
+      }
+    }
+  }
+  )
 
   const clickExit = $(() => {
     gameBase.socket?.disconnect() //斷開socket
@@ -46,7 +61,6 @@ export default component$(() => {
     const playerId = localStorage.getItem(LocalStorageKey.PLAYER_ID) || ''
     store.playerName = localStorage.getItem(LocalStorageKey.PLAYER_NAME) || ''
 
-    console.log('準備打socket',{gameId,playerId})
     if (gameId && playerId) connectRoomSocket({ gameId,playerId })
   })
 
@@ -72,6 +86,8 @@ export default component$(() => {
       <article class="flex flex-row justify-between over-flow-hidden">
         <section class="p-5 flex-1 flex flex-col gap-2">
           <div class="text-[#FFE794] font-bold text-center">神秘精靈礦</div>
+
+          <textarea id="copy-area" class="fixed bottom-[100vh]">{copyValue}</textarea>
           <Players />
         </section>
         <section class="p-5 flex-initial w-2/3 h-screen overflow-scroll no-scrollbar">

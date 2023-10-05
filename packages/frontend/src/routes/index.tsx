@@ -12,7 +12,7 @@ export default component$(() => {
   })
 
   const gotoJoinPage = $(() => {
-    window.location.href = './join'
+    window.location.href = './join/'
   })
 
   useVisibleTask$(() => {
@@ -28,12 +28,12 @@ export default component$(() => {
         <br />
 
         <div class="flex flex-col max-w-[500px] space-y-3">
-          <button class="bg-white rounded p-3" onClick$={gotoCreatePage}>
+          <button class="bg-white rounded p-3" onPointerUp$={gotoCreatePage}>
             新創遊戲房間
           </button>
-          <button class="bg-white rounded p-3" onClick$={gotoJoinPage}>
+          {/* <button class="bg-white rounded p-3" onPointerUp$={gotoJoinPage}>
             加入遊戲房間
-          </button>
+          </button> */}
         </div>
       </section>
     </main>

@@ -73,7 +73,7 @@ const ColData = component$((props: any) => {
   })
 
   return (
-    <div key={'row-' + selfY + '-' + selfX} class="map-col" onClick$={() => clickCol()}>
+    <div key={'row-' + selfY + '-' + selfX} class="map-col" onPointerUp$={() => clickCol()}>
       <Slot name="SlotCard" />
     </div>
   )

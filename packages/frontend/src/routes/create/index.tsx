@@ -8,8 +8,10 @@ import { $dom } from '../../core/utils/dom.util'
 export default component$(() => {
   const nav = useNavigate()
   const handleClick = $(async () => {
+
     const playerName: string = ($dom('#player-name') as HTMLInputElement)?.value || ''
     const gameId = await createGameAndGetId(playerName)
+
     nav(`/room/${gameId}`)
   })
 
@@ -26,7 +28,7 @@ export default component$(() => {
 
         <div class="flex flex-col max-w-[500px] space-y-3">
           <input id="player-name" class="border mb-1"></input>
-          <button onClick$={handleClick} class="bg-green-300  p-1 rounded-sm">
+          <button onPointerUp$={handleClick} class="bg-green-300  p-1 rounded-sm">
             送出
           </button>
         </div>

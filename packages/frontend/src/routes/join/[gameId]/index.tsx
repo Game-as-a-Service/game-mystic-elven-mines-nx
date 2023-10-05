@@ -31,7 +31,7 @@ export default component$(() => {
         <div class="flex flex-col max-w-[500px] space-y-3">
           <input id="player-name" class="border mb-1" placeholder="你的名字"></input>
           <input id="game-id" class="border mb-1" placeholder="房間Id"></input>
-          <button onClick$={goRoom} class="bg-slate-300 p-1 rounded-sm">
+          <button onPointerUp$={goRoom} class="bg-slate-300 p-1 rounded-sm">
             送出
           </button>
         </div>
