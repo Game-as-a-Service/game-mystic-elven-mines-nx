@@ -4,6 +4,8 @@ import com.gaas.mystic.elven.exceptions.NotFoundException;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
 import com.gaas.mystic.elven.socket.SocketChannel;
 import com.gaas.mystic.elven.socket.SocketService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 import javax.inject.Named;
@@ -27,6 +29,13 @@ public class StartGameUsecase {
         elvenGameRepository.save(game);
 
         // 推
-        socketService.sendMessageToGamePlayers(gameId, SocketChannel.GAME_STARTED, "Game started");
+        StartGameMessage message = new StartGameMessage(game.getPlayers().get(0).getName());
+        socketService.sendMessageToGamePlayers(gameId, SocketChannel.GAME_STARTED, message);
     }
+}
+
+@Data
+@AllArgsConstructor
+class StartGameMessage {
+    String nextPlayerName;
 }

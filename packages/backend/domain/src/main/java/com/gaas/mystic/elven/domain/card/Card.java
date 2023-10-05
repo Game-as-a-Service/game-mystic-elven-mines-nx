@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * 卡片
  */
-@FunctionalInterface
 public interface Card {
 
     List<DomainEvent> execute(Parameters parameters);
@@ -27,6 +26,12 @@ public interface Card {
             this.handCardIndex = handCardIndex;
         }
 
+
     }
+
+//    String getType();
+    CardType getType();
+
+    String getName();
 
 }

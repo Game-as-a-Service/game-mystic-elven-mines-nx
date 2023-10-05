@@ -3,11 +3,13 @@ package com.gaas.mystic.elven.domain;
 import com.gaas.mystic.elven.domain.card.Card;
 import com.gaas.mystic.elven.domain.card.PathCard;
 import com.gaas.mystic.elven.exceptions.ElvenGameException;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Getter
 public class Deck {
 
     private final List<Card> cards = new ArrayList<>();

@@ -115,13 +115,13 @@ class ElvenGameDataTest {
         ElvenGameData data = new ElvenGameData("G",
             asList(new PlayerData("A", "A", tools,
                     asList(CardData.toData(new FixCard(ToolName.HARP_OF_HARMONY)),
-                        CardData.toData(new MapCard()))),
+                        CardData.toData(new MapCard())), "ELVEN"),
                 new PlayerData("B", "B", tools,
                     asList(CardData.toData(new FixCard(ToolName.FLYING_BOOTS)),
-                        CardData.toData(new BrokenCard(ToolName.STARLIGHT_WAND)))),
+                        CardData.toData(new BrokenCard(ToolName.STARLIGHT_WAND))), "ELVEN"),
                 new PlayerData("C", "C", tools,
                     asList(CardData.toData(new FixCard(ToolName.STARLIGHT_WAND)),
-                        CardData.toData(new RockFallCard())))
+                        CardData.toData(new RockFallCard())), "GOBLIN")
             ),
             new MazeData(List.of(
                 new PathData(0, 0, PathCard.CROSS, false, null),

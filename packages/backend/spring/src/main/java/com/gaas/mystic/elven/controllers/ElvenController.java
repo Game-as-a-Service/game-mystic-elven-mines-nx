@@ -1,14 +1,10 @@
 package com.gaas.mystic.elven.controllers;
 
-import com.gaas.mystic.elven.presenters.CreateGamePresenter;
+import com.gaas.mystic.elven.presenters.*;
 import com.gaas.mystic.elven.presenters.CreateGamePresenter.CreateGameViewModel;
-import com.gaas.mystic.elven.presenters.FindPlayersPresenter;
+import com.gaas.mystic.elven.presenters.FindPlayerPresenter.FindPlayerViewModel;
 import com.gaas.mystic.elven.presenters.FindPlayersPresenter.FindPlayersViewModel;
-import com.gaas.mystic.elven.presenters.JoinGamePresenter;
 import com.gaas.mystic.elven.presenters.JoinGamePresenter.JoinGameViewModel;
-import com.gaas.mystic.elven.presenters.PlayCardPresenter;
-import com.gaas.mystic.elven.socket.SocketChannel;
-import com.gaas.mystic.elven.socket.SocketService;
 import com.gaas.mystic.elven.usecases.*;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.*;
@@ -28,6 +24,7 @@ public class ElvenController {
 
     private final CreateGameUsecase createGameUsecase;
     private final FindPlayersUsecase findPlayersUsecase;
+    private final FindPlayerUsecase findPlayerUsecase;
     private final JoinGameUsecase joinGameUsecase;
     private final PlayCardUsecase playCardUsecase;
     private final StartGameUsecase startGameUsecase;
@@ -61,6 +58,15 @@ public class ElvenController {
     public FindPlayersViewModel findPlayers(@PathVariable String gameId) {
         var presenter = new FindPlayersPresenter();
         findPlayersUsecase.execute(gameId, presenter);
+        return presenter.present();
+    }
+
+    @Operation(summary = "查詢玩家自己的資訊")
+    @GetMapping("/{gameId}/player/{playerId}")
+    public FindPlayerViewModel findPlayer(@PathVariable String gameId,
+                                          @PathVariable String playerId) {
+        var presenter = new FindPlayerPresenter();
+        findPlayerUsecase.execute(gameId, playerId, presenter);
         return presenter.present();
     }
 
@@ -130,4 +136,21 @@ public class ElvenController {
         }
     }
 
+}
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+class Response<T>{
+    private boolean success;
+    private T data;
+    private String message;
+
+    public static <T> Response<T> success(T data){
+        return new Response<>(true, data, null);
+    }
+
+    public static <T> Response<T> fail(String message){
+        return new Response<>(false, null, message);
+    }
 }
