@@ -21,6 +21,7 @@ public class ElvenGameData {
     private MazeData maze;
     private List<PathData> destinations = new ArrayList<>(ElvenGame.DESTINATION_CARDS_COUNT);
 
+
     public static ElvenGameData /*Data*/ toData(/*聚合根*/ ElvenGame elvenGame) {
         var maze = MazeData.toData(elvenGame.getMaze());
         var players = mapToList(elvenGame.getPlayers(), PlayerData::toData);

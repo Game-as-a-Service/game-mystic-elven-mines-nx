@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.0/socket.io.js" integrity="sha512-g6IDmcVyjQOptVso4kf6adJ5TOfiAznQLg47qiscWvor/cMHje2RCh2tU39DB4udBIm5ZhL4CPcvVDHEzo0HgA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.0/socket.io.js"
+          integrity="sha512-g6IDmcVyjQOptVso4kf6adJ5TOfiAznQLg47qiscWvor/cMHje2RCh2tU39DB4udBIm5ZhL4CPcvVDHEzo0HgA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
+
 
     // create game api
     function createGame() {
@@ -21,31 +24,8 @@
       }).then(function (myJson) {
         console.log(myJson);
         document.getElementById('gameId').value = myJson.gameId;
-        connectSocket(myJson.player.playerId, myJson.gameId);
-      }).catch(function (err) {
-        console.log(err);
-      });
-    }
-
-    // find game api
-    function findGame() {
-      // get gameId
-      const gameId = document.getElementById('gameId').value;
-      // check gameId
-      if (!gameId) {
-        alert('請輸入 game id');
-        return;
-      }
-      // send request
-      fetch('/api/games/' + gameId, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(function (response) {
-        return response.json();
-      }).then(function (myJson) {
-        console.log(myJson);
+        document.getElementById('playerId').value = myJson.playerId;
+        connectSocket(myJson.playerId, myJson.gameId);
       }).catch(function (err) {
         console.log(err);
       });
@@ -79,6 +59,102 @@
       });
     }
 
+    function startGame() {
+      // get gameId
+      const gameId = document.getElementById('gameId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId + ":start", {
+        method: 'POST'
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    // find players api
+    function findPlayers() {
+      // get gameId
+      const gameId = document.getElementById('gameId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId + "/players", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }    // find players api
+    function findPlayers() {
+      // get gameId
+      const gameId = document.getElementById('gameId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId + "/players", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+    // find player api
+    function findPlayer() {
+      // get gameId and playerId
+      const gameId = document.getElementById('gameId').value;
+      const playerId = document.getElementById('playerId').value;
+      // check gameId
+      if (!gameId) {
+        alert('請輸入 game id');
+        return;
+      }
+      if (!playerId) {
+        alert('請輸入 player id');
+        return;
+      }
+      // send request
+      fetch('/api/games/' + gameId + "/player/" + playerId , {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(function (response) {
+        return response.json();
+      }).then(function (myJson) {
+        console.log(myJson);
+      }).catch(function (err) {
+        console.log(err);
+      });
+    }
+
+
     function connectSocket(playerId, gameId) {
       // socket.io client
       const socket = io("ws://127.0.0.1:8888/websocket", {query: {playerId: playerId, gameId: gameId}});
@@ -102,8 +178,14 @@
       socket.on('PLAYER_LEFT', function (data) {
         console.log('player left', data);
       });
+      socket.on('GAME_STARTED', function (data) {
+        console.log('game start', data);
+      });
     }
+
+
   </script>
+
 </head>
 <body>
 <h1>Success</h1>
@@ -114,13 +196,23 @@
     <input type="text" id="gameId">
   </p>
   <p>
+    <label for="gameId">player id:</label>
+    <input type="text" id="playerId">
+  </p>
+  <p>
     <button onclick="createGame()">建立遊戲</button>
   </p>
   <p>
-    <button onclick="findGame()">查詢遊戲</button>
+    <button onclick="joinGame()">加入遊戲</button>
   </p>
   <p>
-    <button onclick="joinGame()">加入遊戲</button>
+    <button onclick="startGame()">開始遊戲</button>
+  </p>
+  <p>
+    <button onclick="findPlayers()">查詢所有玩家</button>
+  </p>
+  <p>
+    <button onclick="findPlayer()">查詢玩家自己</button>
   </p>
 
   <p><a href="/swagger-ui/index.html"> Swagger UI </a></p>

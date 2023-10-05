@@ -19,6 +19,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class FixCard extends ActionCard {
+
+    public final CardType type = CardType.FIX;
+    public final String name = "FixCard";
     protected ToolName toolName;
 
     @Override

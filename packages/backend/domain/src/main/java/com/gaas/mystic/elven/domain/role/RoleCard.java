@@ -6,5 +6,12 @@ package com.gaas.mystic.elven.domain.role;
  * 哥布林 Goblin
  */
 public enum RoleCard {
-    ELVEN, GOBLIN
+    ELVEN, GOBLIN;
+
+    public static RoleCard from(String name) {
+        if (name == null) {
+            return null;
+        }
+        return valueOf(name);
+    }
 }

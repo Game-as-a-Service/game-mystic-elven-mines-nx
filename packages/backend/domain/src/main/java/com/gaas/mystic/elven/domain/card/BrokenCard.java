@@ -19,6 +19,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class BrokenCard extends ActionCard {
+
+    public final CardType type = CardType.BROKEN;
+    public final String name = "BrokenCard";
     private ToolName toolName;
 
     @Override
