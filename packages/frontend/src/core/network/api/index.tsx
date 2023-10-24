@@ -47,7 +47,7 @@ const gamePlayers = async () => {
 
 //  X [GET] 查玩家手上有甚麼牌
 export const getHandCards = async () => {
-  const url = `${API_URL}//card/getHandCards?playerId={id}`
+  const url = `${API_URL}/card/getHandCards?playerId={id}`
   return fetcher({ type: 'GET', url })
 }
 

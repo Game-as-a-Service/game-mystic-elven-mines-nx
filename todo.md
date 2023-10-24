@@ -11,11 +11,8 @@
 - [ ] dayday:音效抽牌
 - [ ] dayday:音效放牌
 
-- [ ] 討論:PLAYER_JOINED PLAYER_LEFT資料
+- [ ] 討論:PLAYER_JOINED PLAYER_LEFT資料 (改為playerNames string[] , 跟有一個playerMap的資料)
 - [ ] 討論:GAME_NEXT_ROUND資料
-
-
-
 
 
 現況socket:當有玩家離開遊戲 前端會收到離開玩家的userId

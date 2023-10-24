@@ -1,9 +1,10 @@
 import { io,Socket } from 'socket.io-client';
 import { setSocket } from '../../gameBase'
-import { SocketChannel } from './types'
+import { IPlayerJoin, SocketChannel } from './types'
 import { IPlayer } from '../api/type';
 import { setGameProgress, setRoomPlayerNameList, setRoomPlayers } from '../../stores/storeRoom';
 import { setToastMessage } from '../../stores/storeUI';
+import { getGamePlayersData } from '../../controllers/roomController';
 
 
 interface IInitSocket {
@@ -33,24 +34,27 @@ export const connectRoomSocket = ({ playerId, gameId }: IInitSocket) => {
 const onConnect = (socket: Socket) => {
   socket.on('connect',  ()=> {
     console.log('%cSocket connected', 'color:lightgreen')
+    getGamePlayersData()
   })
   socket.on('disconnect', ()=>  {
     console.log('%cSocket disconnected','color:red');
   });
   socket.on('reconnect_attempt', (attempts) => {
     console.log('%cTry to reconnect at ' + attempts + ' attempt(s).','color:lightgreen');
+    getGamePlayersData()
   });
 }
 
 const onPlayersJoinLeft = (socket: Socket) => {
-  socket.on(SocketChannel.PLAYER_JOINED, ({players}:{players:IPlayer[]}) => {
-    console.log('%c玩家加入了遊戲', 'color:yellow', players)
-    setRoomPlayerNameList(players.map(x=>x.playerName))
-    setRoomPlayers(players)
+  socket.on(SocketChannel.PLAYER_JOINED, (res:IPlayerJoin) => {
+    console.log('%c玩家加入了遊戲', 'color:yellow', res.playerName)
+    getGamePlayersData()
+    //TODO 改為playerNames string[] , 跟有一個playerMap的資料
   })
 
-  socket.on(SocketChannel.PLAYER_LEFT, (players: IPlayer[]) => {
-    console.log('%c玩家離開了遊戲', 'color:gray', players)
+
+  socket.on(SocketChannel.PLAYER_LEFT, (res: IPlayerJoin) => {
+    console.log('%c玩家離開了遊戲', 'color:brown', res.playerName)
   })
 }
 

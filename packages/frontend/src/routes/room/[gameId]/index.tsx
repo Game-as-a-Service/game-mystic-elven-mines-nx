@@ -3,10 +3,6 @@ import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { isServer } from '@builder.io/qwik/build'
 
 import { setToastMessage, setUIBg } from '../../../core/stores/storeUI'
-import { connectRoomSocket } from '../../../core/network/socket'
-
-
-import { gameBase } from '../../../core/gameBase'
 
 import Map from '../../../game/map'
 import PlayingHands from '../../../game/handCards'
@@ -15,8 +11,9 @@ import PlayerData from '../../../game/leftPlayers/playerData'
 import RightActions from '../../../game/rightActions'
 
 import { IPlayer } from '../../../core/network/api/type'
-import { LocalStorageKey } from '../../../core/controllers/roomController'
+import {  getGameInfo, joinRoomByNameAndId } from '../../../core/controllers/roomController'
 import StartGame from 'packages/frontend/src/game/startGame'
+import { connectRoomSocket } from 'packages/frontend/src/core/network/socket'
 
 interface IStore {
   playerName: string
@@ -33,11 +30,18 @@ export default component$(() => {
   const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
 
   // 連接socket
-  useVisibleTask$(() => {
-    const gameId = localStorage.getItem(LocalStorageKey.GAME_ID) || ''
-    const playerId = localStorage.getItem(LocalStorageKey.PLAYER_ID) || ''
-    store.playerName = localStorage.getItem(LocalStorageKey.PLAYER_NAME) || ''
-    if (gameId && playerId) connectRoomSocket({ gameId,playerId })
+  useVisibleTask$( async () => {
+    const {gameId ,playerId,playerName} = getGameInfo()
+
+
+    if(!gameId){
+      console.log({gameId})
+      nav('../../')
+    }
+    store.playerName = playerName || ''
+    if(playerName === '') console.log('遊客模式')
+
+   if(gameId && playerId) connectRoomSocket({ gameId,playerId })
   })
 
   // welcome
@@ -57,29 +61,6 @@ export default component$(() => {
   })
 
 
-  // Actions click
-  const clickShareToFriend = $(async () => {
-
-    const textArea = document.getElementById('copy-area');
-    if(textArea){
-    try {
-      textArea?.select();
-      document.execCommand('copy');
-      } catch (err) {
-        console.error('Unable to copy', err);
-      }
-      finally{
-        setToastMessage('url已複製到剪貼簿, 請分享給朋友')
-        textArea.blur();
-      }
-    }
-  }
-  )
-  const clickExit = $(() => {
-    gameBase.socket?.disconnect() //斷開socket
-    nav(`/`)
-  })
-
 
   return (
     <main class="relative over-flow-hidden h-screen flex flex-col">
@@ -97,7 +78,7 @@ export default component$(() => {
           <div class="h-[5.5rem]" />
         </section>
 
-        <RightActions data={{clickShareToFriend,clickExit}}/>
+        <RightActions/>
       </article>
 
       {/* Me HandCard  */}

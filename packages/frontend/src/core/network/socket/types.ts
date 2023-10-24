@@ -7,3 +7,9 @@ export enum SocketChannel {
   PLAYER_CARD_DREW ='PLAYER_CARD_DREW',
   PLAYER_CARD_PLACED ='PLAYER_CARD_PLACED',
 }
+
+
+export type IPlayerJoin= {
+  playerName: string,
+  players:string[]
+}

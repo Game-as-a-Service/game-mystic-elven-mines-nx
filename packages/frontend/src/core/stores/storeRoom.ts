@@ -9,7 +9,7 @@ export const setRoomPlayerNameList = (list:string[])=> {
   const oldNameList = useGameStore.getState().roomPlayerNameList
   oldNameList.forEach((name)=>{
       if(!list.includes(name)) {
-        console.log(name,'加入了遊戲')
+        console.log(name,'加入了遊戲',list)
       }
     }
   )
@@ -28,7 +28,7 @@ export const setSinglePlayerMap = (player:IPlayer) =>{
   const roomPlayersMap:IPlayerMap = gameStore.get('roomPlayersMap')
   roomPlayersMap[player.playerName] = {...player}
   useGameStore.setState({ roomPlayersMap })
-  console.log('playerMap updated',gameStore.get('roomPlayersMap'))
+  console.log('玩家資料更新',gameStore.get('roomPlayersMap'))
 }
 
 

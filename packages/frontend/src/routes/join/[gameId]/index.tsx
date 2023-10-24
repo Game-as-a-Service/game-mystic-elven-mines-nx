@@ -1,6 +1,6 @@
 import { $, component$, useVisibleTask$ } from '@builder.io/qwik'
 
-import { joinRoomByNameAndId } from '../../../core/controllers/roomController'
+import { joinRoomByNameAndId, setGameIdToLocal, setPlayerNameToLocal } from '../../../core/controllers/roomController'
 import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { $dom } from 'packages/frontend/src/core/utils/dom.util'
 
@@ -17,8 +17,10 @@ export default component$(() => {
   const goRoom = $(async () => {
     const playerName: string = ($dom('#player-name') as HTMLInputElement)?.value || ''
     const gameId: string = ($dom('#game-id') as HTMLInputElement)?.value || ''
-    const res = await joinRoomByNameAndId(playerName, gameId)
-    if (res) nav(`/room/${gameId}`)
+    const res =  joinRoomByNameAndId(playerName, gameId)
+    setPlayerNameToLocal(res.playerName)
+    setGameIdToLocal(res.gameId)
+    nav(`/room/${gameId}`)
   })
 
   return (

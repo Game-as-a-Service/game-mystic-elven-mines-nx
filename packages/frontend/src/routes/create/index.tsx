@@ -11,6 +11,7 @@ export default component$(() => {
 
     const playerName: string = ($dom('#player-name') as HTMLInputElement)?.value || ''
     const gameId = await createGameAndGetId(playerName)
+    console.log('創建房間',gameId)
 
     nav(`/room/${gameId}`)
   })
