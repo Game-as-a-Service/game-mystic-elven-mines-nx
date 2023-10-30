@@ -20,8 +20,8 @@ import java.util.List;
 @AllArgsConstructor
 public class BrokenCard extends ActionCard {
 
-    public final CardType type = CardType.BROKEN;
-    public final String name = "BrokenCard";
+    private final CardType type = CardType.BROKEN;
+    private final String name = BrokenCard.class.getSimpleName();
     private ToolName toolName;
 
     @Override

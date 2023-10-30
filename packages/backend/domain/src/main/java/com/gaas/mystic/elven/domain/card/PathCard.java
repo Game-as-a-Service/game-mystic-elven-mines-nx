@@ -49,7 +49,7 @@ public class PathCard implements Card {
     // 直T死路
     public static final String DEAD_END_STRAIGHT_T = "DeadEndStraightT";
 
-    public CardType type = CardType.PATH;
+    CardType type = CardType.PATH;
     String name;
     boolean[] path;
 

@@ -66,7 +66,7 @@ public class ElvenController {
     public FindPlayerViewModel findPlayer(@PathVariable String gameId,
                                           @PathVariable String playerId) {
         var presenter = new FindPlayerPresenter();
-        findPlayerUsecase.execute(gameId, playerId, presenter);
+        findPlayerUsecase.execute(new FindPlayerUsecase.Request(gameId, playerId), presenter);
         return presenter.present();
     }
 

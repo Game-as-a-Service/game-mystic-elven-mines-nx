@@ -6,6 +6,7 @@ import com.gaas.mystic.elven.domain.Maze;
 import com.gaas.mystic.elven.domain.Path;
 import com.gaas.mystic.elven.domain.card.*;
 import com.gaas.mystic.elven.domain.role.Player;
+import com.gaas.mystic.elven.domain.role.RoleCard;
 import com.gaas.mystic.elven.domain.tool.Tool;
 import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
@@ -125,15 +126,15 @@ class ElvenGameControllerTest {
             .andExpect(jsonPath("$.players[0].cardNum").isNumber())
             .andExpect(jsonPath("$.players[0].cardNum").value(5))
             .andExpect(jsonPath("$.players[0].tools[0].toolName").exists())
-            .andExpect(jsonPath("$.players[0].tools[0].toolName").value("FLYING_BOOTS"))
+            .andExpect(jsonPath("$.players[0].tools[0].toolName").value(ToolName.FLYING_BOOTS.name()))
             .andExpect(jsonPath("$.players[0].tools[0].available").exists())
             .andExpect(jsonPath("$.players[0].tools[0].available").value(true))
             .andExpect(jsonPath("$.players[0].tools[1].toolName").exists())
-            .andExpect(jsonPath("$.players[0].tools[1].toolName").value("HARP_OF_HARMONY"))
+            .andExpect(jsonPath("$.players[0].tools[1].toolName").value(ToolName.HARP_OF_HARMONY.name()))
             .andExpect(jsonPath("$.players[0].tools[1].available").exists())
             .andExpect(jsonPath("$.players[0].tools[1].available").value(true))
             .andExpect(jsonPath("$.players[0].tools[2].toolName").exists())
-            .andExpect(jsonPath("$.players[0].tools[2].toolName").value("STARLIGHT_WAND"))
+            .andExpect(jsonPath("$.players[0].tools[2].toolName").value(ToolName.STARLIGHT_WAND.name()))
             .andExpect(jsonPath("$.players[0].tools[2].available").exists())
             .andExpect(jsonPath("$.players[0].tools[2].available").value(true));
     }
@@ -157,19 +158,19 @@ class ElvenGameControllerTest {
             .andExpect(jsonPath("$.cardNum").isNumber())
             .andExpect(jsonPath("$.cardNum").value(5))
             .andExpect(jsonPath("$.tools[0].toolName").exists())
-            .andExpect(jsonPath("$.tools[0].toolName").value("FLYING_BOOTS"))
+            .andExpect(jsonPath("$.tools[0].toolName").value(ToolName.FLYING_BOOTS.name()))
             .andExpect(jsonPath("$.tools[0].available").exists())
             .andExpect(jsonPath("$.tools[0].available").value(true))
             .andExpect(jsonPath("$.tools[1].toolName").exists())
-            .andExpect(jsonPath("$.tools[1].toolName").value("HARP_OF_HARMONY"))
+            .andExpect(jsonPath("$.tools[1].toolName").value(ToolName.HARP_OF_HARMONY.name()))
             .andExpect(jsonPath("$.tools[1].available").exists())
             .andExpect(jsonPath("$.tools[1].available").value(true))
             .andExpect(jsonPath("$.tools[2].toolName").exists())
-            .andExpect(jsonPath("$.tools[2].toolName").value("STARLIGHT_WAND"))
+            .andExpect(jsonPath("$.tools[2].toolName").value(ToolName.STARLIGHT_WAND.name()))
             .andExpect(jsonPath("$.tools[2].available").exists())
             .andExpect(jsonPath("$.tools[2].available").value(true))
             .andExpect(jsonPath("$.role").exists())
-            .andExpect(jsonPath("$.role").value(Matchers.oneOf("ELVEN", "GOBLIN")))
+            .andExpect(jsonPath("$.role").value(Matchers.oneOf(RoleCard.ELVEN.name(), RoleCard.GOBLIN.name())))
             .andExpect(jsonPath("$.cards").exists())
             .andExpect(jsonPath("$.cards").isArray())
             .andExpect(jsonPath("$.cards[0]").exists())
@@ -186,7 +187,8 @@ class ElvenGameControllerTest {
             .andExpect(jsonPath("$.cards[3].name").exists())
             .andExpect(jsonPath("$.cards[4]").exists())
             .andExpect(jsonPath("$.cards[4].type").exists())
-            .andExpect(jsonPath("$.cards[4].name").exists());
+            .andExpect(jsonPath("$.cards[4].name").exists())
+            .andReturn();
     }
 
     // ATDD (1) 先寫驗收測試程式 （2) ------------

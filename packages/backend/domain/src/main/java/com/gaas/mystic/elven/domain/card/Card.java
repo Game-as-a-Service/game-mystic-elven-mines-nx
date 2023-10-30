@@ -29,7 +29,6 @@ public interface Card {
 
     }
 
-//    String getType();
     CardType getType();
 
     String getName();

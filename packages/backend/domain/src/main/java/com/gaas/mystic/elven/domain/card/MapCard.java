@@ -15,8 +15,8 @@ import static java.util.Collections.singletonList;
 @Getter
 public class MapCard extends ActionCard {
 
-    public final CardType type = CardType.MAP;
-    public final String name = "MapCard";
+    private final CardType type = CardType.MAP;
+    private final String name = MapCard.class.getSimpleName();
 
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {
