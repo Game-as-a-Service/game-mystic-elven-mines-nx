@@ -15,7 +15,7 @@ import static java.lang.Math.abs;
  * 道路卡
  */
 @Value
-public class PathCard implements Card {
+public class PathCard extends Card {
     // 十字
     public static final String CROSS = "Cross";
     // 十字死路
