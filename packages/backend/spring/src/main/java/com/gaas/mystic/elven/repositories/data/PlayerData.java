@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.gaas.mystic.elven.utils.StreamUtils.mapToList;
 
@@ -21,18 +20,17 @@ public class PlayerData {
     private String name;
     private List<ToolData> tools;
     private List<CardData> hands;
-    private String role;
+    private RoleCard role;
 
     public static PlayerData toData(Player player) {
         var tools = mapToList(player.getTools(), ToolData::toData);
         var hands = mapToList(player.getHands(), CardData::toData);
-        var role = Optional.ofNullable(player.getRoleCard()).map(RoleCard::name).orElse(null);
-        return new PlayerData(player.getId(), player.getName(), tools, hands, role);
+        return new PlayerData(player.getId(), player.getName(), tools, hands, player.getRoleCard());
     }
 
     public Player toDomain() {
         var tools = StreamUtils.mapToArray(this.tools, ToolData::toDomain, Tool[]::new);
         var hands = mapToList(this.hands, CardData::toDomain);
-        return new Player(id, name, hands, RoleCard.from(role), tools);
+        return new Player(id, name, hands, role, tools);
     }
 }

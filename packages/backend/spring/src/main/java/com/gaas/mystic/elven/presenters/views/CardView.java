@@ -16,9 +16,6 @@ public class CardView {
     private String name;
 
     public static CardView toView(Card card) {
-        return CardView.builder()
-            .type(card.getType())
-            .name(card.getName())
-            .build();
+        return new CardView(card.getType(), card.getName());
     }
 }
