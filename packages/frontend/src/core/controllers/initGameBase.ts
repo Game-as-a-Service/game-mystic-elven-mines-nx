@@ -1,5 +1,8 @@
 import { Socket } from 'socket.io-client/build/esm/socket'
 import { isNil } from 'ramda'
+import { LocalStorageKey, setGameIdToLocal, setPlayerNameToLocal } from './roomController'
+import api from '../network/api/'
+import { gameStore } from '../stores'
 
 interface IGameBase {
   socket: Socket | null
@@ -14,6 +17,15 @@ export const gameBase: IGameBase = {
   gameId: '',
   playerName: '',
   playerId: '',
+}
+
+export const initGameBase = () => {
+  console.log('initGameBase')
+  const id = localStorage.getItem(LocalStorageKey.GAME_ID)
+  if (id) setGameIdToLocal(id)
+  const name = localStorage.getItem(LocalStorageKey.PLAYER_NAME)
+  if (name) setPlayerNameToLocal(name)
+  Object.assign(gameBase, { api, gameStore })
 }
 
 // Set Socket.io

@@ -1,5 +1,5 @@
-import { initRoomControllers } from './roomController'
+import { initGameBase } from './initGameBase'
 
 export const initControllers = () => {
-  initRoomControllers()
+  initGameBase()
 }

@@ -4,7 +4,7 @@ import clsx from 'clsx'
 import api from '../../core/network/api'
 
 
-import { gameBase } from '../../core/gameBase'
+import { gameBase } from '../../core/controllers/initGameBase'
 export default component$(() => {
 
   const store = useStore(

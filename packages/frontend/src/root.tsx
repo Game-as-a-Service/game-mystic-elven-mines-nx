@@ -4,7 +4,7 @@ import { RouterHead } from './app/components/router-head/router-head'
 
 import globalStyles from './core/styles/global.css?inline'
 import { initControllers } from './core/controllers'
-import { gameBase } from './core/gameBase'
+import { gameBase } from './core/controllers/initGameBase'
 
 export default component$(() => {
   /**

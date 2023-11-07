@@ -1,7 +1,7 @@
 import { component$,$ } from '@builder.io/qwik'
 
 import BtnCircleUI from '../components/btnCircleUI'
-import { gameBase } from '../../core/gameBase';
+import { gameBase } from '../../core/controllers/initGameBase';
 import { resetGameInfo } from '../../core/controllers/roomController';
 import { useNavigate } from '@builder.io/qwik-city';
 import { setToastMessage } from '../../core/stores/storeUI';

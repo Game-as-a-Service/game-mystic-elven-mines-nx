@@ -1,15 +1,15 @@
 import { createStore } from 'zustand/vanilla'
 import { SelectCardType } from './typing'
-import { IApiCreateGame, IPlayer, IPlayerMap  } from '../network/api/type'
+import { IApiCreateGame, IPlayer, IPlayerMap } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
-import { gameBase } from '../../core/gameBase'
+import { gameBase } from '../controllers/initGameBase'
 
 interface IGameState {
   // Room
   roomInfo: IApiCreateGame | null
-  roomPlayers:IPlayer[]
-  roomPlayersMap: IPlayerMap, //{playerName:{資料}}
-  roomPlayerNameList:string[]
+  roomPlayers: IPlayer[]
+  roomPlayersMap: IPlayerMap //{playerName:{資料}}
+  roomPlayerNameList: string[]
 
   // Game
   map: ColListType
@@ -25,12 +25,12 @@ export const useGameStore = createStore<IGameState>(() => ({
   // Room
   roomInfo: null,
   roomPlayers: [],
-  roomPlayersMap:{},
-  roomPlayerNameList:[],
+  roomPlayersMap: {},
+  roomPlayerNameList: [],
 
   // Game
   map: [[]],
-  gameProgress:'',
+  gameProgress: '',
 
   // Player
   selectedCard: null,
@@ -68,5 +68,4 @@ export const gameStore: IGameStore<IGameState> = {
   getAll: () => useGameStore.getState(),
 }
 
-Object.assign(gameBase, { gameStore })
 export default useGameStore

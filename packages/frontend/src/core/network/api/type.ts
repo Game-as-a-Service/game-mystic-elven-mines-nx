@@ -1,21 +1,32 @@
 // API
 export interface IApiCreateGame {
   gameId: string
-  player:{
+  player: {
     playerName: IPlayer['playerName']
+    cardNum: number
+    tools: { toolName: string; available: boolean }[]
   }
   playerId?: IPlayer['playerId']
 }
 
+export interface IApiJoinGame {
+  players: {
+    playerName: IPlayer['playerName']
+    cardNum: number
+    tools: { toolName: string; available: boolean }[]
+  }[]
+  playerId?: IPlayer['playerId']
+}
+
 export type IPlayer = {
-    playerName: string,
-    playerId?: string,
-    cardNum: number,
-    tools:{
-      toolName: string,
-      available: boolean
-    }[]
-    role?: "ELVEN"|"GOBLIN",
+  playerName: string
+  playerId?: string
+  cardNum: number
+  tools: {
+    toolName: string
+    available: boolean
+  }[]
+  role?: 'ELVEN' | 'GOBLIN'
   cards?: [
     {
       type: string
@@ -24,29 +35,24 @@ export type IPlayer = {
   ]
 }
 
-export type IPlayerMap = Record<IPlayer['playerName'],IPlayer>
+export type IPlayerMap = Record<IPlayer['playerName'], IPlayer>
 export interface IApiGamePlayers {
-    players:  IPlayer[]
-}
-
-export interface IApiJoinGame {
-  players: { playerName: 'string' }[]
-  playerId: 'string'
+  players: IPlayer[]
 }
 
 export interface IApiGameStart {
-  message:string
+  message: string
 }
 
 export interface IApiPlayCard {
-  "playerId": string,
-  "handIndex": number,
-  "cardType": string,
-  "targetPlayerId": string,
-  "destinationCardIndex": number,
-  "row": number,
-  "col":number,
-  "flipped": boolean
+  playerId: string
+  handIndex: number
+  cardType: string
+  targetPlayerId: string
+  destinationCardIndex: number
+  row: number
+  col: number
+  flipped: boolean
 }
 
 export interface ICard {

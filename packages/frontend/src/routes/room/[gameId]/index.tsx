@@ -1,5 +1,5 @@
-import { component$, $, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
-import { useLocation, useNavigate } from '@builder.io/qwik-city'
+import { component$, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
+import { useLocation } from '@builder.io/qwik-city'
 import { isServer } from '@builder.io/qwik/build'
 
 import { setToastMessage, setUIBg } from '../../../core/stores/storeUI'
@@ -11,9 +11,8 @@ import PlayerData from '../../../game/leftPlayers/playerData'
 import RightActions from '../../../game/rightActions'
 
 import { IPlayer } from '../../../core/network/api/type'
-import {  getGameInfo, joinRoomByNameAndId } from '../../../core/controllers/roomController'
+import { initFirstTimeJoinRoom } from '../../../core/controllers/roomController'
 import StartGame from 'packages/frontend/src/game/startGame'
-import { connectRoomSocket } from 'packages/frontend/src/core/network/socket'
 
 interface IStore {
   playerName: string
@@ -24,24 +23,13 @@ interface IStore {
 export default component$(() => {
   setUIBg('game')
 
-  const nav = useNavigate()
   const loc = useLocation()
-  const copyValue = useSignal<any>(loc.url.origin + '/join/' + loc.params.gameId || '')
+  const copyValue = useSignal<string>(loc.url.origin + '/join/' + loc.params.gameId || '')
   const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
 
   // 連接socket
   useVisibleTask$( async () => {
-    const {gameId ,playerId,playerName} = getGameInfo()
-
-
-    if(!gameId){
-      console.log({gameId})
-      nav('../../')
-    }
-    store.playerName = playerName || ''
-    if(playerName === '') console.log('遊客模式')
-
-   if(gameId && playerId) connectRoomSocket({ gameId,playerId })
+    initFirstTimeJoinRoom(store)
   })
 
   // welcome
@@ -58,6 +46,7 @@ export default component$(() => {
         store.hasWelcome = true
       }
     }
+    console.log('store變更',store)
   })
 
 
