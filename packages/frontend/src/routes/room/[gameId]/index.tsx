@@ -24,11 +24,11 @@ export default component$(() => {
   setUIBg('game')
 
   const loc = useLocation()
-  const copyValue = useSignal<string>(loc.url.origin + '/join/' + loc.params.gameId || '')
+  const copyValue = useSignal<unknown>(loc.url.origin + '/join/' + loc.params.gameId || '')
   const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
 
   // 連接socket
-  useVisibleTask$( async () => {
+  useVisibleTask$(() => {
     initFirstTimeJoinRoom(store)
   })
 
@@ -46,7 +46,6 @@ export default component$(() => {
         store.hasWelcome = true
       }
     }
-    console.log('store變更',store)
   })
 
 

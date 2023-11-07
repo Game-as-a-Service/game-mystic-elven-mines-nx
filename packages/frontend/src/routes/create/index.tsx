@@ -4,13 +4,18 @@ import { DocumentHead, useNavigate } from '@builder.io/qwik-city'
 import { setUIBg } from '../../core/stores/storeUI'
 import { createGameAndGetId } from '../../core/controllers/roomController'
 import { $dom } from '../../core/utils/dom.util'
+import { gameBase, setGameIdToLocal, setPlayerNameToLocal } from '../../core/controllers/initGameBase'
 
 export default component$(() => {
   const nav = useNavigate()
+
   const handleClick = $(async () => {
 
     const playerName: string = ($dom('#player-name') as HTMLInputElement)?.value || ''
+    setPlayerNameToLocal(playerName)
     const gameId = await createGameAndGetId(playerName)
+    setGameIdToLocal(gameId)
+    gameBase.hasJoined = true
     console.log('創建房間',gameId)
 
     nav(`/room/${gameId}`)

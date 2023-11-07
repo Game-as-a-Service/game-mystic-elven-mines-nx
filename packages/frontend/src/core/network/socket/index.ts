@@ -44,11 +44,11 @@ const onPlayersJoinLeft = (socket: Socket) => {
   socket.on(SocketChannel.PLAYER_JOINED, (res: IPlayerJoin) => {
     console.log('%c玩家加入了遊戲', 'color:yellow', res.playerName)
     getGamePlayersData()
-    //TODO 改為playerNames string[] , 跟有一個playerMap的資料
   })
 
   socket.on(SocketChannel.PLAYER_LEFT, (res: IPlayerJoin) => {
     console.log('%c玩家離開了遊戲', 'color:brown', res.playerName)
+    getGamePlayersData()
   })
 }
 

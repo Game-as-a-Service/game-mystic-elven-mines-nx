@@ -3,12 +3,8 @@ import clsx from 'clsx'
 import useGameStore from '../../core/stores';
 import {ToolName} from '../../core/types/Card'
 
-type IPlayerData = { key: string; color: 'players' | 'me';playerName:string }
+type IPlayerData = { key: string; color: 'players' | 'me'; playerName:string }
 export default component$(({ key, playerName, color }: IPlayerData) => {
-
-  if(color==='me'){
-    console.log({playerName})
-  }
 
   const tools = useStore({
     0:useGameStore.getState().roomPlayersMap[playerName]?.tools?.[0] || null,

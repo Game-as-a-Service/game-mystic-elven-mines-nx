@@ -99,4 +99,5 @@ const defaultData =  {
   gamePlayCard
 }
 
+
 export default {...defaultData}

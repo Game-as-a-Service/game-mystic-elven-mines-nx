@@ -14,9 +14,9 @@ export const setRoomPlayerNameList = (list: string[]) => {
 }
 
 export const setRoomPlayers = (players: IPlayer[]) => {
-  console.log('players', players)
   useGameStore.setState({ roomPlayers: players })
-  players.forEach((player) => {
+  players.forEach((player, index) => {
+    console.log('player' + index, player)
     setSinglePlayerMap(player)
   })
 }
@@ -25,7 +25,6 @@ export const setSinglePlayerMap = (player: IPlayer) => {
   const roomPlayersMap: IPlayerMap = gameStore.get('roomPlayersMap')
   roomPlayersMap[player.playerName] = { ...player }
   useGameStore.setState({ roomPlayersMap })
-  console.log('玩家資料更新', gameStore.get('roomPlayersMap'))
 }
 
 export const setGameProgress = (progress: string) => {

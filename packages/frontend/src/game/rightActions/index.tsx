@@ -1,8 +1,7 @@
 import { component$,$ } from '@builder.io/qwik'
 
 import BtnCircleUI from '../components/btnCircleUI'
-import { gameBase } from '../../core/controllers/initGameBase';
-import { resetGameInfo } from '../../core/controllers/roomController';
+import { gameBase,resetGameInfo } from '../../core/controllers/initGameBase';
 import { useNavigate } from '@builder.io/qwik-city';
 import { setToastMessage } from '../../core/stores/storeUI';
 export default component$(() => {
@@ -50,7 +49,3 @@ export default component$(() => {
 
   )
 })
-function nav(arg0: string) {
-  throw new Error('Function not implemented.');
-}
-

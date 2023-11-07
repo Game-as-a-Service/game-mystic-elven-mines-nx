@@ -1,6 +1,6 @@
 import { $, component$, useVisibleTask$ } from '@builder.io/qwik'
 
-import { setGameIdToLocal, setPlayerNameToLocal } from '../../../core/controllers/roomController'
+import { setGameIdToLocal, setPlayerNameToLocal } from '../../../core/controllers/initGameBase'
 import { useLocation, useNavigate } from '@builder.io/qwik-city'
 import { $dom } from 'packages/frontend/src/core/utils/dom.util'
 
