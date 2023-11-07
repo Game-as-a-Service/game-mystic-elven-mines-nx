@@ -16,11 +16,11 @@ public class FindPlayerUsecase {
 
     private final ElvenGameRepository elvenGameRepository;
 
-    public void execute(String gameId, String playerId, Presenter presenter) {
+    public void execute(Request request, Presenter presenter) {
         // 查
-        var player = elvenGameRepository.findById(gameId)
+        var player = elvenGameRepository.findById(request.gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"))
-            .getPlayer(playerId);
+            .getPlayer(request.playerId);
 
         // 推
         presenter.renderPlayer(player);
@@ -31,6 +31,7 @@ public class FindPlayerUsecase {
     @AllArgsConstructor
     public static class Request {
         private String gameId;
+        private String playerId;
     }
 
     public interface Presenter {

@@ -5,10 +5,7 @@ import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.builders.Players;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.inject.Named;
 
