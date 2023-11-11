@@ -47,14 +47,6 @@ public class PlayCardUsecase {
         presenter.present(events);
     }
 
-    enum CardType {
-        MAP,
-        PATH,
-        FIX,
-        BROKEN,
-        ROCKFALL
-    }
-
     private ElvenGame findGame(Request request) {
         String gameId = request.getGameId();
         return elvenGameRepository.findById(gameId)

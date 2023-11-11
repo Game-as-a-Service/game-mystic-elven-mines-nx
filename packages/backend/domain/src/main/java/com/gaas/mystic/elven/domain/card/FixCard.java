@@ -19,7 +19,10 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class FixCard extends ActionCard {
-    protected ToolName toolName;
+
+    private final CardType type = CardType.FIX;
+    private final String name = FixCard.class.getSimpleName();
+    private ToolName toolName;
 
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {

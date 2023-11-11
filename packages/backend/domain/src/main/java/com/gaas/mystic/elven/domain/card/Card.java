@@ -3,18 +3,23 @@ package com.gaas.mystic.elven.domain.card;
 import com.gaas.mystic.elven.domain.ElvenGame;
 import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.events.DomainEvent;
+import lombok.Getter;
 
 import java.util.List;
 
 /**
  * 卡片
  */
-@FunctionalInterface
-public interface Card {
+@Getter
+public abstract class Card {
 
-    List<DomainEvent> execute(Parameters parameters);
+    protected CardType type;
 
-    class Parameters {
+    protected String name;
+
+    public abstract List<DomainEvent> execute(Parameters parameters);
+
+    public static class Parameters {
         public String playerId;
         public int handCardIndex;
 
@@ -27,6 +32,11 @@ public interface Card {
             this.handCardIndex = handCardIndex;
         }
 
+
     }
+
+//    CardType getType();
+//
+//    String getName();
 
 }

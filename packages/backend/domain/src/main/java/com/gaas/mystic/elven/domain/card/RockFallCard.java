@@ -15,6 +15,10 @@ import static java.util.Collections.emptyList;
 @Getter
 @AllArgsConstructor
 public class RockFallCard extends ActionCard {
+
+    public final CardType type = CardType.ROCKFALL;
+    public final String name = RockFallCard.class.getSimpleName();
+
     @Override
     public List<DomainEvent> execute(Card.Parameters parameters) {
         var params = (RockFallCard.Parameters) parameters;

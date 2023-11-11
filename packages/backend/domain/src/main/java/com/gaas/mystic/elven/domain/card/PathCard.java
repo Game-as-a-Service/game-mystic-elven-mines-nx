@@ -15,26 +15,41 @@ import static java.lang.Math.abs;
  * 道路卡
  */
 @Value
-public class PathCard implements Card {
+public class PathCard extends Card {
+    // 十字
+    public static final String CROSS = "Cross";
+    // 十字死路
+    public static final String DEAD_END_CROSS = "DeadEndCross";
+    // 左彎
+    public static final String LEFT_CURVE = "LeftCurve";
+    // 左彎死路
+    public static final String DEAD_END_LEFT_CURVE = "DeadEndLeftCurve";
+    // 右彎
+    public static final String RIGHT_CURVE = "RightCurve";
+    // 右彎死路
+    public static final String DEAD_END_RIGHT_CURVE = "DeadEndRightCurve";
+    // 橫線
+    public static final String HORIZONTAL = "Horizontal";
+    // 橫線死路1
+    public static final String DEAD_END_HORIZONTAL_1 = "DeadEndHorizontal1";
+    // 橫線死路2
+    public static final String DEAD_END_HORIZONTAL_2 = "DeadEndHorizontal2";
+    // 直線
+    public static final String STRAIGHT = "Straight";
+    // 直線死路1
+    public static final String DEAD_END_STRAIGHT_1 = "DeadEndStraight1";
+    // 直線死路2
+    public static final String DEAD_END_STRAIGHT_2 = "DeadEndStraight2";
+    // 橫T
+    public static final String HORIZONTAL_T = "HorizontalT";
+    // 橫T死路
+    public static final String DEAD_END_HORIZONTAL_T = "DeadEndHorizontalT";
+    // 直T
+    public static final String STRAIGHT_T = "StraightT";
+    // 直T死路
+    public static final String DEAD_END_STRAIGHT_T = "DeadEndStraightT";
 
-    public static final String CROSS = "十字";
-    public static final String DEAD_END_CROSS = "十字死路";
-    public static final String LEFT_CURVE = "左彎";
-    public static final String DEAD_END_LEFT_CURVE = "左彎死路";
-    public static final String RIGHT_CURVE = "右彎";
-    public static final String DEAD_END_RIGHT_CURVE = "右彎死路";
-    public static final String HORIZONTAL = "橫線";
-    public static final String DEAD_END_HORIZONTAL_1 = "橫線死路1";
-    public static final String DEAD_END_HORIZONTAL_2 = "橫線死路2";
-    public static final String STRAIGHT = "直線";
-    public static final String DEAD_END_STRAIGHT_1 = "直線死路1";
-    public static final String DEAD_END_STRAIGHT_2 = "直線死路2";
-    public static final String HORIZONTAL_T = "橫T";
-    public static final String DEAD_END_HORIZONTAL_T = "橫T死路";
-    public static final String STRAIGHT_T = "直T";
-    public static final String DEAD_END_STRAIGHT_T = "直T死路";
-
-
+    CardType type = CardType.PATH;
     String name;
     boolean[] path;
 

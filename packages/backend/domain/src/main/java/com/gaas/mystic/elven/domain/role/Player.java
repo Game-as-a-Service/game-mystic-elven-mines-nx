@@ -34,9 +34,14 @@ public class Player {
 
 
     public Player(String id, String name, List<Card> hands, Tool... tools) {
+        this(id, name, hands, null, tools);
+    }
+
+    public Player(String id, String name, List<Card> hands, RoleCard roleCard, Tool... tools) {
         this.id = id;
         this.name = name;
         this.hands = new ArrayList<>(hands);
+        this.roleCard = roleCard;
 
         if (tools.length != 3) {
             throw new IllegalStateException("The number of tools should be 3");
@@ -47,10 +52,6 @@ public class Player {
             throw new RuntimeException("The player must have mine cart and lantern and pick.");
         }
         this.tools = tools;
-    }
-
-    public Player(String id, String name, List<Card> hands, RoleCard roleCard, Tool... tools) {
-        this(id, name, hands, tools);
     }
 
     public void addHandCard(Card card) {

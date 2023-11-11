@@ -6,10 +6,10 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
 import com.gaas.mystic.elven.domain.ElvenGame;
+import com.gaas.mystic.elven.domain.role.Player;
 import com.gaas.mystic.elven.exceptions.NotFoundException;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
-import com.gaas.mystic.elven.presenters.FindPlayersPresenter;
-import com.gaas.mystic.elven.presenters.FindPlayersPresenter.FindPlayersViewModel;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,21 +56,21 @@ public class SocketIOService implements SocketService {
             String playerId = playerIdOpt.get();
             log.info("connect sessionId: {}. gameId: {}. playerId: {}.", session, gameId, playerId);
             // get FindPlayersViewModel
-            FindPlayersViewModel present = getPlayersViewModel(gameId);
+            PlayerJoinLeftViewModel message = getViewModel(gameId, playerId);
             // send PLAYER_JOINED event to other clients
-            sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_JOINED, present);
+            sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_JOINED, message);
             // save client Map
             sessionIdToPlayer.put(session, client);
             gameIdToPlayers.computeIfAbsent(gameId, k -> new ArrayList<>()).add(client);
         };
     }
 
-    private FindPlayersViewModel getPlayersViewModel(String gameId) {
+    private PlayerJoinLeftViewModel getViewModel(String gameId, String playerId) {
         ElvenGame game = elvenGameRepository.findById(gameId)
             .orElseThrow(() -> new NotFoundException("Game not found"));
-        var presenter = new FindPlayersPresenter();
-        presenter.renderGame(game);
-        return presenter.present();
+        String playerName = game.getPlayer(playerId).getName();
+        List<String> players = game.getPlayers().stream().map(Player::getName).toList();
+        return new PlayerJoinLeftViewModel(playerName, players);
     }
 
     private DisconnectListener onDisconnected() {
@@ -91,9 +91,25 @@ public class SocketIOService implements SocketService {
                 gameIdToPlayers.remove(gameId);
             }
             // TODO remove player use case ?
+            PlayerJoinLeftViewModel message = removeAndViewModel(gameId, playerId);
             // send PLAYER_LEFT event to other clients
-            sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_LEFT, playerId);
+            sendMessageToGamePlayers(gameId, SocketChannel.PLAYER_LEFT, message);
         };
+    }
+
+    private PlayerJoinLeftViewModel removeAndViewModel(String gameId, String playerId) {
+        // get name
+        ElvenGame game = elvenGameRepository.findById(gameId)
+            .orElseThrow(() -> new NotFoundException("Game not found"));
+        Player player = game.getPlayer(playerId);
+        String playerName = player.getName();
+        // remove player
+        game.removePlayer(player);
+        // save
+        elvenGameRepository.save(game);
+        // get FindPlayersViewModel
+        List<String> players = game.getPlayers().stream().map(Player::getName).toList();
+        return new PlayerJoinLeftViewModel(playerName, players);
     }
 
     private Optional<String> getParam(SocketIOClient client, String param) {
@@ -120,3 +136,14 @@ public class SocketIOService implements SocketService {
 
 }
 
+@Data
+class PlayerJoinLeftViewModel {
+
+    private final String playerName;
+    private final List<String> players;
+
+    public PlayerJoinLeftViewModel(String playerName, List<String> players) {
+        this.playerName = playerName;
+        this.players = players;
+    }
+}
