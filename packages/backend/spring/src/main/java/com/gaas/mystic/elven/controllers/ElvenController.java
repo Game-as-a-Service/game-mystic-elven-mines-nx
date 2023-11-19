@@ -2,6 +2,7 @@ package com.gaas.mystic.elven.controllers;
 
 import com.gaas.mystic.elven.presenters.*;
 import com.gaas.mystic.elven.presenters.CreateGamePresenter.CreateGameViewModel;
+import com.gaas.mystic.elven.presenters.FindGamePresenter.FindGameViewModel;
 import com.gaas.mystic.elven.presenters.FindPlayerPresenter.FindPlayerViewModel;
 import com.gaas.mystic.elven.presenters.FindPlayersPresenter.FindPlayersViewModel;
 import com.gaas.mystic.elven.presenters.JoinGamePresenter.JoinGameViewModel;
@@ -28,6 +29,7 @@ public class ElvenController {
     private final JoinGameUsecase joinGameUsecase;
     private final PlayCardUsecase playCardUsecase;
     private final StartGameUsecase startGameUsecase;
+    private final FindGameUsecase findGameUsecase;
 
     @Operation(summary = "建立遊戲")
     @PostMapping
@@ -67,6 +69,14 @@ public class ElvenController {
                                           @PathVariable String playerId) {
         var presenter = new FindPlayerPresenter();
         findPlayerUsecase.execute(new FindPlayerUsecase.Request(gameId, playerId), presenter);
+        return presenter.present();
+    }
+
+    @Operation(summary = "查詢遊戲的資訊")
+    @GetMapping("/{gameId}")
+    public FindGameViewModel findGame(@PathVariable String gameId) {
+        var presenter = new FindGamePresenter();
+        findGameUsecase.execute(gameId, presenter);
         return presenter.present();
     }
 

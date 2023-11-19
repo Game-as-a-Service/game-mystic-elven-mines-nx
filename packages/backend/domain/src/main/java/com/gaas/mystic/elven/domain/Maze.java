@@ -19,6 +19,7 @@ import static java.util.stream.Collectors.toSet;
  */
 public class Maze {
 
+    // 道路卡片
     private final List<Path> paths;
     private final Path origin;
     private final Set<Point> points;

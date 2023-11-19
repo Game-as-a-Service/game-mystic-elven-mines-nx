@@ -132,7 +132,9 @@ class ElvenGameDataTest {
                 new PathData(-1, 1, PathCard.RIGHT_CURVE, true, null))),
             asList(PathData.toData(new GoalCard(8, 0, false)),
                 PathData.toData(new GoalCard(8, 2, true)),
-                PathData.toData(new GoalCard(8, 4, false))));
+                PathData.toData(new GoalCard(8, 4, false))),
+            asList(CardData.toData(new FixCard(ToolName.HARP_OF_HARMONY)))
+            );
 
         ElvenGame game = data.toDomain();
         List<Player> players = game.getPlayers();
