@@ -1,15 +1,23 @@
-import { $, component$, useTask$, useVisibleTask$ } from '@builder.io/qwik'
+import { $, component$, useTask$ } from '@builder.io/qwik'
 import { DocumentHead, useNavigate } from '@builder.io/qwik-city'
 
 import { setUIBg } from '../../core/stores/storeUI'
-import api from '../../core/network/api'
 import { createGameAndGetId } from '../../core/controllers/roomController'
+import { $dom } from '../../core/utils/dom.util'
+import { gameBase, setGameIdToLocal, setPlayerNameToLocal } from '../../core/controllers/initGameBase'
 
 export default component$(() => {
   const nav = useNavigate()
+
   const handleClick = $(async () => {
-    const hostName: string = (document.querySelector('#host-name') as HTMLInputElement)?.value || ''
-    const gameId = await createGameAndGetId(hostName)
+
+    const playerName: string = ($dom('#player-name') as HTMLInputElement)?.value || ''
+    setPlayerNameToLocal(playerName)
+    const gameId = await createGameAndGetId(playerName)
+    setGameIdToLocal(gameId)
+    gameBase.hasJoined = true
+    console.log('創建房間',gameId)
+
     nav(`/room/${gameId}`)
   })
 
@@ -25,8 +33,8 @@ export default component$(() => {
         <br />
 
         <div class="flex flex-col max-w-[500px] space-y-3">
-          <input id="host-name" class="border mb-1"></input>
-          <button onClick$={handleClick} class="bg-green-300  p-1 rounded-sm">
+          <input id="player-name" class="border mb-1"></input>
+          <button onPointerUp$={handleClick} class="bg-green-300  p-1 rounded-sm">
             送出
           </button>
         </div>

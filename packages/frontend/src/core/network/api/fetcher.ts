@@ -22,6 +22,16 @@ export const fetcher = async ({ url, body, type }: fetcherType) => {
 }
 
 const interceptor = (response: any) => {
-  if (!response.ok) console.error(response)
-  if (response.ok) return response.json()
+  if (!response.ok) {
+    console.error(response)
+    return
+  }
+  if (response.ok) {
+    try {
+      //FIXME 後端只給我OK會報錯
+      return response.json()
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }

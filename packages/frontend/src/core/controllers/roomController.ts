@@ -1,40 +1,50 @@
 import api from '../network/api'
-import Constants from '../Constants'
+import { setRoomMyCards, setRoomPlayerNameList, setRoomPlayers } from '../stores/storeRoom'
+import { getGameInfo, setGameIdToLocal, setPlayerIdToLocal } from './initGameBase'
 
 // 跟遊戲房間有關的Controllers
 
-export const initRoomControllers = () => {
-  const localGameId = localStorage.getItem('gameId')
-  if (localGameId) setGameIdToLocal(localGameId)
-  const localMyName = localStorage.getItem('myName')
-  if (localMyName) setMyNameToLocal(localMyName)
-}
-
-export const createGameAndGetId = async (host: string) => {
-  const res = await api.createGame({ host })
-  setMyNameToLocal(host)
+export const createGameAndGetId = async (playerName: string) => {
+  const res = await api.gameCreate({ playerName: playerName })
+  console.log('api gameCreate', res)
   setGameIdToLocal(res.gameId)
+  setPlayerIdToLocal(res.playerId || '')
   return res.gameId
 }
 
-export const queryGame = async () => {
-  const gamePlayers = await api.queryGame()
-  return gamePlayers
+export const getGamePlayersData = async () => {
+  //socket連線成功後 取得玩家資料
+  const { players } = await api.gamePlayers()
+  const playerNameList = players.map((x) => x.playerName)
+  setRoomPlayers(players)
+  setRoomPlayerNameList(playerNameList)
 }
 
-export const joinRoomByNameAndId = async (name: string, gameId: string) => {
-  const res = await api.joinGame({ name })
-  setGameIdToLocal(gameId)
-  setMyNameToLocal(name)
-  return res
+// 主要是要知道自己手牌
+export const getGamePlayerMeData = async () => {
+  const res = await api.gamePlayerMe()
+  console.log('res', res)
+  setRoomMyCards(res.cards)
 }
 
-// set to localStorage
-export const setGameIdToLocal = (gameId: string) => {
-  localStorage.setItem('gameId', gameId)
-  Constants.gameId = gameId
-}
-export const setMyNameToLocal = (name: string) => {
-  localStorage.setItem('myName', name)
-  Constants.myName = name
+export const initFirstTimeJoinRoom = async (store: any) => {
+  const { gameId, playerId, playerName } = await getGameInfo()
+  console.log('initFirstTimeJoinRoom', { gameId, playerId, playerName })
+
+  store.playerName = playerName
+
+  if (playerName === '') console.log('[遊客模式]')
+  if (playerName !== '') console.log('[玩家模式]')
+
+  if (playerName !== '') {
+    try {
+      const res = await api.gameJoin({ playerName: playerName })
+      if (res) {
+        setPlayerIdToLocal(res.playerId || '')
+        console.log('加入遊戲中...')
+      }
+    } catch {
+      console.log('加入遊戲發生錯誤, 可能是資料損壞, 或是你是房主')
+    }
+  }
 }

@@ -1,5 +1,6 @@
-import { component$, $ } from '@builder.io/qwik'
+import { component$, $, useVisibleTask$, getLocale } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
+import { gameStore, useGameStore } from '../core/stores/index'
 
 import { setUIBg } from '../core/stores/storeUI'
 
@@ -11,7 +12,12 @@ export default component$(() => {
   })
 
   const gotoJoinPage = $(() => {
-    window.location.href = './join'
+    window.location.href = './join/'
+  })
+
+  useVisibleTask$(() => {
+    console.log('useVisibleTask$')
+    gameStore.on('roomInfo', (v, t) => console.log('roomInfo', v, t))
   })
 
   return (
@@ -22,12 +28,12 @@ export default component$(() => {
         <br />
 
         <div class="flex flex-col max-w-[500px] space-y-3">
-          <button class="bg-white rounded p-3" onClick$={gotoCreatePage}>
+          <button class="bg-white rounded p-3" onPointerUp$={gotoCreatePage}>
             新創遊戲房間
           </button>
-          <button class="bg-white rounded p-3" onClick$={gotoJoinPage}>
+          {/* <button class="bg-white rounded p-3" onPointerUp$={gotoJoinPage}>
             加入遊戲房間
-          </button>
+          </button> */}
         </div>
       </section>
     </main>
