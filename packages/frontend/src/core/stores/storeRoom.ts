@@ -5,9 +5,10 @@ export const setRoomInfo = (gameInfo: IApiCreateGame) => useGameStore.setState({
 
 export const setRoomPlayerNameList = (list: string[]) => {
   const oldNameList = useGameStore.getState().roomPlayerNameList
+  console.log('oldNameList', oldNameList)
   oldNameList.forEach((name) => {
     if (!list.includes(name)) {
-      console.log(name, '加入了遊戲', list)
+      console.log(name, '加入了遊戲')
     }
   })
   useGameStore.setState({ roomPlayerNameList: list })

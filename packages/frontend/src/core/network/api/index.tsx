@@ -45,8 +45,8 @@ const gamePlayers = async () => {
 }
 
 // [GET] 查詢遊戲本人資料
-const gamePlayersMe = async () => {
-  const url = `${API_URL}/games/${gameBase.gameId}/players/${gameBase.playerId}`
+const gamePlayerMe = async () => {
+  const url = `${API_URL}/games/${gameBase.gameId}/player/${gameBase.playerId}`
   return fetcher({ type: 'GET', url }).then((res: IApiGamePlayers) => {
     return res
   })
@@ -93,7 +93,7 @@ const defaultData =  {
   gameCreate,
   gameJoin,
   gamePlayers,
-  gamePlayersMe,
+  gamePlayerMe,
   // helloTest,
   gameStart,
   gamePlayCard

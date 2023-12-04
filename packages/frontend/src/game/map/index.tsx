@@ -82,7 +82,7 @@ const ColData = component$((props: any) => {
 export const MapCard = component$((props: IMapCard & { hasCard: boolean }) => {
   return props?.hasCard ? (
     <button class="absolute w-full h-full left-0 right-0">
-      <Image class="w-full" src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
+      <Image  class="w-full" src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
     </button>
   ) : (
     <div class="opacity-0">

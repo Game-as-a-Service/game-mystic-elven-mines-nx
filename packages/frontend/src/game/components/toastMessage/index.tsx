@@ -19,8 +19,8 @@ export default component$(() => {
   )
 
   useVisibleTask$(() => {
-    gameStore.on('toastMessage', (msg) => {
-
+    console.log('init toastMessage')
+    const off = gameStore.on('toastMessage', (msg) => {
       if (msg) {
         console.log('toastMessage listen:', msg)
         store.isShow = true
@@ -29,17 +29,16 @@ export default component$(() => {
           store.isShow = false
           store.txt = ''
           setToastMessage(null)
-        }, 1000)
+        },200)
       }
     })
+
+    console.log('off',off)
   })
   return (
-    // <div class="fixed w-full h-full flex items-center" animate={store.show ? 'open' : 'closed'} variants={variants}>
-    //   <div class="bg-[rgba(0,0,0,0.6)] w-full h-[150px] text-center font-bold text-20">{store.txt}</div>
-    // </div>
     store.isShow ? (
       <div class={clsx('fixed w-full h-full flex items-center')}>
-        <div class="flex justify-center items-center w-full h-[40px] text-white text-center font-bold text-36 bg-[rgba(0,0,0,0.6)]">
+        <div class="flex justify-center items-center w-full h-[40px] text-white text-center font-bold text-100 bg-[rgba(0,0,0,0.6)]">
           {store.txt}
         </div>
       </div>

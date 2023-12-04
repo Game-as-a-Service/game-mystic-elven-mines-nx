@@ -3,7 +3,7 @@ import { gameBase, setSocket } from '../../controllers/initGameBase'
 import { IPlayerJoin, SocketChannel } from './types'
 import { setGameProgress } from '../../stores/storeRoom'
 import { setToastMessage } from '../../stores/storeUI'
-import { getGamePlayersData } from '../../controllers/roomController'
+import { getGamePlayerMeData, getGamePlayersData } from '../../controllers/roomController'
 
 export const connectRoomSocket = () => {
   const config = {
@@ -24,6 +24,8 @@ export const connectRoomSocket = () => {
   onGameProgress(socket) // 遊戲進程
   onPlayerAction(socket) // 玩家動作
   setSocket(socket)
+
+  return true
 }
 
 const onConnect = (socket: Socket) => {
@@ -53,13 +55,14 @@ const onPlayersJoinLeft = (socket: Socket) => {
 }
 
 const onGameProgress = (socket: Socket) => {
-  socket.on(SocketChannel.GAME_STARTED, () => {
-    console.log('%c遊戲開始了', 'color:lightgreen')
+  socket.on(SocketChannel.GAME_STARTED, (data: any) => {
+    console.log('%c遊戲開始了', 'color:lightgreen', data)
     setGameProgress(SocketChannel.GAME_STARTED)
     setToastMessage('遊戲開始了')
+    getGamePlayerMeData()
   })
-  socket.on(SocketChannel.GAME_ENDED, () => {
-    console.log('%c遊戲結束了', 'color:lightgreen')
+  socket.on(SocketChannel.GAME_ENDED, (data: any) => {
+    console.log('%c遊戲結束了', 'color:lightgreen', data)
     setToastMessage('遊戲結束了')
   })
 }

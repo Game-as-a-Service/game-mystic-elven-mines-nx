@@ -1,6 +1,5 @@
 import { component$, useStore, useVisibleTask$, useSignal } from '@builder.io/qwik'
 import { useLocation } from '@builder.io/qwik-city'
-import { isServer } from '@builder.io/qwik/build'
 
 import { setToastMessage, setUIBg } from '../../../core/stores/storeUI'
 
@@ -10,13 +9,14 @@ import LeftPlayers from '../../../game/leftPlayers'
 import PlayerData from '../../../game/leftPlayers/playerData'
 import RightActions from '../../../game/rightActions'
 
-import { IPlayer } from '../../../core/network/api/type'
 import { initFirstTimeJoinRoom } from '../../../core/controllers/roomController'
 import StartGame from 'packages/frontend/src/game/startGame'
+import { connectRoomSocket } from 'packages/frontend/src/core/network/socket'
+import { gameStore } from 'packages/frontend/src/core/stores'
 
 interface IStore {
   playerName: string
-  players: IPlayer[]
+  playersLength: number
   hasWelcome: boolean //第一次進房間會有歡迎詞
 }
 
@@ -24,28 +24,31 @@ export default component$(() => {
   setUIBg('game')
 
   const loc = useLocation()
-  const copyValue = useSignal<unknown>(loc.url.origin + '/join/' + loc.params.gameId || '')
-  const store = useStore<IStore>({ playerName: '', players: [], hasWelcome: false })
+  const copyValue = useSignal<any>(loc.url.origin + '/join/' + loc.params.gameId || '')
+  const store = useStore<IStore>({ playerName: '', playersLength: 0, hasWelcome: false })
 
   // 連接socket
-  useVisibleTask$(() => {
-    initFirstTimeJoinRoom(store)
+  useVisibleTask$(async() => {
+    await initFirstTimeJoinRoom(store)
+    connectRoomSocket()
+  })
+
+
+  useVisibleTask$(async () => {
+    gameStore.on('roomPlayerNameList', (list)=>{
+      store.playersLength = list.length
+    })
   })
 
   // welcome
   useVisibleTask$(({ track }) => {
-    if (!store.hasWelcome) {
-      track(() => store.players)
-      const value = store.players
-      const update = () => (store.players = value)
-      isServer
-        ? update() // don't delay on server render value as part of SSR
-        : delay(2000).then(update) // Delay in browser
-      if (value?.length > 0) {
-        setToastMessage('歡迎來到精靈礦坑,目前有' + value?.length + '位玩家在遊戲中')
-        store.hasWelcome = true
+    track(() => store.playersLength);
+      if (store.playersLength > 0) {
+        if (!store.hasWelcome) {
+            setToastMessage('歡迎來到精靈礦坑,目前有' + store.playersLength + '位玩家在遊戲中')
+            store.hasWelcome = true
+          }
       }
-    }
   })
 
 

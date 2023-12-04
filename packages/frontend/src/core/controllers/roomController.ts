@@ -21,9 +21,10 @@ export const getGamePlayersData = async () => {
   setRoomPlayerNameList(playerNameList)
 }
 
-export const gamePlayersMeData = async () => {
-  const gamePlayersMeDataRes = await api.gamePlayersMe()
-  console.log('gamePlayersMeDataRes', gamePlayersMeDataRes)
+export const getGamePlayerMeData = async () => {
+  const res = await api.gamePlayerMe()
+  console.log('myData', res)
+  //TODO 手牌資料放到zustand
 }
 
 export const initFirstTimeJoinRoom = async (store: any) => {
@@ -45,7 +46,5 @@ export const initFirstTimeJoinRoom = async (store: any) => {
     } catch {
       console.log('加入遊戲發生錯誤, 可能是資料損壞, 或是你是房主')
     }
-
-    connectRoomSocket()
   }
 }

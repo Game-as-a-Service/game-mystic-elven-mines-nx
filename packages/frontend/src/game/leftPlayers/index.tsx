@@ -1,7 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
-import { getGamePlayersData as getGamePlayersData } from '../../core/controllers/roomController'
-import  PlayerData  from './playerData'
-import { setRoomPlayerNameList, setRoomPlayers } from '../../core/stores/storeRoom'
+import PlayerData from './playerData'
 import { gameStore } from '../../core/stores'
 
 // 左方玩家資料
