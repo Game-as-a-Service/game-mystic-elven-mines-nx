@@ -1,6 +1,5 @@
 import { createStore } from 'zustand/vanilla'
-import { SelectCardType } from './typing'
-import { IApiCreateGame, IPlayer, IPlayerMap } from '../network/api/type'
+import { IApiCreateGame, IHandCard, IPlayer, IPlayerMap } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
 import { gameBase } from '../controllers/initGameBase'
 
@@ -10,11 +9,13 @@ interface IGameState {
   roomPlayers: IPlayer[]
   roomPlayersMap: IPlayerMap //{playerName:{資料}}
   roomPlayerNameList: string[]
+  roomMyCards: { data: IHandCard[] } //我的手牌
 
   // Game
   map: ColListType
-  selectedCard: SelectCardType | null
+  selectedCard: IHandCard | null
   gameProgress: string
+  gameActionPlayerName: string //打牌玩家
 
   // UI
   uiBgImg: 'bg-game-01' | 'bg-create'
@@ -27,10 +28,12 @@ export const useGameStore = createStore<IGameState>(() => ({
   roomPlayers: [],
   roomPlayersMap: {},
   roomPlayerNameList: [],
+  roomMyCards: { data: [] },
 
   // Game
   map: [[]],
   gameProgress: '',
+  gameActionPlayerName: '',
 
   // Player
   selectedCard: null,

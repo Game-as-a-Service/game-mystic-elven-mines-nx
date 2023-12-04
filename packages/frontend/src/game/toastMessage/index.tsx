@@ -18,8 +18,8 @@ export default component$(() => {
   )
 
   useVisibleTask$(() => {
-    gameStore.on('toastMessage', (msg) => {
-
+    gameStore.on('toastMessage', (msg,preMsg) => {
+      if(msg === preMsg) return
       if (msg) {
         console.log('toastMessage listen:', msg)
         store.isShow = true

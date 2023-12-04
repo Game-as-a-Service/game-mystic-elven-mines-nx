@@ -52,7 +52,7 @@ const ColData = component$((props: any) => {
     //console.log({ selfY, selfX })
     if (hasCard) return
 
-    const hasSelectedCard = Boolean(useGameStore.getState().selectedCard?.cardName)
+    const hasSelectedCard = Boolean(useGameStore.getState().selectedCard?.name)
     if (!hasSelectedCard) return
 
     const map = gameStore.get('map')
@@ -62,8 +62,8 @@ const ColData = component$((props: any) => {
       r.map((mapCard) => {
         if (mapCard.row === selfY && mapCard.col === selfX) {
           mapCard.hasCard = true
-          mapCard.cardName = card?.cardName || 'no name'
-          mapCard.cardType = card?.cardType || 'no path name'
+          mapCard.cardName = card?.name || 'no name'
+          mapCard.cardType = card?.type || 'no path name'
         }
       })
       return r
@@ -82,7 +82,7 @@ const ColData = component$((props: any) => {
 export const MapCard = component$((props: IMapCard & { hasCard: boolean }) => {
   return props?.hasCard ? (
     <button class="absolute w-full h-full left-0 right-0">
-      <Image  class="w-full" src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
+      <Image class="w-full" src={getImageUrlByApiCardName(props.cardName)} alt="地圖卡"></Image>
     </button>
   ) : (
     <div class="opacity-0">

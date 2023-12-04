@@ -6,15 +6,15 @@ import { getImageUrlByApiCardName } from '../../core/utils/getCardImageByName'
 
 import { CardTypeEnum, Paths } from '../../core/types/Card'
 import { gameStore } from '../../core/stores'
-import { SelectCardType } from '../../core/stores/typing'
 import clsx from 'clsx'
+import { IHandCard } from '../../core/network/api/type'
 
-export const CardData = component$(({ color, cName, cType }: { color: string; cName: Paths; cType: CardTypeEnum }) => {
+export const CardData = component$(({ cName, cType }: { cName: Paths; cType: CardTypeEnum }) => {
   const isSelected = useSignal(false)
 
   const selectCard = $(() => {
-    const card: SelectCardType = { cardName: cName, cardType: cType }
-
+    console.log('select card')
+    const card: IHandCard = { name: cName, type: cType }
     isSelected.value = !isSelected.value
     if (isSelected.value) gameStore.set('selectedCard', card)
     else if (!isSelected.value) gameStore.set('selectedCard', null)

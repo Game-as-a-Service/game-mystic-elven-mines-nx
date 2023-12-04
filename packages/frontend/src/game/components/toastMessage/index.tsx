@@ -1,6 +1,5 @@
 import { component$, useStore, useVisibleTask$ } from '@builder.io/qwik'
 import { gameStore } from '../../../core/stores/index'
-import { isNil } from 'ramda'
 import clsx from 'clsx'
 import { setToastMessage } from '../../../core/stores/storeUI'
 
@@ -20,7 +19,8 @@ export default component$(() => {
 
   useVisibleTask$(() => {
     console.log('init toastMessage')
-    const off = gameStore.on('toastMessage', (msg) => {
+    const off = gameStore.on('toastMessage', (msg, preMsg) => {
+      if (msg === preMsg) return
       if (msg) {
         console.log('toastMessage listen:', msg)
         store.isShow = true
@@ -29,19 +29,17 @@ export default component$(() => {
           store.isShow = false
           store.txt = ''
           setToastMessage(null)
-        },200)
+        }, 200)
       }
     })
 
-    console.log('off',off)
+    console.log('off', off)
   })
-  return (
-    store.isShow ? (
-      <div class={clsx('fixed w-full h-full flex items-center')}>
-        <div class="flex justify-center items-center w-full h-[40px] text-white text-center font-bold text-100 bg-[rgba(0,0,0,0.6)]">
-          {store.txt}
-        </div>
+  return store.isShow ? (
+    <div class={clsx('fixed w-full h-full flex items-center')}>
+      <div class="flex justify-center items-center w-full h-[40px] text-white text-center font-bold text-100 bg-[rgba(0,0,0,0.6)]">
+        {store.txt}
       </div>
-    ) : null
-  )
+    </div>
+  ) : null
 })

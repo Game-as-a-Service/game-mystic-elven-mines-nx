@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@babel/plugin-transform-class-properties": "^7.23.3",
+    "@types/ramda": "^0.29.9",
     "@unpic/qwik": "^0.0.23",
     "clsx": "^2.0.0",
     "ramda": "^0.29.1",

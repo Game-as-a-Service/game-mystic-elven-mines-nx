@@ -16,6 +16,7 @@ interface IGameBase {
   playerName: string
   playerId: string
   api: any
+  hasJoined: boolean
 }
 export const gameBase: IGameBase = {
   socket: null,
@@ -23,6 +24,7 @@ export const gameBase: IGameBase = {
   gameId: '',
   playerName: '',
   playerId: '',
+  hasJoined: false
 }
 
 export const initGameBase = () => {

@@ -1,5 +1,13 @@
 import { fetcher } from './fetcher'
-import { IApiCreateGame, IApiGameStart, IApiJoinGame, IApiPlayCard, IApiGamePlayers , PlayCardType } from './type'
+import {
+  IApiCreateGame,
+  IApiGameStart,
+  IApiJoinGame,
+  IApiPlayCard,
+  IApiGamePlayers,
+  PlayCardType,
+  IPlayer,
+} from './type'
 import { gameBase } from '../../controllers/initGameBase'
 
 const API_URL = import.meta.env.PUBLIC_API_URL
@@ -47,11 +55,10 @@ const gamePlayers = async () => {
 // [GET] 查詢遊戲本人資料
 const gamePlayerMe = async () => {
   const url = `${API_URL}/games/${gameBase.gameId}/player/${gameBase.playerId}`
-  return fetcher({ type: 'GET', url }).then((res: IApiGamePlayers) => {
+  return fetcher({ type: 'GET', url }).then((res: IPlayer) => {
     return res
   })
 }
-
 
 // //  X [GET] 查玩家手上有甚麼牌
 // export const getHandCards = async () => {
@@ -89,15 +96,14 @@ const gamePlayerMe = async () => {
 //   return fetcher({ type: 'GET', url })
 // }
 
-const defaultData =  {
+const defaultData = {
   gameCreate,
   gameJoin,
   gamePlayers,
   gamePlayerMe,
   // helloTest,
   gameStart,
-  gamePlayCard
+  gamePlayCard,
 }
 
-
-export default {...defaultData}
+export default { ...defaultData }

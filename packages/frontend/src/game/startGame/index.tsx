@@ -9,28 +9,28 @@ export default component$(() => {
 
   const store = useStore(
     {
-      isShow: false,
+      isShowStartBtn: false,
       moreThan3: false,
-
     },
     { deep: true }
   )
 
 
   useVisibleTask$(() => {
-      gameStore.on('roomPlayerNameList', (list) => {{
-      if(list.length >= 3){
-        console.log('more than 3 ',store.moreThan3 = true)
-        store.isShow= true
-      }
-      else store.moreThan3 = false
+    gameStore.on('roomPlayerNameList', (list, preList) => {
+      {
+        if(list === preList)return
+        if (list.length >= 3) {
+          console.log('more than 3 ',store.moreThan3 = true)
+          store.isShowStartBtn = true
+        }
+        else store.moreThan3 = false
       }})
 
       gameStore.on('gameProgress', (progress) => {
         if(['GAME_STARTED'].includes(progress)) {
-          store.isShow= false
+          store.isShowStartBtn= false
         }
-
       })
   })
 
@@ -40,11 +40,11 @@ export default component$(() => {
   })
 
   return (
-    store.isShow ? (
-      <div class={clsx('fixed w-full h-full flex items-center')}>
-        <div class="flex justify-center items-center w-full h-[40px] text-white text-center font-bold text-36 bg-[rgba(0,0,0,0.6)]">
-         <button class="bg-blue-900 text-white p-6 "onPointerUp$={handleStartGame}>開始遊戲</button>
-        </div>
+    store.isShowStartBtn ? (
+      <div class={clsx('fixed w-full h-full flex items-center justify-center')}>
+
+          <button class="px-6 h-[40px] bg-blue-900 text-white text-center font-bold text-36"onPointerUp$={handleStartGame}>開始遊戲</button>
+
       </div>
     ) : null
   )

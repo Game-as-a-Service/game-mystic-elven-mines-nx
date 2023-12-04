@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client'
 import { gameBase, setSocket } from '../../controllers/initGameBase'
 import { IPlayerJoin, SocketChannel } from './types'
-import { setGameProgress } from '../../stores/storeRoom'
+import { setGameActionPlayerName, setGameProgress } from '../../stores/storeRoom'
 import { setToastMessage } from '../../stores/storeUI'
 import { getGamePlayerMeData, getGamePlayersData } from '../../controllers/roomController'
 
@@ -55,11 +55,13 @@ const onPlayersJoinLeft = (socket: Socket) => {
 }
 
 const onGameProgress = (socket: Socket) => {
-  socket.on(SocketChannel.GAME_STARTED, (data: any) => {
+  socket.on(SocketChannel.GAME_STARTED, (data: {nextPlayerName: string}) => {
     console.log('%c遊戲開始了', 'color:lightgreen', data)
     setGameProgress(SocketChannel.GAME_STARTED)
-    setToastMessage('遊戲開始了')
     getGamePlayerMeData()
+    setToastMessage(`遊戲開始了, 等待${data.nextPlayerName}動作`)
+    setGameActionPlayerName(data.nextPlayerName)
+
   })
   socket.on(SocketChannel.GAME_ENDED, (data: any) => {
     console.log('%c遊戲結束了', 'color:lightgreen', data)

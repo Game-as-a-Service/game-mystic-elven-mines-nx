@@ -1,3 +1,5 @@
+import { CardTypeEnum, Paths } from '../../types/Card'
+
 // API
 export interface IApiCreateGame {
   gameId: string
@@ -27,12 +29,11 @@ export type IPlayer = {
     available: boolean
   }[]
   role?: 'ELVEN' | 'GOBLIN'
-  cards?: [
-    {
-      type: string
-      name: string
-    }
-  ]
+  cards?: IHandCard[]
+}
+export type IHandCard = {
+  type: CardTypeEnum
+  name: Paths
 }
 
 export type IPlayerMap = Record<IPlayer['playerName'], IPlayer>

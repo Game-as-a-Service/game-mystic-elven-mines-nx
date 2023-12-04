@@ -1,5 +1,5 @@
 import useGameStore, { gameStore } from '.'
-import { IApiCreateGame, IPlayer, IPlayerMap } from '../network/api/type'
+import { IApiCreateGame, IHandCard, IPlayer, IPlayerMap } from '../network/api/type'
 
 export const setRoomInfo = (gameInfo: IApiCreateGame) => useGameStore.setState({ roomInfo: gameInfo })
 
@@ -30,4 +30,12 @@ export const setSinglePlayerMap = (player: IPlayer) => {
 
 export const setGameProgress = (progress: string) => {
   useGameStore.setState({ gameProgress: progress })
+}
+
+export const setGameActionPlayerName = (playerName: string) => {
+  useGameStore.setState({ gameActionPlayerName: playerName })
+}
+
+export const setRoomMyCards = (cards: IHandCard[]) => {
+  useGameStore.setState({ roomMyCards: { data: cards } })
 }
