@@ -1,6 +1,8 @@
 package com.gaas.mystic.elven.domain;
 
 import com.gaas.mystic.elven.domain.card.PathCard;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 終點卡 (3 張)
@@ -8,11 +10,16 @@ import com.gaas.mystic.elven.domain.card.PathCard;
  * 其他 * 2：魔法干擾 - Magical Interference
  */
 public class GoalCard extends Path {
+
+    @Getter
+    @Setter
+    // 是否已被翻開
+    private boolean isShowdown = false;
     private final boolean isGoal;
 
     public GoalCard(int row, int col, boolean isGoal) {
-        this(row, col, PathCard.cross(), isGoal
-                /*預設是十字路口*/);
+        // 預設是十字路口
+        this(row, col, PathCard.cross(), isGoal);
     }
 
     public GoalCard(int row, int col, PathCard path, boolean isGoal) {

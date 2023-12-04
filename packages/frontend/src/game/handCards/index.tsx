@@ -7,20 +7,13 @@ import { IHandCard } from '../../core/network/api/type'
 export default component$(() => {
   const cards = useStore<{ data: IHandCard[]; waterId: number }>({ data: [], waterId: 0 })
 
-  useVisibleTask$(({ track, cleanup }) => {
-    track(() => cards.waterId)
+  useVisibleTask$(() => {
     console.log('useVisibleTask')
     const off = gameStore.on('roomMyCards', (roomCard) => {
-      console.log('useVisibleTask', roomCard)
-
+      console.log('gameStore roomMyCards', roomCard)
       cards.data = roomCard.data
-      cards.waterId++
     })
-
-    cleanup(() => {
-      off.unsubscribe()
-      console.log('clean up')
-    })
+    // FIXME 當卸載的時候unscribe?
   })
   return (
     <div class="grid grid-cols-5 gap-2 w-full">

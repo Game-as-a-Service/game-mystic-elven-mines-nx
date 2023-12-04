@@ -191,6 +191,54 @@ class ElvenGameControllerTest {
             .andReturn();
     }
 
+    @Test
+    public void testPlayerFindGameInfo() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+        game.startGame();
+        gameRepository.save(game);
+
+        mockMvc.perform(get("/api/games/{gameId}", game.getId()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.deckSize").exists())
+            .andExpect(jsonPath("$.deckSize").isNumber())
+            .andExpect(jsonPath("$.maze.pathCards").isArray())
+            .andExpect(jsonPath("$.maze.pathCards[0].row").exists())
+            .andExpect(jsonPath("$.maze.pathCards[0].row").isNumber())
+            .andExpect(jsonPath("$.maze.pathCards[0].col").exists())
+            .andExpect(jsonPath("$.maze.pathCards[0].col").isNumber())
+            .andExpect(jsonPath("$.maze.pathCards[0].name").exists())
+            .andExpect(jsonPath("$.maze.pathCards[0].flipped").exists())
+            .andExpect(jsonPath("$.maze.pathCards[0].flipped").isBoolean())
+            .andExpect(jsonPath("$.maze.goalCards").isArray())
+            .andExpect(jsonPath("$.maze.goalCards[0].row").exists())
+            .andExpect(jsonPath("$.maze.goalCards[0].row").isNumber())
+            .andExpect(jsonPath("$.maze.goalCards[0].col").exists())
+            .andExpect(jsonPath("$.maze.goalCards[0].col").isNumber())
+            .andExpect(jsonPath("$.maze.goalCards[0].name").exists())
+            .andExpect(jsonPath("$.maze.goalCards[0].flipped").exists())
+            .andExpect(jsonPath("$.maze.goalCards[0].flipped").isBoolean())
+            .andExpect(jsonPath("$.maze.goalCards[0].isShowdown").exists())
+            .andExpect(jsonPath("$.maze.goalCards[0].isShowdown").isBoolean())
+            .andExpect(jsonPath("$.maze.goalCards[0].isShowdown").value(false))
+            .andExpect(jsonPath("$.maze.goalCards[0].isGoal").doesNotExist())
+            .andReturn();
+    }
+
+    @Test
+    public void testPlayerFindGameInfoButGameNotStarted() throws Exception {
+        Player A = Players.defaultPlayer("A");
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
+        ElvenGame game = givenGameStarted(A, B, C);
+        gameRepository.save(game);
+
+        mockMvc.perform(get("/api/games/{gameId}", game.getId()))
+            .andExpect(status().isBadRequest());
+    }
+
     // ATDD (1) 先寫驗收測試程式 （2) ------------
     @Test
     public void 修好其中一個工具耶() throws Exception {
