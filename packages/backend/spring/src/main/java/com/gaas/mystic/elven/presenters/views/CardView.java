@@ -14,8 +14,9 @@ import lombok.NoArgsConstructor;
 public class CardView {
     private CardType type;
     private String name;
+    private Boolean flipped;
 
     public static CardView toView(Card card) {
-        return new CardView(card.getType(), card.getName());
+        return new CardView(card.getType(), card.getName(), false);
     }
 }

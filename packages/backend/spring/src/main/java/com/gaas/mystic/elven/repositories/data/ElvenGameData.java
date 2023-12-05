@@ -25,6 +25,7 @@ public class ElvenGameData {
 
 
 
+
     public static ElvenGameData /*Data*/ toData(/*聚合根*/ ElvenGame elvenGame) {
         var maze = MazeData.toData(elvenGame.getMaze());
         var players = mapToList(elvenGame.getPlayers(), PlayerData::toData);
