@@ -39,3 +39,7 @@ export const setGameActionPlayerName = (playerName: string) => {
 export const setRoomMyCards = (cards: IHandCard[]) => {
   useGameStore.setState({ roomMyCards: { data: cards } })
 }
+
+export const setRoomMyRole = (role: 'ELVEN' | 'GOBLIN' | undefined) => {
+  useGameStore.setState({ roomMyRole: role })
+}

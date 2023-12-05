@@ -1,5 +1,5 @@
 import api from '../network/api'
-import { setRoomMyCards, setRoomPlayerNameList, setRoomPlayers } from '../stores/storeRoom'
+import { setRoomMyCards, setRoomMyRole, setRoomPlayerNameList, setRoomPlayers } from '../stores/storeRoom'
 import { getGameInfo, setGameIdToLocal, setPlayerIdToLocal } from './initGameBase'
 
 // 跟遊戲房間有關的Controllers
@@ -23,8 +23,9 @@ export const getGamePlayersData = async () => {
 // 主要是要知道自己手牌
 export const getGamePlayerMeData = async () => {
   const res = await api.gamePlayerMe()
-  console.log('res', res)
-  setRoomMyCards(res.cards)
+  console.log('gamePlayerMe', res)
+  res?.cards && setRoomMyCards(res.cards)
+  res?.cards && setRoomMyRole(res.role)
 }
 
 export const initFirstTimeJoinRoom = async (store: any) => {
