@@ -1,30 +1,28 @@
-import gameStore from '../../core/stores'
 import { CardTypeEnum, Paths } from '../../core/types/Card'
-import { SelectCardType } from '../tester.card'
 
-export interface MapCardType {
+export interface IMapCard {
   row: number
   col: number
   cardName: Paths | string
   cardType: CardTypeEnum | string
 }
 
-export type ColType = MapCardType & { hasCard: boolean }
-export type MapType = Array<ColType[]>
+export type ColType = IMapCard & { hasCard: boolean }
+export type ColListType = Array<ColType[]>
 
-export const convertToMapRow = (cardData: MapCardType[]): MapType => {
-  const dataMap = getDefaultMap()
-  for (const card of cardData) {
+export const convertToMapData = (mapCardList: IMapCard[]): ColListType => {
+  const map = getDefaultMap()
+  for (const card of mapCardList) {
     const { row, col, cardName, cardType } = card
-    if (row <= dataMap.length && col <= dataMap[row - 1].length) {
-      dataMap[row - 1][col - 1].hasCard = true
-      dataMap[row - 1][col - 1].cardName = cardName
-      dataMap[row - 1][col - 1].cardType = cardType
+    if (row <= map.length && col <= map[row - 1].length) {
+      map[row - 1][col - 1].hasCard = true
+      map[row - 1][col - 1].cardName = cardName
+      map[row - 1][col - 1].cardType = cardType
     }
   }
-  return dataMap
+  return map
 }
-const getDefaultMap = (): MapType => {
+const getDefaultMap = (): ColListType => {
   const map = Array(7)
     .fill('7行11格')
     .map((_, rIdx) => {

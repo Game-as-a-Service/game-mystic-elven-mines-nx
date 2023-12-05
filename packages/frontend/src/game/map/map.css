@@ -2,22 +2,16 @@
   @apply flex flex-col items-center text-center;
   margin: 0 auto;
   max-width: 1060px;
-
-  overflow: hidden;
-  border: 1px solid #dedede;
 }
 .map-row {
-  @apply flex flex-row text-center items-center;
-  overflow-x: hidden;
+  @apply text-center items-center;
+  @apply grid grid-cols-11 gap-x-1.5 my-1.5;
+  @apply items-center align-middle;
 }
 .map-col {
-  @apply flex flex-row items-center align-middle;
-  min-width: 90px;
-  min-height: 125px;
+  @apply relative items-center align-middle border border-[rgba(255,255,255,0.2)];
+  @apply rounded-xl w-full h-full;
   background: rgba(255, 255, 255, 0.2);
-  margin: 3px;
-  border: #9b9b9b;
-
 }
 
 .map-col:hover {
@@ -26,4 +20,13 @@
 
 .map-has-card {
   border: 2px solid red;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }

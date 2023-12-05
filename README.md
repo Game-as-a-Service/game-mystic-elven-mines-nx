@@ -13,6 +13,10 @@
 - Nx Java plugin [Link](https://github.com/tinesoft/nxrocks/tree/develop/packages/nx-spring-boot)
 - `nx g @nxrocks/nx-spring-boot:new <your-app-name>`
 
+## 連線文件
+
+- Socket [Link](docs/socket.md)
+
 ## 安裝環境
 
 - Node.js 18

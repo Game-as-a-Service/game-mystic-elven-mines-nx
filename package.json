@@ -12,7 +12,7 @@
     "@nx/linter": "16.1.1",
     "@nx/vite": "16.1.1",
     "@nx/workspace": "16.1.1",
-    "@nxrocks/nx-spring-boot": "^8.0.2",
+    "@nxrocks/nx-spring-boot": "8.0.2",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "@vitest/ui": "^0.31.0",
@@ -36,6 +36,11 @@
     "vitest": "^0.31.0"
   },
   "dependencies": {
-    "@unpic/qwik": "^0.0.23"
+    "@babel/plugin-transform-class-properties": "^7.23.3",
+    "@types/ramda": "^0.29.9",
+    "@unpic/qwik": "^0.0.23",
+    "clsx": "^2.0.0",
+    "ramda": "^0.29.1",
+    "socket.io-client": "^4.7.2"
   }
 }

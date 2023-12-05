@@ -12,7 +12,15 @@ import java.util.List;
 @Getter
 public class Deck {
 
-    private final List<Card> cards = new ArrayList<>();
+    private final List<Card> cards;
+
+    public Deck() {
+        cards = new ArrayList<>();
+    }
+
+    public Deck(List<Card> cards) {
+        this.cards = cards;
+    }
 
     public void prepareDeck() {
         // clear deck
@@ -57,6 +65,22 @@ public class Deck {
             throw new ElvenGameException("Deck is empty");
         }
         return cards.remove(0);
+    }
+
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    public int size() {
+        return cards.size();
+    }
+
+    public List<Card> getCards() {
+        return List.copyOf(cards);
+    }
+
+    public void addCard(Card card) {
+        cards.add(card);
     }
 
 }

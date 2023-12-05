@@ -1,6 +1,6 @@
 // 卡片
 export enum CardTypeEnum {
-  Paths = 'Card_Path', // 道路卡
+  Path = 'PATH', // 道路卡
   Actions = 'Card_Actions', // 功能卡
   Repair = 'Card_Repair', // 修復卡
   Broken = 'Card_Broken', // 破壞卡
@@ -16,17 +16,17 @@ export enum FinishGroup {
   // RockCollapse = 'RockCollapse', // 岩石塌方
   MagicalInterference = 'MagicalInterference', // 魔法干擾
 }
-export enum Actions {
+export enum ToolName {
+  FLYING_BOOTS = 'FLYING_BOOTS', //飛行靴
+  HARP_OF_HARMONY = 'HARP_OF_HARMONY', //音樂之琴
+  STARLIGHT_WAND = 'STARLIGHT_WAND', //星光之杖
+
   //原本遊戲的
   Rockfall = 'Action_Rockfall', // 落石卡
   Map = 'Action_Map', //地圖卡,
-
-  //討論選一
-  FlyingBoots = 'Action_FlyingBoots', //飛行靴
+  //Other
   IllusionCrystalBall = 'Action_IllusionCrystalBall', //幻視水晶球
-  HarpOfHarmony = 'Action_HarpOfHarmony', //音樂之琴
   RainbowCloak = 'Action_RainbowCloak', //彩虹斗篷
-  StarlightWand = 'Action_StarlightWand', //星光之杖
   MysticMap = 'Action_MysticMap', //神秘地圖
 
   // 飛行靴:這對靴子能賦予精靈飛行的能力,讓他們能夠越過障礙物或跨越深淵。它們可以幫助精靈達到高處或遠離危險的地方,同時也提供了更大的行動自由度。
@@ -36,38 +36,57 @@ export enum Actions {
   // 星光之杖:這把寶石鑲嵌的法杖能釋放出閃耀的星光能量,具有治療和恢復的效果。精靈可以使用星光之杖為自己或隊友恢復生命力,並對抗黑暗力量的影響。
   // 神秘地圖:這張地圖隱藏了精靈世界中的重要位置和秘密寶藏的線索。精靈需要解讀地圖上的符號和謎題,找到寶藏或者尋找前進的道路。
 }
+//TODO async backend name
 export enum Paths {
-  Empty = '', // 沒有卡
-  Start = 'Path_Start', // 起始卡
-  Finish = FinishGroup.MagicCrystal, // 終點卡
-
-  Cross = 'Path_Cross', // 十字路口
-  DeadEndCross = 'Path_DeadEndCross', // 死路十字路口
-
-  //討論彎
-  LeftCurve = 'Path_LeftCurve', //左彎
-  DeadEndLeftCurve = 'Path_DeadEndLeftCurve', //左彎死路
-  RightCurve = 'Path_RightCurve', //右彎
-  DeadEndRightCurve = 'Path_DeadEndRightCurve', // 右彎死路
-  //討論彎
-  Curve1 = 'Path_Curve1', // 彎1
-  Curve2 = 'Path_Curve2', // 彎2
-  DeadEndCurve1 = 'Path_DeadEndCurve1', // 彎死路1
-  DeadEndCurve2 = 'Path_DeadEndCurve2', // 彎死路2
-
-  Horizontal = 'Path_Horizontal', // 橫線
-  DeadEndHorizontal1 = 'Path_DeadEndHorizontal1', // 橫線死路1
-  DeadEndHorizontal2 = 'Path_DeadEndHorizontal2', // 橫線死路2
-
-  Straight = 'Path_Straight', // 直線
-  DeadEndStraight1 = 'Path_DeadEndStraight1', // 直線死路1
-  DeadEndStraight2 = 'Path_DeadEndStraight2', // 直線死路2
-
-  HorizontalT = 'Path_HorizontalT', //橫T
-  DeadEndHorizontalT = 'Path_DeadEndHorizontalT', //橫T死路
-  StraightT = 'Path_StraightT', //直T
-  DeadEndStraightT = 'Path_DeadEndStraightT', //直T死路
+  CROSS = 'Cross',
+  DEAD_END_CROSS = 'DeadEndCross',
+  LEFT_CURVE = 'LeftCurve',
+  DEAD_END_LEFT_CURVE = 'DeadEndLeftCurve',
+  RIGHT_CURVE = 'RightCurve',
+  DEAD_END_RIGHT_CURVE = 'DeadEndRightCurve',
+  HORIZONTAL = 'Horizontal',
+  DEAD_END_HORIZONTAL_1 = 'DeadEndHorizontal1',
+  DEAD_END_HORIZONTAL_2 = 'DeadEndHorizontal2',
+  STRAIGHT = 'Straight',
+  DEAD_END_STRAIGHT_1 = 'DeadEndStraight1',
+  DEAD_END_STRAIGHT_2 = 'DeadEndStraight2',
+  HORIZONTAL_T = 'HorizontalT',
+  DEAD_END_HORIZONTAL_T = 'DeadEndHorizontalT',
+  STRAIGHT_T = 'StraightT',
+  DEAD_END_STRAIGHT_T = 'DeadEndStraightT',
 }
+// export enum Paths {
+//   Empty = '', // 沒有卡
+//   Start = 'Path_Start', // 起始卡
+//   Finish = FinishGroup.MagicCrystal, // 終點卡
+
+//   Cross = 'Path_Cross', // 十字路口
+//   DeadEndCross = 'Path_DeadEndCross', // 死路十字路口
+
+//   //討論彎
+//   LeftCurve = 'Path_LeftCurve', //左彎
+//   DeadEndLeftCurve = 'Path_DeadEndLeftCurve', //左彎死路
+//   RightCurve = 'Path_RightCurve', //右彎
+//   DeadEndRightCurve = 'Path_DeadEndRightCurve', // 右彎死路
+//   //討論彎
+//   Curve1 = 'Path_Curve1', // 彎1
+//   Curve2 = 'Path_Curve2', // 彎2
+//   DeadEndCurve1 = 'Path_DeadEndCurve1', // 彎死路1
+//   DeadEndCurve2 = 'Path_DeadEndCurve2', // 彎死路2
+
+//   Horizontal = 'Path_Horizontal', // 橫線
+//   DeadEndHorizontal1 = 'Path_DeadEndHorizontal1', // 橫線死路1
+//   DeadEndHorizontal2 = 'Path_DeadEndHorizontal2', // 橫線死路2
+
+//   Straight = 'Path_Straight', // 直線
+//   DeadEndStraight1 = 'Path_DeadEndStraight1', // 直線死路1
+//   DeadEndStraight2 = 'Path_DeadEndStraight2', // 直線死路2
+
+//   HorizontalT = 'Path_HorizontalT', //橫T
+//   DeadEndHorizontalT = 'Path_DeadEndHorizontalT', //橫T死路
+//   StraightT = 'Path_StraightT', //直T
+//   DeadEndStraightT = 'Path_DeadEndStraightT', //直T死路
+// }
 
 export enum Repair {
   //實作可能只需要一種

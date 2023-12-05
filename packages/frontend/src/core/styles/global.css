@@ -18,8 +18,7 @@
 
 body {
   background-color: #fafafa;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    sans-serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   padding: 0;
 }
 
@@ -122,4 +121,22 @@ a.mindblow:hover {
   border-bottom-width: 0px;
   margin-bottom: 4px;
   transform: translateY(4px);
+}
+/*
+article {
+  border: 2px solid red;
+}
+
+section {
+  padding: 0;
+  border: 2px dashed yellow;
+  //background: rgb(255, 100, 100, 0.5);
+}
+
+div {
+  border: 1px white dashed;
+} */
+
+section {
+  padding: 0;
 }

@@ -37,22 +37,27 @@ public class ElvenGame {
 
     private final List<GoalCard> goalCards = new ArrayList<>(DESTINATION_CARDS_COUNT);
 
-    private final Deck deck = new Deck();
+    @Getter
+    private final Deck deck;
 
     public ElvenGame(List<Player> players) {
         this(randomUUID().toString(), players);
     }
 
     public ElvenGame(String id, List<Player> players) {
-        this(id, players, new Maze());
+        this(id, players, new Maze(), new Deck());
     }
 
     public ElvenGame(String id, List<Player> players, Maze maze) {
+        this(id, players, maze, new Deck());
+    }
+
+    public ElvenGame(String id, List<Player> players, Maze maze, Deck deck) {
         this.id = id;
         this.players = requireNonNullElseGet(players, Collections::emptyList);
-
         setupDestinationCards(RANDOM.nextInt(DESTINATION_CARDS_COUNT));
         this.maze = maze;
+        this.deck = deck;
     }
 
     public void startGame() {
@@ -169,7 +174,7 @@ public class ElvenGame {
     private void setupDestinationCards(int goldenDestinationCardIndex) {
         goalCards.clear();
         for (int i = 0; i < DESTINATION_CARDS_COUNT; i++) {
-            goalCards.add(new GoalCard(8, 2 * i, i == goldenDestinationCardIndex));
+            goalCards.add(new GoalCard(2 * i - 2, 8, i == goldenDestinationCardIndex));
         }
     }
 
@@ -192,9 +197,16 @@ public class ElvenGame {
     }
 
     public void addPlayer(Player player) {
+        checkGameIsNotStarted();
         checkPlayersNumber();
         checkPlayerName(player.getName());
         players.add(player);
+    }
+
+    private void checkGameIsNotStarted() {
+        if (isStarted()) {
+            throw new ElvenGameException("遊戲已開始，無法加入玩家");
+        }
     }
 
     private void checkPlayersNumber() {
@@ -213,5 +225,9 @@ public class ElvenGame {
 
     public void removePlayer(Player player) {
         players.remove(player);
+    }
+
+    public boolean isStarted() {
+        return !deck.isEmpty();
     }
 }
