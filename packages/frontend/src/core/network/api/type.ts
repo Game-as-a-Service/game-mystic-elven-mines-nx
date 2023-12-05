@@ -34,6 +34,7 @@ export type IPlayer = {
 export type IHandCard = {
   type: CardTypeEnum
   name: Paths
+  flipped: boolean
 }
 
 export type IPlayerMap = Record<IPlayer['playerName'], IPlayer>

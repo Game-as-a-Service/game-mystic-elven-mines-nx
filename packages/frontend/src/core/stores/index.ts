@@ -1,7 +1,6 @@
 import { createStore } from 'zustand/vanilla'
 import { IApiCreateGame, IHandCard, IPlayer, IPlayerMap } from '../network/api/type'
 import { ColListType } from '../../game/map/mapController'
-import { gameBase } from '../controllers/initGameBase'
 
 interface IGameState {
   // Room
@@ -10,6 +9,7 @@ interface IGameState {
   roomPlayersMap: IPlayerMap //{playerName:{資料}}
   roomPlayerNameList: string[]
   roomMyCards: { data: IHandCard[] } //我的手牌
+  roomMyRole: 'ELVEN' | 'GOBLIN' | undefined
 
   // Game
   map: ColListType
@@ -29,6 +29,7 @@ export const useGameStore = createStore<IGameState>(() => ({
   roomPlayersMap: {},
   roomPlayerNameList: [],
   roomMyCards: { data: [] },
+  roomMyRole: undefined,
 
   // Game
   map: [[]],
