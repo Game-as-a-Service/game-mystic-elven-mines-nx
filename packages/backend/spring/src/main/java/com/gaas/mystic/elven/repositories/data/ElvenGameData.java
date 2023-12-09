@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gaas.mystic.elven.utils.StreamUtils.mapToList;
+import static com.gaas.mystic.elven.utils.StreamUtils.mapToObj;
 import static java.util.stream.IntStream.range;
 
 @Data
@@ -19,6 +20,7 @@ import static java.util.stream.IntStream.range;
 public class ElvenGameData {
     private String id;
     private List<PlayerData> players;
+    private PlayerData currentPlayer;
     private MazeData maze;
     private List<PathData> destinations = new ArrayList<>(ElvenGame.DESTINATION_CARDS_COUNT);
     private List<CardData> deck = new ArrayList<>();
@@ -28,15 +30,17 @@ public class ElvenGameData {
     public static ElvenGameData /*Data*/ toData(/*聚合根*/ ElvenGame elvenGame) {
         var maze = MazeData.toData(elvenGame.getMaze());
         var players = mapToList(elvenGame.getPlayers(), PlayerData::toData);
+        var currentPlayer = mapToObj(elvenGame.getCurrentPlayer(), PlayerData::toData);
         var destinations = mapToList(elvenGame.getDestinations(), PathData::toData);
         var deck = mapToList(elvenGame.getDeck().getCards(), CardData::toData);
-        return new ElvenGameData(elvenGame.getId(), players, maze, destinations, deck);
+        return new ElvenGameData(elvenGame.getId(), players, currentPlayer, maze, destinations, deck);
     }
 
     public ElvenGame toDomain() {
         var players = mapToList(this.players, PlayerData::toDomain);
+        var currentPlayer = mapToObj(this.currentPlayer, PlayerData::toDomain);
         Deck deck = new Deck(mapToList(this.deck, CardData::toDomain));
-        ElvenGame game = new ElvenGame(id, players, maze.toDomain(), deck);
+        ElvenGame game = new ElvenGame(id, players, currentPlayer, maze.toDomain(), deck);
         game.setGoldInDestinationCard(getGoldenDestinationCardIndex());
         return game;
     }

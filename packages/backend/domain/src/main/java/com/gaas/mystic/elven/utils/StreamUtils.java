@@ -26,13 +26,13 @@ public class StreamUtils {
 
     public static <T, R> List<T> flatMapToList(Collection<R> collection, Function<? super R, ? extends Stream<? extends T>> flatMapping) {
         return collection.stream()
-                .flatMap(r -> {
-                    try {
-                        return flatMapping.apply(r);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }).collect(toList());
+            .flatMap(r -> {
+                try {
+                    return flatMapping.apply(r);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }).collect(toList());
     }
 
     public static <T extends Comparable<T>> List<T> sortToList(Collection<T> collection) {
@@ -151,5 +151,16 @@ public class StreamUtils {
 
     public static <T> String join(Collection<T> collection, String delimiter) {
         return collection.stream().map(String::valueOf).collect(joining(delimiter));
+    }
+
+    public static <T, R> T mapToObj(R obj, Function<R, T> mapping) {
+        return Optional.ofNullable(obj).map(in -> {
+            try {
+                return mapping.apply(in);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).orElse(null);
+
     }
 }

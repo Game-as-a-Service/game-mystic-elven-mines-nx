@@ -10,6 +10,7 @@ import com.gaas.mystic.elven.domain.role.RoleCard;
 import com.gaas.mystic.elven.domain.tool.Tool;
 import com.gaas.mystic.elven.domain.tool.ToolName;
 import com.gaas.mystic.elven.outport.ElvenGameRepository;
+import com.gaas.mystic.elven.socket.SocketIOService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,10 @@ class ElvenGameControllerTest {
     @Autowired
     private ElvenGameRepository gameRepository;
 
+
+    @Autowired
+    private SocketIOService socketIOService;
+
     @Test
     public void testPlayerCreateGame() throws Exception {
         mockMvc.perform(post("/api/games")
@@ -58,7 +63,7 @@ class ElvenGameControllerTest {
     @Test
     public void testPlayerFindPlayersInfoBeforeGameStarted() throws Exception {
         Player A = Players.defaultPlayer("A");
-        ElvenGame game = givenGameStarted(A);
+        ElvenGame game = saveGame(A);
 
         mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
             .andExpect(status().isOk())
@@ -69,7 +74,7 @@ class ElvenGameControllerTest {
     @Test
     public void testPlayerJoinGame() throws Exception {
         Player A = Players.defaultPlayer("A");
-        ElvenGame game = givenGameStarted(A);
+        ElvenGame game = saveGame(A);
 
         mockMvc.perform(post("/api/games/{gameId}", game.getId())
                 .contentType(APPLICATION_JSON)
@@ -87,7 +92,7 @@ class ElvenGameControllerTest {
     @Test
     public void givenPlayerJoinGame_whenSamePlayerName_thenFail() throws Exception {
         Player A = Players.defaultPlayer("A");
-        ElvenGame game = givenGameStarted(A);
+        ElvenGame game = saveGame(A);
 
         mockMvc.perform(post("/api/games/{gameId}", game.getId())
                 .contentType(APPLICATION_JSON)
@@ -103,7 +108,7 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
 
         mockMvc.perform(post("/api/games/{gameId}:start", game.getId()))
             .andExpect(status().isOk());
@@ -114,9 +119,8 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
-        ElvenGame game = givenGameStarted(A, B, C);
-        game.startGame();
-        gameRepository.save(game);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         mockMvc.perform(get("/api/games/{gameId}/players", game.getId()))
             .andExpect(status().isOk())
@@ -144,9 +148,8 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
-        ElvenGame game = givenGameStarted(A, B, C);
-        game.startGame();
-        gameRepository.save(game);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         mockMvc.perform(get("/api/games/{gameId}/player/{playerId}", game.getId(), A.getId()))
             .andExpect(status().isOk())
@@ -196,9 +199,8 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
-        ElvenGame game = givenGameStarted(A, B, C);
-        game.startGame();
-        gameRepository.save(game);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         mockMvc.perform(get("/api/games/{gameId}", game.getId()))
             .andExpect(status().isOk())
@@ -232,7 +234,7 @@ class ElvenGameControllerTest {
         Player A = Players.defaultPlayer("A");
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
         gameRepository.save(game);
 
         mockMvc.perform(get("/api/games/{gameId}", game.getId()))
@@ -265,12 +267,12 @@ class ElvenGameControllerTest {
             new Tool(ToolName.HARP_OF_HARMONY, true),
             new Tool(ToolName.STARLIGHT_WAND, true));
 
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(B, A, C);
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
                 .content("""
-                    {  "cardType": "FIX",
+                    {  "type": "FIX",
                     "playerId": "B",
                       "handIndex": 0,
                       "targetPlayerId": "A"
@@ -285,11 +287,11 @@ class ElvenGameControllerTest {
         assertTrue(actualA.getTool(ToolName.STARLIGHT_WAND).isAvailable());
     }
 
-    private ElvenGame givenGameStarted(ElvenGame game) {
+    private ElvenGame saveGame(ElvenGame game) {
         return gameRepository.save(game);
     }
 
-    private ElvenGame givenGameStarted(Player... players) {
+    private ElvenGame saveGame(Player... players) {
         return gameRepository.save(new ElvenGame(asList(players)));
     }
 
@@ -297,6 +299,18 @@ class ElvenGameControllerTest {
         // 從 repo 查出 game
         return gameRepository.findById(gameId).orElseThrow();
     }
+
+    private void startGame(ElvenGame game) {
+        game.startGame();
+        saveGame(game);
+    }
+
+    private void startGame(Player... players) {
+        ElvenGame elvenGame = new ElvenGame(asList(players));
+        elvenGame.startGame();
+        saveGame(elvenGame);
+    }
+
 
     @Test
     public void 都好的硬要修() throws Exception {
@@ -306,12 +320,13 @@ class ElvenGameControllerTest {
 
         Player C = Players.defaultPlayer("C");
 
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
                 .content("""
-                    {   "cardType": "FIX",
+                    {   "type": "FIX",
                     "playerId": "B",
                       "handIndex": 0,
                       "targetPlayerId": "A"
@@ -335,13 +350,13 @@ class ElvenGameControllerTest {
 
         ElvenGame game = new ElvenGame(asList(A, B, C)); //givenGameStarted?
         game.setGoldInDestinationCard(2);
-        game = givenGameStarted(game);
+        game = saveGame(game);
 
         //A玩家對 終點2 使用地圖卡
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
                 .content("""
-                    {   "cardType": "MAP",
+                    {   "type": "MAP",
                     "playerId": "A",
                       "handIndex": 0,
                       "destinationCardIndex": 2
@@ -354,15 +369,15 @@ class ElvenGameControllerTest {
     @Test
     void 好矮人gameOver() throws Exception {
         // Given
-        Player A = Players.defaultPlayer("A");
-        Player B = Players.defaultPlayer("B");
-        Player C = Players.defaultPlayerBuilder("C")
+        Player A = Players.defaultPlayerBuilder("A")
             .hand(new BrokenCard(ToolName.HARP_OF_HARMONY)).build();
+        Player B = Players.defaultPlayer("B");
+        Player C = Players.defaultPlayer("C");
 
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
 
         //When, C玩家打出最後一張手牌
-        playBrokenCardSuccessfully(game, "C", 0, "A");
+        playBrokenCardSuccessfully(game, "A", 0, "C");
 
         // Then: assertions
         ElvenGame actualGame = gameRepository.findById(game.getId()).orElseThrow();
@@ -384,7 +399,8 @@ class ElvenGameControllerTest {
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
 
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         // When
         playPathCard(game, "A", 0, 0, 1, false)
@@ -403,7 +419,8 @@ class ElvenGameControllerTest {
             .hand(new BrokenCard(ToolName.HARP_OF_HARMONY))
             .build();
 
-        ElvenGame game = givenGameStarted(A, B, Players.defaultPlayer("C"));
+        ElvenGame game = saveGame(B, A, Players.defaultPlayer("C"));
+
 
         // when
         playBrokenCardSuccessfully(game, "B", 0, "A");
@@ -419,7 +436,7 @@ class ElvenGameControllerTest {
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
                 .content(format("""
-                    {   "cardType": "BROKEN",
+                    {   "type": "BROKEN",
                     "playerId": "%s",
                       "handIndex": %d,
                       "targetPlayerId": "%s"
@@ -434,7 +451,7 @@ class ElvenGameControllerTest {
         Player B = Players.defaultPlayer("B");
         Player C = Players.defaultPlayer("C");
 
-        var game = givenGameStarted(new ElvenGame("GameId", List.of(A, B, C),
+        var game = saveGame(new ElvenGame("GameId", List.of(A, B, C),
             new Maze(List.of(new Path(0, 0, PathCard.cross()),
                 new Path(0, 1, PathCard.cross()),
                 new Path(-1, 1, PathCard.rightCurve(), true)))));
@@ -442,7 +459,7 @@ class ElvenGameControllerTest {
         mockMvc.perform(post("/api/games/{gameId}:playCard", game.getId())
                 .contentType(APPLICATION_JSON)
                 .content("""
-                    {"cardType": "ROCKFALL",
+                    {"type": "ROCKFALL",
                      "playerId": "A",
                      "row": 0,
                      "col": 1
@@ -468,7 +485,8 @@ class ElvenGameControllerTest {
             .hand(PathCard.rightCurve())
             .build();
 
-        ElvenGame game = givenGameStarted(A, B, C);
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
 
         // When -- Then
         //  輪到 A 出一張十字路口，可以成功連接回起點，放置成功
@@ -505,13 +523,62 @@ class ElvenGameControllerTest {
             .contentType(APPLICATION_JSON)
             .content(format("""
                     {
-                     "cardType": "PATH",
-                    "playerId": "%s",
-                    "handIndex": %d,
-                    "row": %d,
-                    "col": %d,
-                    "flipped": %b}
+                        "type": "PATH",
+                        "playerId": "%s",
+                        "handIndex": %d,
+                        "row": %d,
+                        "col": %d,
+                        "flipped": %b
+                    }
                 """, playerId, handIndex, row, col, flipped)));
     }
+
+    @Test
+    void given三位玩家開始遊戲_when當前玩家出道路卡_than成功() throws Exception {
+        // Given
+        Player A = Players.defaultPlayerBuilder("A").hand(PathCard.cross()).build();
+        Player B = Players.defaultPlayerBuilder("B").hand(PathCard.cross()).build();
+        Player C = Players.defaultPlayerBuilder("C").build();
+
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
+
+        playPathCard(game, "A", 0, 0, 1, false)
+            .andExpect(status().is2xxSuccessful());
+
+        playPathCard(game, "B", 0, 0, -1, true)
+            .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    void given三位玩家開始遊戲_when當前玩家出不合理的道路卡_than失敗() throws Exception {
+        // Given
+        Player A = Players.defaultPlayerBuilder("A").hand(PathCard.cross()).build();
+        Player B = Players.defaultPlayerBuilder("B").hand(PathCard.cross()).build();
+        Player C = Players.defaultPlayerBuilder("C").build();
+
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
+
+        playPathCard(game, "A", 0, 0, 2, false)
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void given三位玩家開始遊戲_when不是當前玩家出道路卡_than失敗() throws Exception {
+        // Given
+        Player A = Players.defaultPlayerBuilder("A").hand(PathCard.cross()).build();
+        Player B = Players.defaultPlayerBuilder("B").hand(PathCard.cross()).build();
+        Player C = Players.defaultPlayerBuilder("C").build();
+
+        ElvenGame game = saveGame(A, B, C);
+        startGame(game);
+
+        playPathCard(game, "B", 0, 0, 1, false)
+            .andExpect(status().isBadRequest());
+    }
+
+
+
 }
 

@@ -124,6 +124,7 @@ class ElvenGameDataTest {
                     asList(CardData.toData(new FixCard(ToolName.STARLIGHT_WAND)),
                         CardData.toData(new RockFallCard())), RoleCard.GOBLIN)
             ),
+            null,
             new MazeData(List.of(
                 new PathData(0, 0, PathCard.CROSS, false, null),
                 new PathData(0, 1, PathCard.CROSS, true, null),

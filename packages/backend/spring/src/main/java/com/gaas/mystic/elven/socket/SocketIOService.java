@@ -134,6 +134,11 @@ public class SocketIOService implements SocketService {
             .forEach(c -> c.sendEvent(channel.name(), message));
     }
 
+    // get socket clients
+    public SocketIOClient getSocketIOClient(String gameId) {
+        return gameIdToPlayers.get(gameId).get(0);
+    }
+
 }
 
 @Data

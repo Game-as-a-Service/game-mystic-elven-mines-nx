@@ -95,12 +95,12 @@ public class ElvenController {
     public static class PlayCardRequest {
 
         @NotBlank
+        String type;
+
+        @NotBlank
         String playerId;
 
         int handIndex;
-
-        @NotBlank
-        String cardType;
 
         // play fix card
         String targetPlayerId;
@@ -114,7 +114,7 @@ public class ElvenController {
         Boolean flipped;
 
         public PlayCardUsecase.Request toRequest(String gameId) {
-            return new PlayCardUsecase.Request(gameId, playerId, handIndex, cardType, targetPlayerId, destinationCardIndex,
+            return new PlayCardUsecase.Request(gameId, playerId, handIndex, type, targetPlayerId, destinationCardIndex,
                 row, col, requireNonNullElse(flipped, false));
         }
     }
@@ -151,16 +151,16 @@ public class ElvenController {
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-class Response<T>{
+class Response<T> {
     private boolean success;
     private T data;
     private String message;
 
-    public static <T> Response<T> success(T data){
+    public static <T> Response<T> success(T data) {
         return new Response<>(true, data, null);
     }
 
-    public static <T> Response<T> fail(String message){
+    public static <T> Response<T> fail(String message) {
         return new Response<>(false, null, message);
     }
 }

@@ -27,11 +27,17 @@ public class ElvenGame {
     public static final int DESTINATION_CARDS_COUNT = 3;
     public static final int NUMBER_OF_PLAYER_HAND_CARDS = 5;
     private static final Random RANDOM = new Random();
+
     // @Id (UUID)
     @Getter
     private String id;
+
     // one-to-many relationship
     private final List<Player> players;
+
+    @Getter
+    private Player currentPlayer;
+
     @Getter
     private final Maze maze;
 
@@ -53,8 +59,13 @@ public class ElvenGame {
     }
 
     public ElvenGame(String id, List<Player> players, Maze maze, Deck deck) {
+        this(id, players, null, maze, deck);
+    }
+
+    public ElvenGame(String id, List<Player> players, Player currentPlayer, Maze maze, Deck deck) {
         this.id = id;
         this.players = requireNonNullElseGet(players, Collections::emptyList);
+        this.currentPlayer = currentPlayer == null ? this.players.get(0) : currentPlayer;
         setupDestinationCards(RANDOM.nextInt(DESTINATION_CARDS_COUNT));
         this.maze = maze;
         this.deck = deck;
@@ -145,12 +156,25 @@ public class ElvenGame {
     // 2. 萃取相同行為 (萃取出共同的部分到介面中）so sad
     // 3. 依賴抽象 (依賴抽象的 Card)
     public List<DomainEvent> playCard(Card.Parameters parameters) {
+        checkPlayerIsCurrentPlayer(parameters.playerId);
         parameters.player = getPlayer(parameters.playerId);
         parameters.card = parameters.player.getHandCard(parameters.handCardIndex);
         parameters.game = this;
         var events = parameters.card.execute(parameters);
         parameters.player.playCard(parameters.handCardIndex);
+        turnToNextPlayer();
         return events;
+    }
+
+    private void checkPlayerIsCurrentPlayer(String playerId) {
+        if (!currentPlayer.getId().equals(playerId)) {
+            throw new ElvenGameException(format("Player %s is not current player.", playerId));
+        }
+    }
+
+    private void turnToNextPlayer() {
+        int index = players.stream().map(Player::getId).toList().indexOf(currentPlayer.getId());
+        currentPlayer = players.get((index + 1) % players.size());
     }
 
     public boolean isGameOver() {
