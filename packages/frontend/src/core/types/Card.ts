@@ -37,7 +37,7 @@ export enum ToolName {
   // 神秘地圖:這張地圖隱藏了精靈世界中的重要位置和秘密寶藏的線索。精靈需要解讀地圖上的符號和謎題,找到寶藏或者尋找前進的道路。
 }
 //TODO async backend name
-export enum Paths {
+export enum PathCard {
   CROSS = 'Cross',
   DEAD_END_CROSS = 'DeadEndCross',
   LEFT_CURVE = 'LeftCurve',

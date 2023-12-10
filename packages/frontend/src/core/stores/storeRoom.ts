@@ -37,9 +37,38 @@ export const setGameActionPlayerName = (playerName: string) => {
 }
 
 export const setRoomMyCards = (cards: IHandCard[]) => {
-  useGameStore.setState({ roomMyCards: { data: cards } })
+  useGameStore.setState({ roomMyCards: { data: mockRoomMyCards } })
+  //useGameStore.setState({ roomMyCards: { data: data } })
 }
 
 export const setRoomMyRole = (role: 'ELVEN' | 'GOBLIN' | undefined) => {
   useGameStore.setState({ roomMyRole: role })
 }
+
+export const mockRoomMyCards = [
+  {
+    type: 'PATH',
+    name: 'Horizontal',
+    flipped: false,
+  },
+  {
+    type: 'PATH',
+    name: 'Horizontal',
+    flipped: false,
+  },
+  {
+    type: 'PATH',
+    name: 'Horizontal',
+    flipped: false,
+  },
+  {
+    type: 'PATH',
+    name: 'Horizontal',
+    flipped: false,
+  },
+  {
+    type: 'PATH',
+    name: 'Horizontal',
+    flipped: false,
+  },
+]

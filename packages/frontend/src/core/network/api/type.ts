@@ -1,4 +1,4 @@
-import { CardTypeEnum, Paths } from '../../types/Card'
+import { CardTypeEnum, PathCard } from '../../types/Card'
 
 // API
 export interface IApiCreateGame {
@@ -33,7 +33,7 @@ export type IPlayer = {
 }
 export type IHandCard = {
   type: CardTypeEnum
-  name: Paths
+  name: PathCard
   flipped: boolean
 }
 

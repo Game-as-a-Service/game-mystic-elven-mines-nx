@@ -14,6 +14,8 @@ export const fetcher = async ({ url, body, type }: fetcherType) => {
     if (body) config.body = JSON.stringify(body)
     const response = await fetch(url, config)
 
+    //FIXME game start bug
+
     const res = await interceptor(response)
     return res
   } catch (error) {

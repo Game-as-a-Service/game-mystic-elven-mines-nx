@@ -1,9 +1,9 @@
-import { CardTypeEnum, Paths } from '../../core/types/Card'
+import { CardTypeEnum, PathCard } from '../../core/types/Card'
 
 export interface IMapCard {
   row: number
   col: number
-  cardName: Paths | string
+  cardName: PathCard | string
   cardType: CardTypeEnum | string
 }
 
